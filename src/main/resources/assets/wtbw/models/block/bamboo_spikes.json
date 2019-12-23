@@ -1,8 +1,0 @@
-{
-  "parent": "wtbw:block/diamond_spikes",
-  "textures": {
-    "0": "block/smooth_stone",
-    "1": "block/bamboo_stalk"
-  }
-}
-

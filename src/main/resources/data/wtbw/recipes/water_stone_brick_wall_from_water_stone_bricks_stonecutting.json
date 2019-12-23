@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "wtbw:water_stone_brick"
-  },
-  "result": "wtbw:water_stone_brick_wall",
-  "count": 1
-}

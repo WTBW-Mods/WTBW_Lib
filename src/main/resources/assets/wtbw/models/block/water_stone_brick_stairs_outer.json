@@ -1,8 +1,0 @@
-{
-    "parent": "block/outer_stairs",
-    "textures": {
-        "bottom": "wtbw:block/fancy/water_stone_brick",
-        "top": "wtbw:block/fancy/water_stone_brick",
-        "side": "wtbw:block/fancy/water_stone_brick"
-    }
-}

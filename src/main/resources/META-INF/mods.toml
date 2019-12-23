@@ -4,9 +4,9 @@ loaderVersion="[30,)"
 #issueTrackerURL="http://my.issue.tracker/" #optional
 
 [[mods]]
-modId="wtbw"
+modId="wtbw_lib"
 version="${file.jarVersion}"
-displayName="What the B Wants"
+displayName="WTBW Library"
 #updateJSONURL="http://myurl.me/"
 #displayURL="http://example.com/"
 #logoFile="examplemod.png"
@@ -14,7 +14,7 @@ displayName="What the B Wants"
 authors="Naxanria, Sunekaer" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-A collection of things and stuffs
+Library mod
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.wtbw]] #optional

@@ -1,6 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "wtbw:item/tools/excavators/diamond_excavator"
-  }
-}
