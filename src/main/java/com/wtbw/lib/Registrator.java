@@ -2,6 +2,7 @@ package com.wtbw.lib;
 
 import com.wtbw.lib.block.BaseTileBlock;
 import com.wtbw.lib.gui.container.BaseTileContainer;
+import com.wtbw.lib.item.BaseItemProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -71,24 +72,39 @@ public abstract class Registrator
     eventBus.addGenericListener(ContainerType.class, this::registerContainers);
   }
   
-  protected Item.Properties getItemProperties()
+  protected BaseItemProperties getItemProperties()
   {
-    return new Item.Properties().group(group);
+    return new BaseItemProperties().group(group);
   }
   
-  protected Block.Properties getBlockProperties(Material material)
+  protected Block.Properties getBlockProperties(Material material, float hardnessAndResistance)
   {
-    return Block.Properties.create(material);
+    return getBlockProperties(material, hardnessAndResistance, hardnessAndResistance);
   }
   
-  protected Block.Properties getBlockProperties(Material material, DyeColor color)
+  protected Block.Properties getBlockProperties(Material material, float hardness, float resistance)
   {
-    return Block.Properties.create(material, color);
+    return Block.Properties.create(material).hardnessAndResistance(hardness, resistance);
   }
   
-  protected Block.Properties getBlockProperties(Material material, MaterialColor color)
+  protected Block.Properties getBlockProperties(Material material, float hardnessAndResistance, DyeColor color)
   {
-    return Block.Properties.create(material, color);
+    return Block.Properties.create(material, color).hardnessAndResistance(hardnessAndResistance);
+  }
+  
+  protected Block.Properties getBlockProperties(Material material, float hardness, float resistance, DyeColor color)
+  {
+    return Block.Properties.create(material, color).hardnessAndResistance(hardness, resistance);
+  }
+  
+  protected Block.Properties getBlockProperties(Material material, float hardnessAndResistance, MaterialColor color)
+  {
+    return Block.Properties.create(material, color).hardnessAndResistance(hardnessAndResistance);
+  }
+  
+  protected Block.Properties getBlockProperties(Material material, float hardness, float resistance, MaterialColor color)
+  {
+    return Block.Properties.create(material, color).hardnessAndResistance(hardness, resistance);
   }
 
   public void registerBlocks(RegistryEvent.Register<Block> event)
@@ -144,14 +160,14 @@ public abstract class Registrator
   
   protected <T extends Block> T register(T block, String registryName, boolean createBlockItem, Item.Properties blockItemProperties)
   {
-    block.setRegistryName(WTBWLib.MODID, registryName);
+    block.setRegistryName(modid, registryName);
     if (createBlockItem)
     {
       if (blockItemProperties == null)
       {
         blockItemProperties = getItemProperties();
       }
-      blockItems.add((BlockItem) new BlockItem(block, blockItemProperties).setRegistryName(WTBWLib.MODID, registryName));
+      blockItems.add((BlockItem) new BlockItem(block, blockItemProperties).setRegistryName(modid, registryName));
     }
 
     blockRegistry.register(block);
