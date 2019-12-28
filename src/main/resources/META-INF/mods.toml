@@ -9,22 +9,18 @@ version="${file.jarVersion}"
 displayName="WTBW Library"
 #updateJSONURL="http://myurl.me/"
 #displayURL="http://example.com/"
-#logoFile="examplemod.png"
-#credits="Thanks for this example mod goes to Java" #optional
+#logoFile="tools.png"
 authors="Naxanria, Sunekaer" #optional
-# The description text for the mod (multi line!) (#mandatory)
 description='''
 Library mod
 '''
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.wtbw]] #optional
-    modId="forge" #mandatory
-    mandatory=true #mandatory
-    versionRange="[30.0.2,)" #mandatory
+[[dependencies.wtbw_lib]]
+    modId="forge"
+    mandatory=true
+    versionRange="[30.0.2,)"
     ordering="NONE"
     side="BOTH"
-# Here's another dependency
-[[dependencies.wtbw]]
+[[dependencies.wtbw_lib]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.15.1,)"

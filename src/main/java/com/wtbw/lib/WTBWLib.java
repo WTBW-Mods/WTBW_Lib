@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 /*
   @author: Naxanria
 */
-@SuppressWarnings("Convert2MethodRef")
 @Mod(WTBWLib.MODID)
 public class WTBWLib
 {

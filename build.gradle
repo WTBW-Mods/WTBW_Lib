@@ -14,7 +14,7 @@ apply plugin: 'maven-publish'
 
 version = "${project_version}"
 group = 'com.wtbw.lib'
-archivesBaseName = "wtbw_lib-${minecraft_version}-${project_version}"
+archivesBaseName = "wtbw_lib-${minecraft_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
