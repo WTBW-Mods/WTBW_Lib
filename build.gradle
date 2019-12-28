@@ -2,22 +2,19 @@ buildscript {
     repositories {
         jcenter()
         maven { url = 'https://files.minecraftforge.net/maven' }
-//        maven { url "https://plugins.gradle.org/m2/" }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-//        classpath 'com.wynprice.cursemaven:CurseMaven:1.2.+'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-//apply plugin: 'com.wynprice.cursemaven'
 
 version = "${project_version}"
 group = 'com.wtbw.lib'
-archivesBaseName = "wtbw_lib-${minecraft_version}"
+archivesBaseName = "wtbw_lib-${minecraft_version}-${project_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
@@ -59,19 +56,17 @@ minecraft {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-//    compile fg.deobf(curse.resolve('jei', project.jei_file))
-//    compile fg.deobf(curse.resolve("item-filters", project.item_filters_file))
 }
 
 jar {
     manifest {
         attributes([
-            "Specification-Title": "examplemod",
-            "Specification-Vendor": "examplemodsareus",
+            "Specification-Title": "WTBW Lib",
+            "Specification-Vendor": "wtbw",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"examplemodsareus",
+            "Implementation-Vendor" :"wtbw",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
