@@ -194,7 +194,7 @@ public abstract class Registrator
     return type;
   }
 
-  interface IContainerFactory
+  public interface IContainerFactory
   {
     BaseTileContainer<?> create(int windowId, World world, BlockPos pos, PlayerInventory inv);
   }
