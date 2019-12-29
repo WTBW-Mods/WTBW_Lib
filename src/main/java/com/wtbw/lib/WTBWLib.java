@@ -34,11 +34,12 @@ public class WTBWLib
     {
       forgeEventBus.addListener(KeyEventListener::update);
     });
-
+    
+    Networking.registerMessages();
   }
   
   private void setup(final FMLCommonSetupEvent event)
   {
-    Networking.registerMessages();
+  
   }
 }
