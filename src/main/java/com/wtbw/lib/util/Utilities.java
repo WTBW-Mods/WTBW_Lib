@@ -324,4 +324,11 @@ public class Utilities
   
     return -1;
   }
+  
+  public static boolean isInside(BlockPos start, BlockPos end, BlockPos check)
+  {
+    return check.getX() >= start.getX() && check.getX() <= end.getX()
+      && check.getY() >= start.getY() && check.getY() <= end.getY()
+      && check.getZ() >= start.getZ() && check.getZ() <= end.getZ();
+  }
 }
