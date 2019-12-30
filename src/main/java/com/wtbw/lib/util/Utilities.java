@@ -14,6 +14,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -323,6 +324,18 @@ public class Utilities
     }
   
     return -1;
+  }
+  
+  public static BiValue<BlockPos, BlockPos> sort(BlockPos start, BlockPos end)
+  {
+    int x1 = Math.min(start.getX(), end.getX());
+    int x2 = Math.max(start.getX(), end.getX());
+    int y1 = Math.min(start.getY(), end.getY());
+    int y2 = Math.max(start.getY(), end.getY());
+    int z1 = Math.min(start.getZ(), end.getZ());
+    int z2 = Math.max(start.getZ(), end.getZ());
+    
+    return new BiValue<>(new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
   }
   
   public static boolean isInside(BlockPos start, BlockPos end, BlockPos check)

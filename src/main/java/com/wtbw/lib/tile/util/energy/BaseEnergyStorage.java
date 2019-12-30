@@ -1,12 +1,15 @@
 package com.wtbw.lib.tile.util.energy;
 
+import com.wtbw.lib.util.NBTHelper;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
 
 /*
   @author: Naxanria
 */
-public class BaseEnergyStorage extends EnergyStorage
+public class BaseEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT>
 {
   public BaseEnergyStorage(int capacity)
   {
@@ -61,5 +64,26 @@ public class BaseEnergyStorage extends EnergyStorage
   public int extractInternal(int amount, boolean simulate)
   {
     return -insertInternal(-amount, simulate);
+  }
+  
+  @Override
+  public CompoundNBT serializeNBT()
+  {
+    CompoundNBT nbt = new CompoundNBT();
+    nbt.putInt("capacity", capacity);
+    nbt.putInt("energy", energy);
+    nbt.putInt("maxExtract", maxExtract);
+    nbt.putInt("maxInsert", maxReceive);
+    
+    return nbt;
+  }
+  
+  @Override
+  public void deserializeNBT(CompoundNBT nbt)
+  {
+    capacity = NBTHelper.getInt(nbt, "capacity");
+    energy = NBTHelper.getInt(nbt, "energy");
+    maxExtract = NBTHelper.getInt(nbt, "maxExtract");
+    maxReceive = NBTHelper.getInt(nbt, "maxInsert");
   }
 }
