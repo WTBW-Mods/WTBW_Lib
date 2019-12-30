@@ -1,6 +1,9 @@
 package com.wtbw.lib.util;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.function.Supplier;
 
 /*
   @author: Naxanria
@@ -60,5 +63,35 @@ public class NBTHelper
     }
     
     return defaultValue;
+  }
+  
+  public static CompoundNBT putBlockPos(CompoundNBT compoundNBT, String name, BlockPos pos)
+  {
+    CompoundNBT compound = new CompoundNBT();
+    compound.putInt("X", pos.getX());
+    compound.putInt("Y", pos.getY());
+    compound.putInt("Z", pos.getZ());
+    compoundNBT.put(name, compound);
+    return compoundNBT;
+  }
+  
+  public static BlockPos getBlockPos(CompoundNBT compoundNBT, String name)
+  {
+    return getBlockPos(compoundNBT, name, () -> new BlockPos(0, 0, 0));
+  }
+  
+  public static BlockPos getBlockPos(CompoundNBT compoundNBT, String name, Supplier<BlockPos> defaultProvider)
+  {
+    if (compoundNBT.contains(name))
+    {
+      CompoundNBT compound = compoundNBT.getCompound(name);
+      int x = compound.getInt("X");
+      int y = compound.getInt("Y");
+      int z = compound.getInt("Z");
+      
+      return new BlockPos(x, y, z);
+    }
+    
+    return defaultProvider.get();
   }
 }
