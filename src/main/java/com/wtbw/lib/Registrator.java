@@ -36,6 +36,8 @@ public abstract class Registrator
   protected String modid;
   
   private List<BlockItem> blockItems = new ArrayList<>();
+  private List<BaseTileBlock> blockTiles = new ArrayList<>();
+  
   protected IForgeRegistry<Block> blockRegistry;
   protected IForgeRegistry<Item> itemRegistry;
   protected IForgeRegistry<TileEntityType<?>> tileRegistry;
@@ -53,7 +55,9 @@ public abstract class Registrator
 
   protected abstract void registerAllItems();
   
-  protected abstract void registerAllTiles();
+  @Deprecated
+  protected void registerAllTiles()
+  {}
   
   protected abstract void registerAllContainers();
 
@@ -130,8 +134,13 @@ public abstract class Registrator
   public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event)
   {
     tileRegistry = event.getRegistry();
-
-    registerAllTiles();
+    
+    for (BaseTileBlock block : blockTiles)
+    {
+      register(block);
+    }
+    
+//    registerAllTiles();
   }
 
   public void registerContainers(RegistryEvent.Register<ContainerType<?>> event)
@@ -168,6 +177,12 @@ public abstract class Registrator
         blockItemProperties = getItemProperties();
       }
       blockItems.add((BlockItem) new BlockItem(block, blockItemProperties).setRegistryName(modid, registryName));
+    }
+    
+    if (block instanceof BaseTileBlock)
+    {
+      // mark for tileEntityRegistration
+      blockTiles.add((BaseTileBlock) block);
     }
 
     blockRegistry.register(block);

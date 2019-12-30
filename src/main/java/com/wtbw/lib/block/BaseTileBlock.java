@@ -1,5 +1,6 @@
 package com.wtbw.lib.block;
 
+import com.wtbw.lib.tile.util.IComparatorProvider;
 import com.wtbw.lib.tile.util.IContentHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -24,6 +25,7 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
 {
   public final TileEntityProvider<TE> tileEntityProvider;
   protected boolean hasGui = true;
+  protected boolean hasComparatorOverride = false;
 
   public BaseTileBlock(Properties properties, TileEntityProvider<TE> tileEntityProvider)
   {
@@ -32,6 +34,29 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
     this.tileEntityProvider = tileEntityProvider;
   }
 
+  public BaseTileBlock setComparatorOverride(boolean override)
+  {
+    hasComparatorOverride = override;
+    return this;
+  }
+  
+  public BaseTileBlock comparatorOverride()
+  {
+    return setComparatorOverride(true);
+  }
+  
+  public BaseTileBlock setHasGui(boolean gui)
+  {
+    hasGui = gui;
+    return this;
+  }
+  
+  public BaseTileBlock setGui()
+  {
+    hasGui = true;
+    return this;
+  }
+  
   @Override
   public boolean hasTileEntity(BlockState state)
   {
@@ -92,7 +117,6 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
     super.onReplaced(state, worldIn, pos, newState, isMoving);
   }
   
-  
   public interface TileEntityProvider<TE extends TileEntity>
   {
     default TE get()
@@ -101,5 +125,26 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
     }
 
     TE get(IBlockReader world, BlockState state);
+  }
+  
+  @Override
+  public boolean hasComparatorInputOverride(BlockState state)
+  {
+    return hasComparatorOverride;
+  }
+  
+  @Override
+  public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos)
+  {
+    if (hasComparatorOverride)
+    {
+      TE tileEntity = getTileEntity(worldIn, pos);
+      if (tileEntity instanceof IComparatorProvider)
+      {
+        return ((IComparatorProvider) tileEntity).getComparatorStrength();
+      }
+    }
+    
+    return super.getComparatorInputOverride(blockState, worldIn, pos);
   }
 }
