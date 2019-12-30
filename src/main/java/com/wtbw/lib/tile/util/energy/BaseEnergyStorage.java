@@ -37,6 +37,23 @@ public class BaseEnergyStorage extends EnergyStorage implements INBTSerializable
     return this;
   }
   
+  public BaseEnergyStorage setCapacity(int capacity)
+  {
+    this.capacity = capacity;
+    energy = MathHelper.clamp(energy, 0, capacity);
+    return this;
+  }
+  
+  public int getMaxExtract()
+  {
+    return maxExtract;
+  }
+  
+  public int getMaxInsert()
+  {
+    return maxReceive;
+  }
+  
   /**
    * Inserts energy, bypassing canReceive() and maxReceive
    * @param amount the amount to insert

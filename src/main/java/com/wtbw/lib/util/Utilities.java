@@ -10,12 +10,17 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -355,5 +360,90 @@ public class Utilities
     return x >= x1 && x <= x2
       && y >= y1 && y <= y2
       && z >= z1 && z <= z2;
+  }
+  
+  public static int sendPowerAround(World world, BlockPos pos, int toSend, boolean shareEqually)
+  {
+    return sendPowerAround(world, pos, toSend, shareEqually, Direction.values());
+  }
+  
+  /**
+   * Shares power to neighbouring energy acceptors
+   * @param world the world
+   * @param pos the position to send from
+   * @param toSend the amount of power to send
+   * @param shareEqually if each gets an equal share, or first come first serve
+   * @param sides what sides to send to, null for all sides
+   * @return the amount not send
+   */
+  public static int sendPowerAround(World world, BlockPos pos, int toSend, boolean shareEqually, @Nullable Direction[] sides)
+  {
+    if (toSend <= 0)
+    {
+      return 0;
+    }
+    
+    if (sides == null)
+    {
+      sides = Direction.values();
+    }
+    
+    List<IEnergyStorage> storageFound = new ArrayList<>();
+    
+    for(Direction side : sides)
+    {
+      TileEntity tileEntity = world.getTileEntity(pos.offset(side));
+      if (tileEntity != null)
+      {
+        LazyOptional<IEnergyStorage> capability = tileEntity.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+        capability.ifPresent(
+          storage1 ->
+          {
+            if (storage1.canReceive())
+            {
+              storageFound.add(storage1);
+            }
+          });
+      }
+    }
+    
+    if (storageFound.size() == 0)
+    {
+      return toSend;
+    }
+    
+    if (shareEqually)
+    {
+      int each = toSend / storageFound.size();
+      while (toSend > 0 && storageFound.size() > 0)
+      {
+        for (int i = 0; i < storageFound.size(); i++)
+        {
+          int insert = storageFound.get(i).receiveEnergy(each, false);
+          if (insert == 0)
+          {
+            storageFound.remove(i);
+          }
+          toSend -= insert;
+        }
+      }
+    }
+    else
+    {
+      while (toSend > 0 && storageFound.size() > 0)
+      {
+        for (int i = 0; i < storageFound.size(); i++)
+        {
+          int insert = storageFound.get(i).receiveEnergy(toSend, false);
+          if (insert == 0)
+          {
+            storageFound.remove(i);
+          }
+          toSend -= insert;
+        }
+      }
+    }
+    
+    return toSend;
   }
 }

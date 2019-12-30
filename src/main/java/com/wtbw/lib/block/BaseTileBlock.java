@@ -40,7 +40,7 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
     return this;
   }
   
-  public BaseTileBlock comparatorOverride()
+  public BaseTileBlock comparator()
   {
     return setComparatorOverride(true);
   }
