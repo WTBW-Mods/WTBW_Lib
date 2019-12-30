@@ -327,8 +327,20 @@ public class Utilities
   
   public static boolean isInside(BlockPos start, BlockPos end, BlockPos check)
   {
-    return check.getX() >= start.getX() && check.getX() <= end.getX()
-      && check.getY() >= start.getY() && check.getY() <= end.getY()
-      && check.getZ() >= start.getZ() && check.getZ() <= end.getZ();
+    int x = check.getX();
+    int y = check.getY();
+    int z = check.getZ();
+    
+    // sort the coordinates
+    int x1 = Math.min(start.getX(), end.getX());
+    int x2 = Math.max(start.getX(), end.getX());
+    int y1 = Math.min(start.getY(), end.getY());
+    int y2 = Math.max(start.getY(), end.getY());
+    int z1 = Math.min(start.getZ(), end.getZ());
+    int z2 = Math.max(start.getZ(), end.getZ());
+    
+    return x >= x1 && x <= x2
+      && y >= y1 && y <= y2
+      && z >= z1 && z <= z2;
   }
 }
