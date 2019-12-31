@@ -154,7 +154,7 @@ public class Utilities
     int endX = dirX == 0 ? pos.getX() + hSize : pos.getX();
     int endY = dirY == 0 ? pos.getY() + hSize : pos.getY();
     int endZ = dirZ == 0 ? pos.getZ() + hSize : pos.getZ();
-    
+
     if (height != size)
     {
       startY = pos.getY() + (dirY == 0 ? -height : 0);

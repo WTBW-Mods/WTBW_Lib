@@ -90,7 +90,7 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
         break;
     }
     
-    sprite.render(x + 1, y + 2);
+    sprite.render(x + 1, y + 1);
 
     this.renderBg(Minecraft.getInstance(), mouseX, mouseY);
   }
