@@ -1,5 +1,7 @@
 package com.wtbw.lib.util;
 
+import net.minecraft.util.math.MathHelper;
+
 /*
   @author: Naxanria
 */
@@ -39,5 +41,19 @@ public class ColorUtil
   public static int color(float r, float g, float b, float a)
   {
     return color((int) (r * 256),(int) (g * 256), (int) (b * 256), (int) (a * 256));
+  }
+  
+  public static int lerp(float t, int colorA, int colorB)
+  {
+    int[] aCols = getRGBAi(colorA);
+    int[] bCols = getRGBAi(colorB);
+    
+    return color
+      (
+        (int) MathHelper.lerp(t, aCols[0], bCols[0]),
+        (int) MathHelper.lerp(t, aCols[1], bCols[1]),
+        (int) MathHelper.lerp(t, aCols[2], bCols[2]),
+        (int) MathHelper.lerp(t, aCols[3], bCols[3])
+      );
   }
 }

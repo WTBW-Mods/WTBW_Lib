@@ -103,4 +103,26 @@ public class BaseEnergyStorage extends EnergyStorage implements INBTSerializable
     maxExtract = NBTHelper.getInt(nbt, "maxExtract");
     maxReceive = NBTHelper.getInt(nbt, "maxInsert");
   }
+  
+  public float getPercentageFilled()
+  {
+    return energy / (float) capacity;
+  }
+  
+  public int getComparatorStrength()
+  {
+    float p = getPercentageFilled();
+    int c = (int) (p * 15);
+    if (c == 0)
+    {
+      return (energy > 0) ? 1 : 0;
+    }
+    
+    if (c == 15)
+    {
+      return (energy == capacity) ? 15 : 14;
+    }
+    
+    return c;
+  }
 }

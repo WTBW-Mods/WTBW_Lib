@@ -50,7 +50,7 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
 
         for (ITooltipProvider provider : tooltipProviders)
         {
-          if (provider.isHover(mouseX - i, mouseY - j))
+          if (provider.isHover(mouseX, mouseY))
           {
             renderTooltip(provider.getTooltip(), mouseX, mouseY);
             break;
