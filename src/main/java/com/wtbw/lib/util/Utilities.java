@@ -134,6 +134,36 @@ public class Utilities
     return Arrays.asList(toList);
   }
 
+  public static Area getArea(BlockPos pos, Direction facing, int size)
+  {
+    return getArea(pos, facing, size, size);
+  }
+  
+  public static Area getArea(BlockPos pos, Direction facing, int size, int height)
+  {
+    Vec3i directionVec = facing.getDirectionVec();
+    int dirX = directionVec.getX();
+    int dirY = directionVec.getY();
+    int dirZ = directionVec.getZ();
+    
+    int hSize = size / 2;
+  
+    int startX = dirX == 0 ? pos.getX() - hSize : pos.getX() + size * dirX;
+    int startY = dirY == 0 ? pos.getY() - hSize : pos.getY() + size * dirY;
+    int startZ = dirZ == 0 ? pos.getZ() - hSize : pos.getZ() + size * dirZ;
+    int endX = dirX == 0 ? pos.getX() + hSize : pos.getX();
+    int endY = dirY == 0 ? pos.getY() + hSize : pos.getY();
+    int endZ = dirZ == 0 ? pos.getZ() + hSize : pos.getZ();
+    
+    if (height != size)
+    {
+      startY = pos.getY() + (dirY == 0 ? -height : 0);
+      endY = pos.getY() + (dirY == 0 ? 0 : dirY * height);
+    }
+  
+    return new Area(new BlockPos(startX, startY, startZ), new BlockPos(endX, endY, endZ));
+  }
+  
   public static List<BlockPos> getBlocks(BlockPos pos, Direction facing)
   {
     return getBlocks(pos, facing, 3);
