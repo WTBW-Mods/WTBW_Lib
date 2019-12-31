@@ -445,32 +445,27 @@ public class Utilities
     if (shareEqually)
     {
       int each = toSend / storageFound.size();
-      while (toSend > 0 && storageFound.size() > 0)
+
+      for (int i = 0; i < storageFound.size(); i++)
       {
-        for (int i = 0; i < storageFound.size(); i++)
+        int insert = storageFound.get(i).receiveEnergy(each, false);
+        if (insert == 0)
         {
-          int insert = storageFound.get(i).receiveEnergy(each, false);
-          if (insert == 0)
-          {
-            storageFound.remove(i);
-          }
-          toSend -= insert;
+          storageFound.remove(i);
         }
+        toSend -= insert;
       }
     }
     else
     {
-      while (toSend > 0 && storageFound.size() > 0)
+      for (int i = 0; i < storageFound.size(); i++)
       {
-        for (int i = 0; i < storageFound.size(); i++)
+        int insert = storageFound.get(i).receiveEnergy(toSend, false);
+        if (insert == 0)
         {
-          int insert = storageFound.get(i).receiveEnergy(toSend, false);
-          if (insert == 0)
-          {
-            storageFound.remove(i);
-          }
-          toSend -= insert;
+          storageFound.remove(i);
         }
+        toSend -= insert;
       }
     }
     
