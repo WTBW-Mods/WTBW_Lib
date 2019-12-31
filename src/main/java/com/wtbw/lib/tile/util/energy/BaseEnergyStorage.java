@@ -1,6 +1,6 @@
 package com.wtbw.lib.tile.util.energy;
 
-import com.wtbw.lib.util.NBTHelper;
+import com.wtbw.lib.util.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.INBTSerializable;

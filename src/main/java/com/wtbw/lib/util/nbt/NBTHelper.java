@@ -1,4 +1,4 @@
-package com.wtbw.lib.util;
+package com.wtbw.lib.util.nbt;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;

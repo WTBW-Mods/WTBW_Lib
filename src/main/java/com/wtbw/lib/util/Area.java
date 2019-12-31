@@ -1,5 +1,6 @@
 package com.wtbw.lib.util;
 
+import com.wtbw.lib.util.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;

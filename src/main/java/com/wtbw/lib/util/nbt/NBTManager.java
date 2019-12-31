@@ -1,4 +1,4 @@
-package com.wtbw.lib.util;
+package com.wtbw.lib.util.nbt;
 
 import net.minecraft.nbt.CompoundNBT;
 
@@ -11,12 +11,6 @@ import java.util.Map;
 public class NBTManager
 {
   public Map<String, Manager> managerMap = new HashMap<>();
-  
-  public static abstract class Manager
-  {
-    public abstract void read(String name, CompoundNBT nbt);
-    public abstract void write(String name, CompoundNBT nbt);
-  }
   
   public void read(CompoundNBT nbt)
   {
