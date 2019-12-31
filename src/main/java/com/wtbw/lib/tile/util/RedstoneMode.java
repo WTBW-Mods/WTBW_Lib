@@ -8,5 +8,9 @@ public enum RedstoneMode
   IGNORE,
   ON,
   OFF,
-  PULSE
+  PULSE;
+  
+  public static final RedstoneMode[] noPulse = new RedstoneMode[]{ IGNORE, ON, OFF };
+  public static final RedstoneMode[] onOff = new RedstoneMode[]{ ON, OFF };
+  
 }
