@@ -98,6 +98,11 @@ public class BaseEnergyStorage extends EnergyStorage implements INBTSerializable
   @Override
   public void deserializeNBT(CompoundNBT nbt)
   {
+    if (nbt.isEmpty())
+    {
+      return;
+    }
+    
     capacity = NBTHelper.getInt(nbt, "capacity");
     energy = NBTHelper.getInt(nbt, "energy");
     maxExtract = NBTHelper.getInt(nbt, "maxExtract");
