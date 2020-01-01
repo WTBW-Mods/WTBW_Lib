@@ -3,6 +3,7 @@ package com.wtbw.lib.util.nbt;
 import com.wtbw.lib.tile.util.RedstoneControl;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.IntReferenceHolder;
 import net.minecraftforge.common.util.INBTSerializable;
 
 /*
@@ -19,8 +20,15 @@ public abstract class Manager
     public abstract void set(T value);
   }
   
-  public abstract static class Int extends Impl<Integer>
+  public interface IIntReferenceHolder
   {
+    IntReferenceHolder getReferenceHolder();
+  }
+  
+  public abstract static class Int extends Impl<Integer> implements IIntReferenceHolder
+  {
+    private IntReferenceHolder referenceHolder;
+    
     @Override
     public void read(String name, CompoundNBT nbt)
     {
@@ -32,10 +40,36 @@ public abstract class Manager
     {
       nbt.putInt(name, get());
     }
+  
+    @Override
+    public IntReferenceHolder getReferenceHolder()
+    {
+      if (referenceHolder == null)
+      {
+        referenceHolder = new IntReferenceHolder()
+        {
+          @Override
+          public int get()
+          {
+            return Int.this.get();
+          }
+  
+          @Override
+          public void set(int value)
+          {
+            Int.this.set(value);
+          }
+        };
+      }
+      
+      return referenceHolder;
+    }
   }
   
-  public abstract static class Bool extends Impl<Boolean>
+  public abstract static class Bool extends Impl<Boolean> implements IIntReferenceHolder
   {
+    private IntReferenceHolder referenceHolder;
+    
     @Override
     public void read(String name, CompoundNBT nbt)
     {
@@ -46,6 +80,30 @@ public abstract class Manager
     public void write(String name, CompoundNBT nbt)
     {
       nbt.putBoolean(name, get());
+    }
+  
+    @Override
+    public IntReferenceHolder getReferenceHolder()
+    {
+      if (referenceHolder == null)
+      {
+        referenceHolder = new IntReferenceHolder()
+        {
+          @Override
+          public int get()
+          {
+            return Bool.this.get() ? 1 : 0;
+          }
+  
+          @Override
+          public void set(int value)
+          {
+            Bool.this.set(value == 1);
+          }
+        };
+      }
+      
+      return referenceHolder;
     }
   }
   
@@ -100,50 +158,6 @@ public abstract class Manager
       nbt.put(name, control.serialize());
     }
   }
-  
-//  public static class ItemHandler extends Manager
-//  {
-//    private final ItemStackHandler handler;
-//
-//    protected ItemHandler(ItemStackHandler handler)
-//    {
-//      this.handler = handler;
-//    }
-//
-//    @Override
-//    public void read(String name, CompoundNBT nbt)
-//    {
-//      handler.deserializeNBT(nbt.getCompound(name));
-//    }
-//
-//    @Override
-//    public void write(String name, CompoundNBT nbt)
-//    {
-//      nbt.put(name, handler.serializeNBT());
-//    }
-//  }
-//
-//  public static class Energy extends Manager
-//  {
-//    private final BaseEnergyStorage storage;
-//
-//    public Energy(BaseEnergyStorage storage)
-//    {
-//      this.storage = storage;
-//    }
-//
-//    @Override
-//    public void read(String name, CompoundNBT nbt)
-//    {
-//      storage.deserializeNBT(nbt.getCompound(name));
-//    }
-//
-//    @Override
-//    public void write(String name, CompoundNBT nbt)
-//    {
-//      nbt.put(name, storage.serializeNBT());
-//    }
-//  }
   
   public static class Serializable extends Manager
   {

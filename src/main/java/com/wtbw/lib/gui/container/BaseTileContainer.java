@@ -1,5 +1,6 @@
 package com.wtbw.lib.gui.container;
 
+import com.wtbw.lib.gui.util.InputSlot;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -12,6 +13,7 @@ import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
@@ -53,6 +55,11 @@ public abstract class BaseTileContainer<TE extends TileEntity> extends Container
   protected void addSlot(IItemHandler handler, int index, int x, int y)
   {
     addSlot(new SlotItemHandler(handler, index, x, y));
+  }
+  
+  protected void addInputSlot(ItemStackHandler handler, int index, int x, int y)
+  {
+    addSlot(new InputSlot(handler, index, x, y));
   }
   
   protected int addSlotBox(IItemHandler handler, int index, int x, int y, int horAmount, int verAmount, int dx, int dy)
@@ -128,5 +135,11 @@ public abstract class BaseTileContainer<TE extends TileEntity> extends Container
     }
   
     return stack;
+  }
+  
+  @Override
+  public boolean canInteractWith(PlayerEntity playerIn)
+  {
+    return true;
   }
 }

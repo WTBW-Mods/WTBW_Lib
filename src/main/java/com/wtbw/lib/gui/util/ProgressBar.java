@@ -277,6 +277,15 @@ public class ProgressBar extends AbstractGui
     return this;
   }
   
+  public ProgressBar gradientColor(int emptyColor, int fullColor)
+  {
+    gradient = true;
+    this.emptyColor = emptyColor;
+    this.fullColor = fullColor;
+    
+    return this;
+  }
+  
   public int getX()
   {
     return x;
