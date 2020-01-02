@@ -13,6 +13,8 @@ import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -470,5 +472,10 @@ public class Utilities
     }
     
     return toSend;
+  }
+  
+  public static ITextComponent getTitle(TileEntity tile)
+  {
+    return new TranslationTextComponent("block." + tile.getType().getRegistryName().toString().replace(":", "."));
   }
 }

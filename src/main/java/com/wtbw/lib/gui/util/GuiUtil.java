@@ -6,7 +6,9 @@ import com.wtbw.lib.network.ButtonClickedPacket;
 import com.wtbw.lib.network.Networking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.inventory.ChestScreen;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
@@ -17,6 +19,12 @@ public class GuiUtil extends AbstractGui
 {
   public static final ResourceLocation WIDGETS = Widget.WIDGETS_LOCATION;
 
+  public static final SpriteMap GUI_MAP = new SpriteMap(256, new ResourceLocation("textures/gui/container/generic_54.png"));
+  public static final Sprite SLOT_SPRITE;
+  public static final Sprite INVENTORY_SPRITE;
+  
+  public static final NineSliceSprite GUI_NINE_SLICE;
+  
   public static final SpriteMap WIDGETS_MAP = new SpriteMap(256, WIDGETS);
   public static final NineSliceSprite BUTTON_NINE_SLICE_DISABLED;
   public static final NineSliceSprite BUTTON_NINE_SLICE_NORMAL;
@@ -78,6 +86,25 @@ public class GuiUtil extends AbstractGui
         3, yOff + 20 - h,
         200 - w, yOff + 20 - h
       );
+    
+    GUI_NINE_SLICE = NineSliceSprite.create
+      (
+        GUI_MAP, 7, 7,
+        0, 0,
+        7, 0,
+        176 - 7, 0,
+        
+        0, 7,
+        7, 7,
+        176 - 7, 7,
+        
+        0, 222 - 7,
+        7, 222 - 7,
+        176 - 7, 222 - 7
+      );
+    
+    SLOT_SPRITE = new Sprite(GUI_MAP, 18, 18, 7, 17);
+    INVENTORY_SPRITE = new Sprite(GUI_MAP, 161, 75,7, 139);
   }
   
   public static void sendButton(int id, BlockPos pos, ClickType clickType)
@@ -172,18 +199,45 @@ public class GuiUtil extends AbstractGui
   {
     int renderWidth = width;
     int xp = x;
-    while (uWidth <= renderWidth)
+    do
     {
       int renderHeight = height;
       int yp = y;
-      while (vHeight <= renderHeight)
+      do
       {
         renderTexture(xp, yp, renderWidth, renderHeight, u, v, textureWidth, textureHeight, color, textureLocation);
         renderHeight -= vHeight;
         yp += vHeight;
       }
+      while (vHeight <= renderHeight);
       renderWidth -= uWidth;
       xp += uWidth;
     }
+    while (uWidth <= renderWidth);
+  }
+  
+  public static void renderGui(int x, int y)
+  {
+    renderGui(x, y, 175, 165);
+  }
+  
+  public static void renderGui(int x, int y, int width, int height)
+  {
+    GUI_NINE_SLICE.render(x, y, width, height);
+  }
+  
+  public static void renderSlotBackground(Slot slot)
+  {
+    renderSlotBackground(slot.xPos, slot.yPos);
+  }
+  
+  public static void renderSlotBackground(int x, int y)
+  {
+    SLOT_SPRITE.render(x, y);
+  }
+  
+  public static void renderInventoryBackground(int x, int y)
+  {
+    INVENTORY_SPRITE.render(x, y);
   }
 }

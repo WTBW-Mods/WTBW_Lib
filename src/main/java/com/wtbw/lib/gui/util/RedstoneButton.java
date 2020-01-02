@@ -62,7 +62,7 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
 //    Minecraft minecraft = Minecraft.getInstance();
 //    minecraft.getTextureManager().bindTexture(WIDGETS_LOCATION);
 //    GlStateManager.color4f(1.0F, 1.0F, 1.0F, this.alpha);
-    int yOff = this.getYImage(this.isHovered());
+//    int yOff = this.getYImage(this.isHovered());
 //    GlStateManager.enableBlend();
 //    GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 //    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);

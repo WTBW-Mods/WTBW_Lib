@@ -1,10 +1,12 @@
 package com.wtbw.lib.gui.screen;
 
+import com.wtbw.lib.gui.util.GuiUtil;
 import com.wtbw.lib.gui.util.ITooltipProvider;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
@@ -77,4 +79,77 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
     }
     return super.addButton(widget);
   }
+  
+  protected void defaultGui()
+  {
+    defaultGuiBackground();
+    renderTitle();
+    renderInventoryText();
+    renderSlotsBackground();
+  }
+  
+  protected void defaultGuiBackground()
+  {
+    defaultGuiBackground(guiLeft, guiTop);
+  }
+  
+  protected void defaultGuiBackground(int x, int y)
+  {
+    GuiUtil.renderGui(x, y);
+  }
+  
+  protected void defaultGuiBackground(int x, int y, int width, int height)
+  {
+    GuiUtil.renderGui(x, y, width, height);
+  }
+  
+  protected void renderSlotsBackground()
+  {
+    renderSlotsBackground(true);
+  }
+  
+  protected void renderSlotsBackground(boolean inventory)
+  {
+    for (int i = 0; i < container.inventorySlots.size(); i++)
+    {
+      Slot slot = container.inventorySlots.get(i);
+      int x = slot.xPos + guiLeft - 1;
+      int y = slot.yPos + guiTop - 1;
+      if (inventory)
+      {
+        if (i == container.inventorySlots.size() - 36)
+        {
+          GuiUtil.renderInventoryBackground(x, y);
+          break;
+        }
+      }
+      
+      GuiUtil.renderSlotBackground(x, y);
+    }
+  }
+  
+  protected void renderTitle()
+  {
+    renderTitle(guiLeft + 8, guiTop + 6);
+  }
+  
+  protected void renderTitle(int x, int y)
+  {
+    if (title != null)
+    {
+      String title = this.title.getUnformattedComponentText();
+      font.drawString(title, x, y, 0xff404040);
+    }
+  }
+  
+  protected void renderInventoryText()
+  {
+    renderInventoryText(guiLeft + 8, guiTop + 73);
+  }
+  
+  protected void renderInventoryText(int x, int y)
+  {
+    font.drawString(playerInventory.getDisplayName().getFormattedText(), x, y, 0xff404040);
+  }
+  
 }
