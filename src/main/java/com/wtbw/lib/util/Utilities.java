@@ -478,4 +478,9 @@ public class Utilities
   {
     return new TranslationTextComponent("block." + tile.getType().getRegistryName().toString().replace(":", "."));
   }
+  
+  public static boolean isInBounds(int value, int min, int max)
+  {
+    return value >= min && value <= max;
+  }
 }
