@@ -29,4 +29,14 @@ public class Sprite
   {
     map.render(x, y, color, this);
   }
+  
+  public void render(int x, int y, int width, int height)
+  {
+    render(x, y, width, height, 0xffffffff);
+  }
+  
+  public void render(int x, int y, int width, int height, int color)
+  {
+    map.render(x, y, width, height, color, this);
+  }
 }

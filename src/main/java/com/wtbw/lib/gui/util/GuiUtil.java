@@ -16,10 +16,69 @@ import net.minecraft.util.math.BlockPos;
 public class GuiUtil extends AbstractGui
 {
   public static final ResourceLocation WIDGETS = Widget.WIDGETS_LOCATION;
-  private static ResourceLocation lastTexture = null;
-  
+
   public static final SpriteMap WIDGETS_MAP = new SpriteMap(256, WIDGETS);
-//  public static final NineSliceSprite BUTTON_NINE_SLICE = new NineSliceSprite(WIDGETS_MAP, 10, 5, )
+  public static final NineSliceSprite BUTTON_NINE_SLICE_DISABLED;
+  public static final NineSliceSprite BUTTON_NINE_SLICE_NORMAL;
+  public static final NineSliceSprite BUTTON_NINE_SLICE_HOVER;
+  static
+  {
+    int yOff = 46;
+    int w = 10;
+    int h = 5;
+    BUTTON_NINE_SLICE_DISABLED = NineSliceSprite.create
+      (
+        WIDGETS_MAP, w, h,
+      
+        0, yOff,
+        3, yOff,
+        200 - w, yOff,
+      
+        0, yOff + 3,
+        3, yOff + 3,
+        200 - w, yOff + 3,
+      
+        0, yOff + 20 - h,
+        3, yOff + 20 - h,
+        200 - w, yOff + 20 - h
+      );
+  
+    yOff += 20;
+    BUTTON_NINE_SLICE_NORMAL = NineSliceSprite.create
+      (
+        WIDGETS_MAP, w, h,
+      
+        0, yOff,
+        3, yOff,
+        200 - w, yOff,
+      
+        0, yOff + 3,
+        3, yOff + 3,
+        200 - w, yOff + 3,
+      
+        0, yOff + 20 - h,
+        3, yOff + 20 - h,
+        200 - w, yOff + 20 - h
+      );
+  
+    yOff += 20;
+    BUTTON_NINE_SLICE_HOVER = NineSliceSprite.create
+      (
+        WIDGETS_MAP, w, h,
+      
+        0, yOff,
+        3, yOff,
+        200 - w, yOff,
+      
+        0, yOff + 3,
+        3, yOff + 3,
+        200 - w, yOff + 3,
+      
+        0, yOff + 20 - h,
+        3, yOff + 20 - h,
+        200 - w, yOff + 20 - h
+      );
+  }
   
   public static void sendButton(int id, BlockPos pos, ClickType clickType)
   {
@@ -57,30 +116,56 @@ public class GuiUtil extends AbstractGui
   
   public static void renderButton(int x, int y, int width, boolean hover)
   {
-    renderButton(x, y, width, hover, true);
+    renderButton(x, y, width, 20, hover);
+  }
+  
+  public static void renderButton(int x, int y, int width, int height, boolean hover)
+  {
+    renderButton(x, y, width, height, hover, true);
   }
   
   public static void renderButton(int x, int y, int width, boolean hover, boolean enabled)
   {
-    int buttonX = 0;
-    int buttonEndX = 200;
-    int offset = 20;
-    int buttonY = 66;
-    if (!enabled)
+    renderButton(x, y, width, 20, hover, enabled);
+  }
+  
+  public static void renderButton(int x, int y, int width, int height, boolean hover, boolean enabled)
+  {
+    if (enabled)
     {
-      buttonY -= offset;
+      if (hover)
+      {
+        BUTTON_NINE_SLICE_HOVER.render(x, y, width, height);
+      }
+      else
+      {
+        BUTTON_NINE_SLICE_NORMAL.render(x, y, width, height);
+      }
     }
-    else if (hover)
+    else
     {
-      buttonY += offset;
+      BUTTON_NINE_SLICE_DISABLED.render(x, y, width, height);
     }
     
-    int height = 20;
-    
-    // start part
-    renderTexture(x, y, 3, height, buttonX, buttonY, 256, 256, WIDGETS);
-    width = width - 3;
-    renderTexture(x + 3, y, width, height,buttonEndX - width, buttonY, 256, 256, WIDGETS);
+//    int buttonX = 0;
+//    int buttonEndX = 200;
+//    int offset = 20;
+//    int buttonY = 66;
+//    if (!enabled)
+//    {
+//      buttonY -= offset;
+//    }
+//    else if (hover)
+//    {
+//      buttonY += offset;
+//    }
+//
+//    int height = 20;
+//
+//    // start part
+//    renderTexture(x, y, 3, height, buttonX, buttonY, 256, 256, WIDGETS);
+//    width = width - 3;
+//    renderTexture(x + 3, y, width, height,buttonEndX - width, buttonY, 256, 256, WIDGETS);
   }
   
   public static void renderRepeating(int x, int y, int width, int height, int u, int v, int uWidth, int vHeight, int textureWidth, int textureHeight, int color, ResourceLocation textureLocation)

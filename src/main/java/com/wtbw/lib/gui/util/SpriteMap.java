@@ -99,4 +99,15 @@ public class SpriteMap
     GuiUtil.renderTexture(x, y, sprite.width, sprite.height, sprite.u, sprite.v, width, height, color, ID);
     return this;
   }
+  
+  public SpriteMap render(int x, int y, int width, int height, Sprite sprite)
+  {
+    return render(x, y, width, height, 0xffffffff, sprite);
+  }
+  
+  public SpriteMap render(int x, int y, int width, int height, int color, Sprite sprite)
+  {
+    GuiUtil.renderRepeating(x, y, width, height, sprite.u, sprite.v, sprite.width, sprite.height, this.width, this.height, color, ID);
+    return this;
+  }
 }

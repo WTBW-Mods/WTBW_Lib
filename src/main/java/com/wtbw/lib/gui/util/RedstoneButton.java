@@ -72,7 +72,7 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
 //    GuiUtil.renderTexture(x, y, width / 2, height, 0, 46 + yOff * 20, 256, 256, WIDGETS_LOCATION);
 //    GuiUtil.renderTexture(x + width / 2, y, width / 2, width / 2, 200 - width / 2, 46 + yOff * 20, 256, 256, WIDGETS_LOCATION);
     
-    GuiUtil.renderButton(x, y, width, isHovered);
+    GuiUtil.renderButton(x, y, width, height, isHovered, active);
     
     Sprite sprite;
     switch (control.getRedstoneMode())
