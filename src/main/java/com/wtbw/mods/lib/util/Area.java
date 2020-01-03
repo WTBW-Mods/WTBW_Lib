@@ -58,6 +58,21 @@ public class Area implements INBTSerializable<CompoundNBT>
     }
   }
   
+  public int width()
+  {
+    return getSide(Direction.EAST) - getSide(Direction.WEST);
+  }
+  
+  public int height()
+  {
+    return getSide(Direction.DOWN) - getSide(Direction.UP);
+  }
+  
+  public int depth()
+  {
+    return getSide(Direction.NORTH) - getSide(Direction.SOUTH);
+  }
+  
   @Override
   public CompoundNBT serializeNBT()
   {
@@ -72,6 +87,12 @@ public class Area implements INBTSerializable<CompoundNBT>
   {
     start = NBTHelper.getBlockPos(nbt, "start");
     end = NBTHelper.getBlockPos(nbt, "end");
+  }
+  
+  @Override
+  public String toString()
+  {
+    return "Area [" + start.toString() + "] [" + end.toString() + "] (" + width() + ", " + height() + ", " + depth() + ")";
   }
 }
 
