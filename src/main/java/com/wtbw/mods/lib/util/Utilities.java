@@ -149,9 +149,9 @@ public class Utilities
     
     int hSize = size / 2;
   
-    int startX = dirX == 0 ? pos.getX() - hSize : pos.getX() + size * dirX + ((dirX == -1) ? -1 : 0);
-    int startY = dirY == 0 ? pos.getY() - hSize : pos.getY() + size * dirY + ((dirY == -1) ? -1 : 0);
-    int startZ = dirZ == 0 ? pos.getZ() - hSize : pos.getZ() + size * dirZ + ((dirZ == -1) ? -1 : 0);
+    int startX = dirX == 0 ? pos.getX() - hSize : pos.getX() + ((dirX == 1) ? size - 1 : - size + 1);
+    int startY = dirY == 0 ? pos.getY() - hSize : pos.getY() + ((dirY == 1) ? size - 1 : - size + 1);
+    int startZ = dirZ == 0 ? pos.getZ() - hSize : pos.getZ() + ((dirZ == 1) ? size - 1 : - size + 1);
     int endX = dirX == 0 ? pos.getX() + hSize : pos.getX();
     int endY = dirY == 0 ? pos.getY() + hSize : pos.getY();
     int endZ = dirZ == 0 ? pos.getZ() + hSize : pos.getZ();

@@ -54,23 +54,23 @@ public class Area implements INBTSerializable<CompoundNBT>
       case WEST:
         return start.getX();
       case EAST:
-        return end.getZ();
+        return end.getX();
     }
   }
   
   public int width()
   {
-    return getSide(Direction.EAST) - getSide(Direction.WEST);
+    return getSide(Direction.EAST) - getSide(Direction.WEST) + 1;
   }
   
   public int height()
   {
-    return getSide(Direction.DOWN) - getSide(Direction.UP);
+    return getSide(Direction.UP) - getSide(Direction.DOWN) + 1;
   }
   
   public int depth()
   {
-    return getSide(Direction.NORTH) - getSide(Direction.SOUTH);
+    return getSide(Direction.SOUTH) - getSide(Direction.NORTH) + 1;
   }
   
   @Override
