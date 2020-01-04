@@ -64,4 +64,24 @@ public class NBTManager
     
     return referenceHolders;
   }
+  
+  public List<Manager.IIntArrayHolder> arrayHolders()
+  {
+    List<Manager.IIntArrayHolder> holders = new ArrayList<>();
+    
+    for (Map.Entry<String, Manager> entry : managerMap.entrySet())
+    {
+      Manager manager = entry.getValue();
+      if (manager instanceof Manager.IIntArrayHolder)
+      {
+        holders.add((Manager.IIntArrayHolder) manager);
+      }
+      else if (manager instanceof Manager.Serializable && ((Manager.Serializable) manager).serializable instanceof Manager.IIntArrayHolder)
+      {
+        holders.add((Manager.IIntArrayHolder) ((Manager.Serializable) manager).serializable);
+      }
+    }
+    
+    return holders;
+  }
 }

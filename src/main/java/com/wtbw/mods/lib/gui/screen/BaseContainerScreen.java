@@ -1,7 +1,9 @@
 package com.wtbw.mods.lib.gui.screen;
 
+import com.wtbw.mods.lib.gui.util.EnergyBar;
 import com.wtbw.mods.lib.gui.util.GuiUtil;
 import com.wtbw.mods.lib.gui.util.ITooltipProvider;
+import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
@@ -150,6 +152,11 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
   protected void renderInventoryText(int x, int y)
   {
     font.drawString(playerInventory.getDisplayName().getFormattedText(), x, y, 0xff404040);
+  }
+  
+  protected EnergyBar getDefaultBar(BaseEnergyStorage storage)
+  {
+    return new EnergyBar(storage, guiLeft + 10, guiTop + 16);
   }
   
 }

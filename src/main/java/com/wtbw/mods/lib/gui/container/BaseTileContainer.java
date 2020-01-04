@@ -1,6 +1,8 @@
 package com.wtbw.mods.lib.gui.container;
 
 import com.wtbw.mods.lib.gui.util.InputSlot;
+import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
+import com.wtbw.mods.lib.util.nbt.NBTManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -9,9 +11,11 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -71,6 +75,11 @@ public abstract class BaseTileContainer<TE extends TileEntity> extends Container
     }
     
     return index;
+  }
+  
+  protected void layoutPlayerInventorySlots()
+  {
+    layoutPlayerInventorySlots(9, 84);
   }
   
   protected void layoutPlayerInventorySlots(int leftCol, int topRow)
@@ -141,5 +150,11 @@ public abstract class BaseTileContainer<TE extends TileEntity> extends Container
   public boolean canInteractWith(PlayerEntity playerIn)
   {
     return true;
+  }
+  
+  protected void track(NBTManager manager)
+  {
+    manager.referenceHolders().forEach(iIntReferenceHolder -> trackInt(iIntReferenceHolder.cast()));
+    manager.arrayHolders().forEach(iIntArrayHolder -> trackIntArray(iIntArrayHolder.cast()));
   }
 }

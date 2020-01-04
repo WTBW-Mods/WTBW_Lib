@@ -1,8 +1,10 @@
 package com.wtbw.mods.lib.util.nbt;
 
 import com.wtbw.mods.lib.tile.util.RedstoneControl;
+import com.wtbw.mods.lib.util.ICast;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -20,9 +22,26 @@ public abstract class Manager
     public abstract void set(T value);
   }
   
-  public interface IIntReferenceHolder
+  public interface IIntReferenceHolder extends ICast<IntReferenceHolder>
   {
     IntReferenceHolder getReferenceHolder();
+  
+    @Override
+    default IntReferenceHolder cast()
+    {
+      return getReferenceHolder();
+    }
+  }
+  
+  public interface IIntArrayHolder extends ICast<IIntArray>
+  {
+    IIntArray getIntArray();
+    
+    @Override
+    default IIntArray cast()
+    {
+      return getIntArray();
+    }
   }
   
   public abstract static class Int extends Impl<Integer> implements IIntReferenceHolder
@@ -107,7 +126,7 @@ public abstract class Manager
     }
   }
   
-  public abstract static class BlockPos extends Impl<net.minecraft.util.math.BlockPos>
+  public abstract static class BlockPos extends Impl<net.minecraft.util.math.BlockPos> implements IIntArrayHolder
   {
     @Override
     public void read(String name, CompoundNBT nbt)
@@ -119,6 +138,62 @@ public abstract class Manager
     public void write(String name, CompoundNBT nbt)
     {
       nbt.put(name, NBTUtil.writeBlockPos(get()));
+    }
+  
+    @Override
+    public IIntArray getIntArray()
+    {
+      return new IIntArray()
+      {
+        @Override
+        public int get(int index)
+        {
+          net.minecraft.util.math.BlockPos pos = BlockPos.this.get();
+          switch (index)
+          {
+            default:
+            case 0:
+              return pos.getX();
+              
+            case 1:
+              return pos.getY();
+              
+            case 2:
+              return pos.getZ();
+          }
+        }
+  
+        @Override
+        public void set(int index, int value)
+        {
+          net.minecraft.util.math.BlockPos pos = BlockPos.this.get();
+          int x = pos.getX();
+          int y = pos.getY();
+          int z = pos.getZ();
+  
+          switch (index)
+          {
+            default:
+            case 0:
+              x = value;
+              break;
+            case 1:
+              y = value;
+              break;
+            case 2:
+              z = value;
+              break;
+          }
+          
+          BlockPos.this.set(new net.minecraft.util.math.BlockPos(x, y, z));
+        }
+  
+        @Override
+        public int size()
+        {
+          return 3;
+        }
+      };
     }
   }
   
@@ -161,7 +236,7 @@ public abstract class Manager
   
   public static class Serializable extends Manager
   {
-    private final INBTSerializable<CompoundNBT> serializable;
+    public final INBTSerializable<CompoundNBT> serializable;
   
     public Serializable(INBTSerializable<CompoundNBT> serializable)
     {

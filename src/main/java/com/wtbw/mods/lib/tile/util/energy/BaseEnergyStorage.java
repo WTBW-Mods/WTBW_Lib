@@ -1,7 +1,10 @@
 package com.wtbw.mods.lib.tile.util.energy;
 
+import com.wtbw.mods.lib.util.nbt.Manager;
 import com.wtbw.mods.lib.util.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
@@ -9,7 +12,7 @@ import net.minecraftforge.energy.EnergyStorage;
 /*
   @author: Naxanria
 */
-public class BaseEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT>
+public class BaseEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT>, Manager.IIntArrayHolder
 {
   public BaseEnergyStorage(int capacity)
   {
@@ -129,5 +132,59 @@ public class BaseEnergyStorage extends EnergyStorage implements INBTSerializable
     }
     
     return c;
+  }
+  
+  @Override
+  public IIntArray getIntArray()
+  {
+    return new IIntArray()
+    {
+      @Override
+      public int get(int index)
+      {
+        switch (index)
+        {
+          default:
+          case 0:
+            return energy;
+            
+          case 1:
+            return capacity;
+            
+          case 2:
+            return maxExtract;
+            
+          case 3:
+            return maxReceive;
+        }
+      }
+  
+      @Override
+      public void set(int index, int value)
+      {
+        switch (index)
+        {
+          default:
+          case 0:
+            energy = value;
+            break;
+          case 1:
+            capacity = value;
+            break;
+          case 2:
+            maxExtract = value;
+            break;
+          case 3:
+            maxReceive = value;
+            break;
+        }
+      }
+  
+      @Override
+      public int size()
+      {
+        return 4;
+      }
+    };
   }
 }
