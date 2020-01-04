@@ -22,6 +22,7 @@ public interface IRedstoneControlled extends IButtonHandler
   @Override
   default boolean handleButton(int buttonID, ClickType clickType)
   {
+    getControl().tileEntity.markDirty();
     return getControl().handleButton(buttonID, clickType);
   }
 }
