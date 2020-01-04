@@ -1,7 +1,7 @@
 modLoader="javafml" #mandatory
 loaderVersion="[30,)"
 
-#issueTrackerURL="http://my.issue.tracker/" #optional
+issueTrackerURL="https://github.com/WTBW-Mods/WTBW_Lib/issues/"
 
 [[mods]]
 modId="wtbw_lib"
