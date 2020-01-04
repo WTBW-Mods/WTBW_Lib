@@ -1,11 +1,16 @@
 package com.wtbw.mods.lib.util.nbt;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /*
   @author: Naxanria
@@ -40,6 +45,67 @@ public class NBTManager
     managerMap.put(name, manager);
     return this;
   }
+  
+  public NBTManager registerInt(String name, Supplier<Integer> get, Consumer<Integer> set)
+  {
+    return register(name, new Manager.Int()
+    {
+      @Override
+      public Integer get()
+      {
+        return get.get();
+      }
+  
+      @Override
+      public void set(Integer value)
+      {
+        set.accept(value);
+      }
+    });
+  }
+  
+  public NBTManager registerBoolean(String name, Supplier<Boolean> get, Consumer<Boolean> set)
+  {
+    return register(name, new Manager.Bool()
+    {
+      @Override
+      public Boolean get()
+      {
+        return get.get();
+      }
+    
+      @Override
+      public void set(Boolean value)
+      {
+        set.accept(value);
+      }
+    });
+  }
+  
+  public NBTManager registerBlockPos(String name, Supplier<BlockPos> get, Consumer<BlockPos> set)
+  {
+    return register(name, new Manager.BlockPos()
+    {
+      @Override
+      public net.minecraft.util.math.BlockPos get()
+      {
+        return get.get();
+      }
+      
+      @Override
+      public void set(net.minecraft.util.math.BlockPos value)
+      {
+        set.accept(value);
+      }
+    });
+  }
+  
+  public NBTManager register(String name, INBTSerializable<CompoundNBT> serializable)
+  {
+    return register(name, new Manager.Serializable(serializable));
+  }
+  
+  
   
   public boolean contains(String name)
   {

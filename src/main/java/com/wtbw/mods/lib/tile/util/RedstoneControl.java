@@ -3,11 +3,12 @@ package com.wtbw.mods.lib.tile.util;
 import com.wtbw.mods.lib.gui.util.ClickType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.INBTSerializable;
 
 /*
   @author: Naxanria
 */
-public class RedstoneControl implements IButtonHandler
+public class RedstoneControl implements IButtonHandler, INBTSerializable<CompoundNBT>
 {
   public static final int BUTTON_IGNORE = 0x1000;
   public static final int BUTTON_ON = 0x1001;
@@ -148,23 +149,23 @@ public class RedstoneControl implements IButtonHandler
     return -1;
   }
   
-  public CompoundNBT serialize()
+  @Override
+  public CompoundNBT serializeNBT()
   {
     CompoundNBT compound = new CompoundNBT();
-    
+  
     compound.putBoolean("active", active);
     compound.putInt("count", count);
     compound.putInt("mode", mode.ordinal());
-    
+  
     return compound;
   }
   
-  public RedstoneControl deserialize(CompoundNBT compound)
+  @Override
+  public void deserializeNBT(CompoundNBT compound)
   {
     active = compound.getBoolean("active");
     count = compound.getInt("count");
     mode = RedstoneMode.values()[compound.getInt("mode") % RedstoneMode.values().length];
-    
-    return this;
   }
 }

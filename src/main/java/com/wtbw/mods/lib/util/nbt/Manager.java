@@ -212,27 +212,27 @@ public abstract class Manager
     }
   }
   
-  public static class Redstone extends Manager
-  {
-    private final RedstoneControl control;
-  
-    public Redstone(RedstoneControl control)
-    {
-      this.control = control;
-    }
-  
-    @Override
-    public void read(String name, CompoundNBT nbt)
-    {
-      control.deserialize(nbt.getCompound(name));
-    }
-  
-    @Override
-    public void write(String name, CompoundNBT nbt)
-    {
-      nbt.put(name, control.serialize());
-    }
-  }
+//  public static class Redstone extends Manager
+//  {
+//    private final RedstoneControl control;
+//
+//    public Redstone(RedstoneControl control)
+//    {
+//      this.control = control;
+//    }
+//
+//    @Override
+//    public void read(String name, CompoundNBT nbt)
+//    {
+//      control.deserialize(nbt.getCompound(name));
+//    }
+//
+//    @Override
+//    public void write(String name, CompoundNBT nbt)
+//    {
+//      nbt.put(name, control.serialize());
+//    }
+//  }
   
   public static class Serializable extends Manager
   {
