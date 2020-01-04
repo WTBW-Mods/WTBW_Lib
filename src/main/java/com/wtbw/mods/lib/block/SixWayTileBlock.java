@@ -7,6 +7,7 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 
@@ -22,6 +23,7 @@ public class SixWayTileBlock<TE extends TileEntity> extends BaseTileBlock<TE>
   public SixWayTileBlock(Properties properties, TileEntityProvider<TE> tileEntityProvider)
   {
     super(properties, tileEntityProvider);
+    setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
   }
   
   @Nullable
