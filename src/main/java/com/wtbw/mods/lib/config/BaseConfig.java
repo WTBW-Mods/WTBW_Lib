@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib.config;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 /*
@@ -29,5 +30,10 @@ public abstract class BaseConfig
   protected String key(String name)
   {
     return modid + ".config.client." + name;
+  }
+  
+  public static boolean isResourceLocation(String resource)
+  {
+    return ResourceLocation.isResouceNameValid(resource);
   }
 }
