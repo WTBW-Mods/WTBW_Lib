@@ -159,4 +159,9 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
     return new EnergyBar(storage, guiLeft + 10, guiTop + 16);
   }
   
+  protected void drawStringNoShadow(String string, int x, int y, int color)
+  {
+    font.drawString(string, x, y, color);
+  }
+  
 }
