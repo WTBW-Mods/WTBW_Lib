@@ -32,6 +32,6 @@ public class EnergyBar extends ProgressBar implements ITooltipProvider
   @Override
   public List<String> getTooltip()
   {
-    return Utilities.listOf(storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + " RF");
+    return Utilities.listOf(storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + " FE");
   }
 }
