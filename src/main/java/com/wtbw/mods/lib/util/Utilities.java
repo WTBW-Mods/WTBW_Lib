@@ -1,8 +1,10 @@
 package com.wtbw.mods.lib.util;
 
 import com.wtbw.mods.lib.WTBWLib;
+import com.wtbw.mods.lib.tile.util.InventoryWrapper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,10 +24,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
@@ -55,6 +54,24 @@ public class Utilities
   {
     Collection<IRecipe<?>> recipes = manager.getRecipes();
     return recipes.stream().filter(iRecipe -> iRecipe.getType() == type).collect(Collectors.toList());
+  }
+  
+  public static <R extends IRecipe<IInventory>> R getRecipe(World world, IRecipeType<R> type, ItemStack stack)
+  {
+    InventoryWrapper wrapper = new InventoryWrapper(stack);
+    return getRecipe(world, type, wrapper);
+  }
+  
+  public static <R extends IRecipe<IInventory>> R getRecipe(World world, IRecipeType<R> type, List<ItemStack> stacks)
+  {
+    return getRecipe(world, type, new InventoryWrapper(stacks));
+  }
+  
+  public static <C extends IInventory, R extends IRecipe<C>> R getRecipe(World world, IRecipeType<R> type, C inventory)
+  {
+    Optional<R> recipe = world.getRecipeManager().getRecipe(type, inventory, world);
+    
+    return recipe.orElse(null);
   }
 
   public static Direction getFacingFromVector(Vec3d vec)

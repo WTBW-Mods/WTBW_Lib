@@ -5,6 +5,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.List;
+
 /*
   @author: Naxanria
 */
@@ -15,6 +17,21 @@ public class InventoryWrapper implements IInventory
   public InventoryWrapper(ItemStackHandler handler)
   {
     this.handler = handler;
+  }
+  
+  public InventoryWrapper(List<ItemStack> stacks)
+  {
+    handler = new ItemStackHandler(stacks.size());
+    for (int i = 0; i < stacks.size(); i++)
+    {
+      handler.setStackInSlot(i, stacks.get(i));
+    }
+  }
+  
+  public InventoryWrapper(ItemStack stack)
+  {
+    handler = new ItemStackHandler(1);
+    handler.setStackInSlot(0, stack);
   }
   
   @Override
