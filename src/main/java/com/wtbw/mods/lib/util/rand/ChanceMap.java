@@ -1,4 +1,4 @@
-package com.wtbw.mods.lib.util;
+package com.wtbw.mods.lib.util.rand;
 
 import java.util.*;
 
