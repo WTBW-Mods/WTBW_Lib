@@ -43,6 +43,7 @@ public class ItemStackChanceMap extends ChanceMap<ItemStack>
         else
         {
           stack.setCount(count);
+          count = 0;
         }
         
         output.add(stack);
