@@ -38,6 +38,11 @@ public class ChanceMap<V>
     return this;
   }
   
+  public List<Entry<V>> getEntries()
+  {
+    return entries;
+  }
+  
   public Map<V, Integer> getMaxResultMap()
   {
     Map<V, Integer> map = new HashMap<>();
