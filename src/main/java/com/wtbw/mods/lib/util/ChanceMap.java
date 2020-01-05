@@ -1,7 +1,5 @@
 package com.wtbw.mods.lib.util;
 
-import net.minecraft.item.ItemStack;
-
 import java.util.*;
 
 /*
@@ -38,6 +36,26 @@ public class ChanceMap<V>
   {
     entries.add(new Entry<>(value, chance, attempts));
     return this;
+  }
+  
+  public Map<V, Integer> getMaxResultMap()
+  {
+    Map<V, Integer> map = new HashMap<>();
+  
+    for (Entry<V> entry : entries)
+    {
+      int count = 0;
+      if (map.containsKey(entry.value))
+      {
+        count = map.get(entry.value);
+      }
+      
+      count += entry.attempts;
+      
+      map.put(entry.value, count);
+    }
+    
+    return map;
   }
   
   public Map<V, Integer> getChancedMap()

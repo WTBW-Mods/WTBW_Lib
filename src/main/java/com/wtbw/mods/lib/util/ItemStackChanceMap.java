@@ -1,6 +1,5 @@
 package com.wtbw.mods.lib.util;
 
-import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
@@ -15,7 +14,17 @@ public class ItemStackChanceMap extends ChanceMap<ItemStack>
 {
   public List<ItemStack> getRoll()
   {
-    Map<ItemStack, Integer> chancedMap = getChancedMap();
+    return getRoll(false);
+  }
+  
+  public List<ItemStack> getMaxRoll()
+  {
+    return getRoll(true);
+  }
+  
+  private List<ItemStack> getRoll(boolean maxResult)
+  {
+    Map<ItemStack, Integer> chancedMap = maxResult ? getMaxResultMap() : getChancedMap();
     
     List<ItemStack> output = new ArrayList<>();
   
@@ -41,15 +50,6 @@ public class ItemStackChanceMap extends ChanceMap<ItemStack>
     }
     
     return output;
-  }
-  
-  public static ItemStackChanceMap read(JsonObject object)
-  {
-    ItemStackChanceMap map = new ItemStackChanceMap();
-    
-    
-    
-    return map;
   }
   
   public static ItemStackChanceMap read(PacketBuffer buffer)
