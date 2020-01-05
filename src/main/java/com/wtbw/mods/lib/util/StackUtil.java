@@ -220,6 +220,17 @@ public class StackUtil
     return stack.getCount() == stack.getMaxStackSize();
   }
   
+  
+  public static List<ItemStack> insert(List<ItemStack> stacks, ItemStackHandler handler)
+  {
+    return insert(stacks, handler, 0);
+  }
+  
+  public static List<ItemStack> insert(List<ItemStack> stacks, ItemStackHandler handler, int startIndex)
+  {
+    return insert(stacks, handler, startIndex, handler.getSlots(), false);
+  }
+  
   public static List<ItemStack> insert(List<ItemStack> stacks, ItemStackHandler handler, int startIndex, int endIndex, boolean simulate)
   {
     List<ItemStack> leftOver = new ArrayList<>();
@@ -239,6 +250,10 @@ public class StackUtil
         if (inSlot.isEmpty() || doItemsStack(inSlot, stack))
         {
           stack = merge(inSlot, stack);
+          if (!simulate)
+          {
+            handler.setStackInSlot(slot, stack);
+          }
         }
       }
       
