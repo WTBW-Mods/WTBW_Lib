@@ -239,4 +239,9 @@ public class GuiUtil extends AbstractGui
   {
     INVENTORY_SPRITE.render(x, y);
   }
+  
+  public static void drawRect(int x, int y, int width, int height, int color)
+  {
+    fill(x, y, x + width, y + height, color);
+  }
 }

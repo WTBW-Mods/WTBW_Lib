@@ -184,6 +184,26 @@ public class StackUtil
 
     return false;
   }
+  
+  public static boolean canInsert(ItemStackHandler handler, List<ItemStack> stacks, boolean requireFullFit)
+  {
+    List<ItemStack> handlerStacks = new ArrayList<>();
+  
+    for (int slot = 0; slot < handler.getSlots(); slot++)
+    {
+      handlerStacks.add(handler.getStackInSlot(slot));
+    }
+    
+    for (ItemStack stack : stacks)
+    {
+      if (!canInsert(handlerStacks, stack, requireFullFit))
+      {
+        return false;
+      }
+    }
+    
+    return true;
+  }
 
   public static boolean doItemsStack(ItemStack onto, ItemStack stack)
   {
@@ -198,5 +218,50 @@ public class StackUtil
   public static boolean isFull(ItemStack stack)
   {
     return stack.getCount() == stack.getMaxStackSize();
+  }
+  
+  public static List<ItemStack> insert(List<ItemStack> stacks, ItemStackHandler handler, int startIndex, int endIndex, boolean simulate)
+  {
+    List<ItemStack> leftOver = new ArrayList<>();
+    
+    for (int i = 0; i < stacks.size(); i++)
+    {
+      ItemStack stack = stacks.get(i);
+  
+      for (int slot = startIndex; slot < handler.getSlots() && slot < endIndex; slot++)
+      {
+        if (stack.isEmpty())
+        {
+          break;
+        }
+        
+        ItemStack inSlot = handler.getStackInSlot(slot);
+        if (inSlot.isEmpty() || doItemsStack(inSlot, stack))
+        {
+          stack = merge(inSlot, stack);
+        }
+      }
+      
+      if (!stack.isEmpty())
+      {
+        leftOver.add(stack);
+      }
+    }
+    
+    return leftOver;
+  }
+  
+  public static ItemStack merge(ItemStack onto, ItemStack stack)
+  {
+    if (doItemsStack(onto, stack))
+    {
+      int nCount = Math.min(onto.getCount() + stack.getCount(), onto.getMaxStackSize());
+      stack.setCount(nCount - onto.getCount());
+      onto.setCount(nCount);
+      
+      return stack;
+    }
+    
+    return ItemStack.EMPTY;
   }
 }

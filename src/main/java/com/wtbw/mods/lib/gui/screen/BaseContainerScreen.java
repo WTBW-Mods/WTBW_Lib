@@ -164,4 +164,8 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
     font.drawString(string, x, y, color);
   }
   
+  protected void drawRect(int x, int y, int width, int height, int color)
+  {
+    GuiUtil.drawRect(x, y, width, height, color);
+  }
 }

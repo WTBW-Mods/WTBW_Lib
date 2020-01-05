@@ -1,7 +1,6 @@
 package com.wtbw.mods.lib.gui.container;
 
 import com.wtbw.mods.lib.gui.util.InputSlot;
-import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
 import com.wtbw.mods.lib.util.nbt.NBTManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,11 +10,9 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIntArray;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -44,13 +41,24 @@ public abstract class BaseTileContainer<TE extends TileEntity> extends Container
     this.world = world;
   }
   
-  protected int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx)
+  protected int addSlotRangeVertical(IItemHandler handler, int index, int x, int y, int amount, int dy)
+  {
+    return addSlotRange(handler, index, x, y, amount, 0, dy);
+  }
+  
+  protected int addSlotRangeHorizontal(IItemHandler handler, int index, int x, int y, int amount, int dx)
+  {
+    return addSlotRange(handler, index, x, y, amount, dx, 0);
+  }
+  
+  protected int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx, int dy)
   {
     for (int i = 0; i < amount; i++)
     {
       addSlot(handler, index, x, y);
       index++;
       x += dx;
+      y += dy;
     }
     
     return index;
@@ -70,7 +78,7 @@ public abstract class BaseTileContainer<TE extends TileEntity> extends Container
   {
     for (int i = 0; i < verAmount; i++)
     {
-      index = addSlotRange(handler, index, x, y, horAmount, dx);
+      index = addSlotRangeHorizontal(handler, index, x, y, horAmount, dx);
       y += dy;
     }
     
@@ -90,7 +98,7 @@ public abstract class BaseTileContainer<TE extends TileEntity> extends Container
     addSlotBox(wrapper, 9, leftCol, topRow, 9, 3, 18, 18);
     
     topRow += 58;
-    addSlotRange(wrapper, 0, leftCol, topRow, 9, 18);
+    addSlotRangeHorizontal(wrapper, 0, leftCol, topRow, 9, 18);
   }
   
   protected IWorldPosCallable getWorldPos()
