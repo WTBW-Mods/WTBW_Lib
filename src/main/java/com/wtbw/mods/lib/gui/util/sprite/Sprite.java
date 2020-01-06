@@ -81,10 +81,10 @@ public class Sprite
         sv += this.height;
         break;
       case LEFT:
-        sv -= width;
+        su -= width;
         break;
       case RIGHT:
-        sv += this.width;
+        su += this.width;
         break;
     }
     
