@@ -1,6 +1,8 @@
 package com.wtbw.mods.lib.gui.util;
 
 import com.wtbw.mods.lib.WTBWLib;
+import com.wtbw.mods.lib.gui.util.sprite.Sprite;
+import com.wtbw.mods.lib.gui.util.sprite.SpriteMap;
 import com.wtbw.mods.lib.tile.util.IRedstoneControlled;
 import com.wtbw.mods.lib.tile.util.RedstoneMode;
 import com.wtbw.mods.lib.util.Utilities;

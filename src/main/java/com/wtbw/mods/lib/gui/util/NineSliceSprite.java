@@ -1,5 +1,8 @@
 package com.wtbw.mods.lib.gui.util;
 
+import com.wtbw.mods.lib.gui.util.sprite.Sprite;
+import com.wtbw.mods.lib.gui.util.sprite.SpriteMap;
+
 /*
   @author: Naxanria
 */

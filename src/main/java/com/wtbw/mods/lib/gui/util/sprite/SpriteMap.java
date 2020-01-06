@@ -1,5 +1,6 @@
-package com.wtbw.mods.lib.gui.util;
+package com.wtbw.mods.lib.gui.util.sprite;
 
+import com.wtbw.mods.lib.gui.util.GuiUtil;
 import com.wtbw.mods.lib.util.QuadInt;
 import net.minecraft.util.ResourceLocation;
 

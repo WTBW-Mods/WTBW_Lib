@@ -2,6 +2,8 @@ package com.wtbw.mods.lib.gui.util;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.wtbw.mods.lib.gui.util.sprite.Sprite;
+import com.wtbw.mods.lib.gui.util.sprite.SpriteMap;
 import com.wtbw.mods.lib.network.ButtonClickedPacket;
 import com.wtbw.mods.lib.network.Networking;
 import net.minecraft.client.Minecraft;
