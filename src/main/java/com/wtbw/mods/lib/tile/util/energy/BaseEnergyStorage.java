@@ -187,4 +187,14 @@ public class BaseEnergyStorage extends EnergyStorage implements INBTSerializable
       }
     };
   }
+  
+  public void setExtract(int extract)
+  {
+    this.maxExtract = extract;
+  }
+  
+  public void setReceive(int receive)
+  {
+    this.maxReceive = receive;
+  }
 }

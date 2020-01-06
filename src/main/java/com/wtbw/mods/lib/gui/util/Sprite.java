@@ -39,4 +39,6 @@ public class Sprite
   {
     map.render(x, y, width, height, color, this);
   }
+  
+  // todo: add getAdjacent methods for easier getting sprites offset
 }
