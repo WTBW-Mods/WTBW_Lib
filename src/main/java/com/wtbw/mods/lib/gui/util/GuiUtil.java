@@ -2,6 +2,7 @@ package com.wtbw.mods.lib.gui.util;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.wtbw.mods.lib.gui.util.sprite.NineSliceSprite;
 import com.wtbw.mods.lib.gui.util.sprite.Sprite;
 import com.wtbw.mods.lib.gui.util.sprite.SpriteMap;
 import com.wtbw.mods.lib.network.ButtonClickedPacket;
@@ -104,8 +105,8 @@ public class GuiUtil extends AbstractGui
         176 - 7, 222 - 7
       );
     
-    SLOT_SPRITE = new Sprite(GUI_MAP, 18, 18, 7, 17);
-    INVENTORY_SPRITE = new Sprite(GUI_MAP, 161, 75,7, 139);
+    SLOT_SPRITE = GUI_MAP.getSprite(7, 17, 18, 18);
+    INVENTORY_SPRITE = GUI_MAP.getSprite(7, 139, 161, 75);
   }
   
   public static void sendButton(int id, BlockPos pos, ClickType clickType)

@@ -1,5 +1,7 @@
 package com.wtbw.mods.lib.gui.util.sprite;
 
+import com.wtbw.mods.lib.WTBWLib;
+
 /*
   @author: Naxanria
 */
@@ -18,8 +20,19 @@ public class Sprite
     this.height = height;
     this.u = u;
     this.v = v;
+  
+//    WTBWLib.LOGGER.info("Created new sprite: {}", toString());
     
+    assertDimensions();
     assertInside();
+  }
+  
+  private void assertDimensions()
+  {
+    if (width <= 0 || height <= 0)
+    {
+      throw new IllegalArgumentException("Width and height need to be bigger than 0! "+ toString());
+    }
   }
   
   public void render(int x, int y)
@@ -44,18 +57,27 @@ public class Sprite
   
   public Sprite getAdjacent(int width, int height, Direction direction)
   {
+    int su = u;
+    int sv = v;
+    
     switch (direction)
     {
       default:
       case UP:
-        return new Sprite(map, u, v - height, width, height);
+        sv -= height;
+        break;
       case DOWN:
-        return new Sprite(map, u, v + this.height, width, height);
+        sv += this.height;
+        break;
       case LEFT:
-        return new Sprite(map, u - width, v, width, height);
+        sv -= width;
+        break;
       case RIGHT:
-        return new Sprite(map, u + this.width, v, width, height);
+        sv += this.width;
+        break;
     }
+    
+    return map.getSprite(su, sv, width, height);
   }
   
   public Sprite getLeft(int width, int height)
@@ -110,6 +132,7 @@ public class Sprite
   public String toString()
   {
     return "Sprite{" +
+      ", id=" + map.ID.toString() +
       ", u=" + u +
       ", v=" + v +
       ", width=" + width +

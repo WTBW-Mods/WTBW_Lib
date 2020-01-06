@@ -1,7 +1,4 @@
-package com.wtbw.mods.lib.gui.util;
-
-import com.wtbw.mods.lib.gui.util.sprite.Sprite;
-import com.wtbw.mods.lib.gui.util.sprite.SpriteMap;
+package com.wtbw.mods.lib.gui.util.sprite;
 
 /*
   @author: Naxanria
@@ -33,7 +30,7 @@ public class NineSliceSprite
       for (int y = 0; y < 3; y++)
       {
         int index = x + y * 3;
-        sprites[index] = new Sprite(map, width, height, u + width * x, v + height * y);
+        sprites[index] = sprite(map, u + width * x, v + height * y, width, height);
       }
     }
   }
@@ -44,10 +41,15 @@ public class NineSliceSprite
     int index = 0;
     for (int i = 0; i < spriteUV.length; i += 2, index++)
     {
-      sprites[index] = new Sprite(map, width, height, spriteUV[i], spriteUV[i + 1]);
+      sprites[index] = sprite(map, spriteUV[i], spriteUV[i + 1], width, height);
     }
     
     return new NineSliceSprite(sprites);
+  }
+
+  private static Sprite sprite(SpriteMap map, int u, int v, int width, int height)
+  {
+    return map.getSprite(u, v, width, height);
   }
   
   public void render(int x, int y, int width, int height)

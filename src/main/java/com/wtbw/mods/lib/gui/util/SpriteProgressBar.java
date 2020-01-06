@@ -1,6 +1,6 @@
-package com.wtbw.mods.lib.gui.util.sprite;
+package com.wtbw.mods.lib.gui.util;
 
-import com.wtbw.mods.lib.gui.util.ProgressBar;
+import com.wtbw.mods.lib.gui.util.sprite.Sprite;
 
 import java.util.function.Supplier;
 
