@@ -55,6 +55,17 @@ public class Sprite
     map.render(x, y, width, height, color, this);
   }
   
+  public void renderPartial(int x, int y, int uOff, int vOff)
+  {
+    renderPartial(x, y, uOff, vOff, 0xffffffff);
+  }
+  
+  public void renderPartial(int x, int y, int uOff, int vOff, int color)
+  {
+    map.renderPartial(x, y, uOff, vOff, color, this);
+  }
+  
+  
   public Sprite getAdjacent(int width, int height, Direction direction)
   {
     int su = u;

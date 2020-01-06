@@ -111,4 +111,15 @@ public class SpriteMap
     GuiUtil.renderRepeating(x, y, width, height, sprite.u, sprite.v, sprite.width, sprite.height, this.width, this.height, color, ID);
     return this;
   }
+  
+  public SpriteMap renderPartial(int x, int y, int uOff, int vOff, Sprite sprite)
+  {
+    return renderPartial(x, y, uOff, vOff, 0xffffffff, sprite);
+  }
+  
+  public SpriteMap renderPartial(int x, int y, int uOff, int vOff, int color, Sprite sprite)
+  {
+    GuiUtil.renderTexture(x, y, sprite.width - uOff, sprite.height - vOff, sprite.u + uOff, sprite.v + vOff, width, height, color, ID);
+    return this;
+  }
 }

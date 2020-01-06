@@ -76,10 +76,16 @@ public class SpriteProgressBar extends ProgressBar
     int x = this.x + xOffset + this.xOffset;
     int y = this.y + yOffset + this.yOffset;
   
+    if (backgroundSprite != null)
+    {
+      backgroundSprite.render(x, y);
+    }
+  
     int fillHeight = height;
     int fillWidth = width;
     int fillX = x;
     int fillY = y;
+    boolean partial = false;
   
     switch (fillDirection)
     {
@@ -89,21 +95,25 @@ public class SpriteProgressBar extends ProgressBar
       case RIGHT_LEFT:
         fillWidth = (int) (fillWidth * currentProgress);
         fillX = x + width - fillWidth;
+        partial = true;
         break;
       case BOTTOM_TOP:
         fillHeight = (int) (fillHeight * currentProgress);
         fillY = y + height - fillHeight;
+        partial = true;
         break;
       case TOP_BOTTOM:
         fillHeight = (int) (fillHeight * currentProgress);
         break;
     }
-    
-    if (backgroundSprite != null)
+
+    if (partial)
     {
-      backgroundSprite.render(x, y);
+      progressSprite.renderPartial(fillX, fillY, width - fillWidth, height - fillHeight);
     }
-    
-    progressSprite.render(fillX, fillY, fillWidth, fillHeight);
+    else
+    {
+      progressSprite.render(fillX, fillY, fillWidth, fillHeight);
+    }
   }
 }
