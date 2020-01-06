@@ -17,7 +17,7 @@ Library mod
 [[dependencies.wtbw_lib]]
     modId="forge"
     mandatory=true
-    versionRange="[30.0.2,)"
+    versionRange="[30.0.30,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.wtbw_lib]]
