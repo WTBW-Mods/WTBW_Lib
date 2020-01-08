@@ -23,7 +23,9 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -498,5 +500,36 @@ public class Utilities
   public static boolean isInBounds(int value, int min, int max)
   {
     return value >= min && value <= max;
+  }
+  
+  private static DecimalFormat df_1 = new DecimalFormat("#.#");
+  private static DecimalFormat df_2 = new DecimalFormat("#.##");
+  public static String abbreviate(int num)
+  {
+    if (num > 1000000000)
+    {
+      
+      return df_2.format(num / (double) 1000000000) + "G";
+    }
+  
+    if (num > 1000000)
+    {
+      return df_2.format(num / (double) 1000000) + "M";
+    }
+  
+    if (num > 1000)
+    {
+      return df_1.format(num / (double) 1000) + "k";
+    }
+    
+    return String.valueOf(num);
+  }
+  
+  public static String getTooltip(@Nonnull IEnergyStorage storage, boolean abbreviated)
+  {
+    String energy = abbreviated ? Utilities.abbreviate(storage.getEnergyStored()) : String.valueOf(storage.getEnergyStored());
+    String capacity = abbreviated ? Utilities.abbreviate(storage.getMaxEnergyStored()) : String.valueOf(storage.getMaxEnergyStored());
+    
+    return energy + "/" + capacity + " FE";
   }
 }

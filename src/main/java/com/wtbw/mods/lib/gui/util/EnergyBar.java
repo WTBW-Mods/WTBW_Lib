@@ -2,6 +2,7 @@ package com.wtbw.mods.lib.gui.util;
 
 import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
 import com.wtbw.mods.lib.util.Utilities;
+import net.minecraft.client.gui.screen.Screen;
 
 import java.util.List;
 
@@ -32,6 +33,6 @@ public class EnergyBar extends ProgressBar implements ITooltipProvider
   @Override
   public List<String> getTooltip()
   {
-    return Utilities.listOf(storage.getEnergyStored() + "/" + storage.getMaxEnergyStored() + " FE");
+    return Utilities.listOf(Utilities.getTooltip(storage, !Screen.hasShiftDown()));
   }
 }
