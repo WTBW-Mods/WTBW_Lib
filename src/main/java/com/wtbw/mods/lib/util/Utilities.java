@@ -506,18 +506,18 @@ public class Utilities
   private static DecimalFormat df_2 = new DecimalFormat("#.##");
   public static String abbreviate(int num)
   {
-    if (num > 1000000000)
+    if (num >= 1000000000)
     {
       
       return df_2.format(num / (double) 1000000000) + "G";
     }
   
-    if (num > 1000000)
+    if (num >= 1000000)
     {
       return df_2.format(num / (double) 1000000) + "M";
     }
   
-    if (num > 1000)
+    if (num >= 1000)
     {
       return df_1.format(num / (double) 1000) + "k";
     }
