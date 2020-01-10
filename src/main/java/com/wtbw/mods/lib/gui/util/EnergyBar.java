@@ -11,7 +11,7 @@ import java.util.List;
 */
 public class EnergyBar extends ProgressBar implements ITooltipProvider
 {
-  protected final BaseEnergyStorage storage;
+  public final BaseEnergyStorage storage;
   public EnergyBar(BaseEnergyStorage storage, int x, int y)
   {
     this(storage, x, y, 20, 54);
