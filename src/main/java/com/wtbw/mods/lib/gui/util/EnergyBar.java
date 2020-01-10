@@ -20,6 +20,7 @@ public class EnergyBar extends ProgressBar implements ITooltipProvider
   public EnergyBar(BaseEnergyStorage storage, int x, int y, int width, int height)
   {
     super(x, y, width, height, storage::getMaxEnergyStored, storage::getEnergyStored);
+    update();
     this.storage = storage;
     gradientColor(0xffff0000, 0xff00ff00);
   }
