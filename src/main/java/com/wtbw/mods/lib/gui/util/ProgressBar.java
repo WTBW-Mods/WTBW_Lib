@@ -69,6 +69,12 @@ public class ProgressBar extends AbstractGui
   {
     currStorage = storage;
     currCapacity = capacity;
+  
+    currentProgress = progress();
+    if (useReverseProgress)
+    {
+      currentProgress = 1f - progress();
+    }
     
     return this;
   }
