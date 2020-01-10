@@ -14,6 +14,7 @@ import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -153,6 +154,14 @@ public class Utilities
   {
     return Arrays.asList(toList);
   }
+  
+  public static <T> NonNullList<T> nnListOf(T... toList)
+  {
+    NonNullList<T> list = NonNullList.create();
+    list.addAll(Arrays.asList(toList));
+    return list;
+  }
+  
 
   public static Area getArea(BlockPos pos, Direction facing, int size)
   {

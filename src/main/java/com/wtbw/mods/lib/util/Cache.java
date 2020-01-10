@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib.util;
 
+import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 /*
@@ -10,7 +11,7 @@ public class Cache<T>
   private T t;
   private final Supplier<T> supplier;
   
-  public Cache(Supplier<T> supplier)
+  Cache(Supplier<T> supplier)
   {
     this.supplier = supplier;
   }
@@ -31,4 +32,15 @@ public class Cache<T>
     t = null;
     return tmp;
   }
+  
+  public <C> C cast()
+  {
+    return (C) get();
+  }
+  
+  public static <T> Cache<T> create(@Nonnull Supplier<T> supplier)
+  {
+    return new Cache<>(supplier);
+  }
+  
 }
