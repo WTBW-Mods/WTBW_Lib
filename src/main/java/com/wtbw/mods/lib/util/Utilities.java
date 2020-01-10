@@ -502,8 +502,8 @@ public class Utilities
     return value >= min && value <= max;
   }
   
-  private static DecimalFormat df_1 = new DecimalFormat("#.#");
-  private static DecimalFormat df_2 = new DecimalFormat("#.##");
+  public static DecimalFormat df_1 = new DecimalFormat("#.#");
+  public static DecimalFormat df_2 = new DecimalFormat("#.##");
   public static String abbreviate(int num)
   {
     if (num >= 1000000000)

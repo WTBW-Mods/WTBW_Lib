@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib.util.rand;
 
+import com.wtbw.mods.lib.util.BiValue;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 
@@ -24,7 +25,7 @@ public class ItemStackChanceMap extends ChanceMap<ItemStack>
   
   private List<ItemStack> getRoll(boolean maxResult)
   {
-    Map<ItemStack, Integer> chancedMap = maxResult ? getMaxResultMap() : getChancedMap();
+    Map<ItemStack, Integer> chancedMap = maxResult ? getMaxRolls() : getRolls();
     
     List<ItemStack> output = new ArrayList<>();
   
@@ -53,21 +54,50 @@ public class ItemStackChanceMap extends ChanceMap<ItemStack>
     return output;
   }
   
+  public List<BiValue<ItemStack, Float>> getItemChances()
+  {
+    List<BiValue<ItemStack, Float>> chanceList = new ArrayList<>();
+    BiValue<List<BiValue<ItemStack, Integer>>, List<Float>> itemChances = getChances();
+    List<BiValue<ItemStack, Integer>> items = itemChances.a;
+    List<Float> chances = itemChances.b;
+  
+    for (int i = 0; i < items.size(); i++)
+    {
+      ItemStack stack = getItemStack(items.get(i));
+      Float chance = chances.get(i);
+      chanceList.add(new BiValue<>(stack, chance));
+    }
+    
+    return chanceList;
+  }
+  
+  private ItemStack getItemStack(BiValue<ItemStack, Integer> biValue)
+  {
+    ItemStack copy = biValue.a.copy();
+    copy.setCount(biValue.b);
+    
+    return copy;
+  }
+  
   public static ItemStackChanceMap read(PacketBuffer buffer)
   {
     boolean asCount = buffer.readBoolean();
-    int size = buffer.readInt();
+    int mapSize = buffer.readInt();
   
     ItemStackChanceMap map = new ItemStackChanceMap();
     map.setAttemptsAsCount(asCount);
     
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < mapSize; i++)
     {
       ItemStack stack = buffer.readItemStack();
-      float chance = buffer.readFloat();
-      int attempts = buffer.readInt();
-      
-      map.add(chance, attempts, stack);
+      int listSize = buffer.readInt();
+      for (int j = 0; j < listSize; j++)
+      {
+        float chance = buffer.readFloat();
+        int attempts = buffer.readInt();
+  
+        map.add(chance, attempts, stack);
+      }
     }
     
     return map;
@@ -76,13 +106,20 @@ public class ItemStackChanceMap extends ChanceMap<ItemStack>
   public static PacketBuffer write(PacketBuffer buffer, final ItemStackChanceMap map)
   {
     buffer.writeBoolean(map.attemptsAsCount);
-    buffer.writeInt(map.entries.size());
-    for (Entry<ItemStack> entry : map.entries)
-    {
-      buffer.writeItemStack(entry.value);
-      buffer.writeFloat(entry.chance);
-      buffer.writeInt(entry.attempts);
-    }
+    buffer.writeInt(map.chanceMap.size());
+    map.chanceMap.forEach(
+      (stack, biValues) ->
+      {
+        buffer.writeItemStack(stack);
+        buffer.writeInt(biValues.size());
+        
+        biValues.forEach(
+        (biValue) ->
+        {
+          buffer.writeFloat(biValue.a);
+          buffer.writeInt(biValue.b);
+        });
+      });
     
     return buffer;
   }

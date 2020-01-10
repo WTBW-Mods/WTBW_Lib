@@ -1,5 +1,7 @@
 package com.wtbw.mods.lib.util.rand;
 
+import com.wtbw.mods.lib.util.BiValue;
+
 import java.util.*;
 
 /*
@@ -7,20 +9,11 @@ import java.util.*;
 */
 public class ChanceMap<V>
 {
-  public boolean isAttemptsAsCount()
-  {
-    return attemptsAsCount;
-  }
-  
-  public ChanceMap<V> setAttemptsAsCount(boolean attemptsAsCount)
-  {
-    this.attemptsAsCount = attemptsAsCount;
-    return this;
-  }
-  
-  protected List<Entry<V>> entries = new ArrayList<>();
   protected boolean attemptsAsCount = false;
   protected Random random;
+
+  Map<V, List<BiValue<Float, Integer>>> chanceMap = new LinkedHashMap<>();
+  protected int entries;
   
   public ChanceMap()
   {
@@ -32,87 +25,172 @@ public class ChanceMap<V>
     random = new Random(seed);
   }
   
+  public ChanceMap(Random random)
+  {
+    this.random = random;
+  }
+  
   public ChanceMap<V> add(float chance, int attempts, V value)
   {
-    entries.add(new Entry<>(value, chance, attempts));
+    List<BiValue<Float, Integer>> list;
+    if (chanceMap.containsKey(value))
+    {
+      list = chanceMap.get(value);
+    }
+    else
+    {
+      list = new ArrayList<>();
+    }
+    list.add(new BiValue<>(chance, attempts));
+    chanceMap.putIfAbsent(value, list);
+    entries++;
+    
     return this;
   }
   
-  public List<Entry<V>> getEntries()
+  public Map<V, List<BiValue<Float, Integer>>> getChanceMap()
   {
-    return entries;
+    return chanceMap;
   }
   
-  public Map<V, Integer> getMaxResultMap()
+  public BiValue<List<BiValue<V, Integer>>, List<Float>> getChances()
+  {
+    List<BiValue<V, Integer>> values = new ArrayList<>();
+    List<Float> chances = new ArrayList<>();
+    
+    chanceMap.forEach
+    (
+      (v, biValues) ->
+      {
+        biValues.forEach
+        (
+          biValue ->
+          {
+            values.add(new BiValue<>(v, biValue.b));
+            chances.add(biValue.a);
+          }
+        );
+      }
+    );
+    
+    return new BiValue<>(values, chances);
+  }
+  
+  public Map<V, Integer> getMaxRolls()
   {
     Map<V, Integer> map = new HashMap<>();
-  
-    for (Entry<V> entry : entries)
+    
+    for (Map.Entry<V, List<BiValue<Float, Integer>>> entry : chanceMap.entrySet())
     {
-      int count = 0;
-      if (map.containsKey(entry.value))
+      int tot = 0;
+      for (BiValue<Float, Integer> biValue : entry.getValue())
       {
-        count = map.get(entry.value);
+        tot += biValue.b;
       }
-      
-      count += entry.attempts;
-      
-      map.put(entry.value, count);
+      map.put(entry.getKey(), tot);
     }
+    
+  
+//    for (Entry<V> entry : entries)
+//    {
+//      int count = 0;
+//      if (map.containsKey(entry.value))
+//      {
+//        count = map.get(entry.value);
+//      }
+//
+//      count += entry.attempts;
+//
+//      map.put(entry.value, count);
+//    }
     
     return map;
   }
   
-  public Map<V, Integer> getChancedMap()
+  public Map<V, Integer> getRolls()
   {
     Map<V, Integer> map = new HashMap<>();
-    
-    for (Entry<V> entry : entries)
+  
+    for (Map.Entry<V, List<BiValue<Float, Integer>>> entry : chanceMap.entrySet())
     {
-      int count = 0;
-      if (map.containsKey(entry.value))
+      int tot = 0;
+      for (BiValue<Float, Integer> biValue : entry.getValue())
       {
-        count = map.get(entry.value);
-      }
-      
-      if (attemptsAsCount)
-      {
-        if (RandomUtil.chance(random, entry.chance))
+        if (attemptsAsCount)
         {
-          count += entry.attempts;
-        }
-      }
-      else
-      {
-        for (int i = 0; i < entry.attempts; i++)
-        {
-          if (RandomUtil.chance(random, entry.chance))
+          if (RandomUtil.chance(random, biValue.a))
           {
-            count++;
+            tot += biValue.b;
+          }
+        }
+        else
+        {
+          for (int i = 0; i < biValue.b; i++)
+          {
+            if (RandomUtil.chance(random, biValue.a))
+            {
+              tot++;
+            }
           }
         }
       }
       
-      if (count > 0)
-      {
-        map.put(entry.value, count);
-      }
+      map.put(entry.getKey(), tot);
     }
     
+//    for (Entry<V> entry : entries)
+//    {
+//      int count = 0;
+//      if (map.containsKey(entry.value))
+//      {
+//        count = map.get(entry.value);
+//      }
+//
+//      if (attemptsAsCount)
+//      {
+//        if (RandomUtil.chance(random, entry.chance))
+//        {
+//          count += entry.attempts;
+//        }
+//      }
+//      else
+//      {
+//        for (int i = 0; i < entry.attempts; i++)
+//        {
+//          if (RandomUtil.chance(random, entry.chance))
+//          {
+//            count++;
+//          }
+//        }
+//      }
+//
+//      if (count > 0)
+//      {
+//        map.put(entry.value, count);
+//      }
+//    }
+//
     return map;
   }
   
-  public static class Entry<V>
+  public boolean isAttemptsAsCount()
   {
-    public final V value;
-    public final float chance;
-    public final int attempts;
-    
-    public Entry(V value, float chance, int attempts)
-    {
-      this.value = value;
-      this.chance = chance;
-      this.attempts = attempts;
-    }
+    return attemptsAsCount;
+  }
+  
+  public ChanceMap<V> setAttemptsAsCount(boolean attemptsAsCount)
+  {
+    this.attemptsAsCount = attemptsAsCount;
+    return this;
+  }
+  
+  public int getEntries()
+  {
+    return entries;
+  }
+  
+  public Random getRandom()
+  {
+    return random;
   }
 }
