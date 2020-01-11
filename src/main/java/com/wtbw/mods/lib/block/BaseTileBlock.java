@@ -2,21 +2,32 @@ package com.wtbw.mods.lib.block;
 
 import com.wtbw.mods.lib.tile.util.IComparatorProvider;
 import com.wtbw.mods.lib.tile.util.IContentHolder;
+import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
+import com.wtbw.mods.lib.util.Cache;
+import com.wtbw.mods.lib.util.TextComponentBuilder;
+import com.wtbw.mods.lib.util.Utilities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 /*
   @author: Naxanria
@@ -24,8 +35,12 @@ import javax.annotation.Nullable;
 public class BaseTileBlock<TE extends TileEntity> extends Block
 {
   public final TileEntityProvider<TE> tileEntityProvider;
+  
   protected boolean hasGui = true;
   protected boolean hasComparatorOverride = false;
+  protected boolean hideExtraTooltips = false;
+  
+  protected Cache<BaseEnergyStorage> storage = Cache.create(() -> new BaseEnergyStorage(10000));
 
   public BaseTileBlock(Properties properties, TileEntityProvider<TE> tileEntityProvider)
   {
@@ -146,5 +161,30 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
     }
     
     return super.getComparatorInputOverride(blockState, worldIn, pos);
+  }
+  
+  @Override
+  public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+  {
+    if (!hideExtraTooltips)
+    {
+      CompoundNBT data = stack.getChildTag("BlockEntityTag");
+  
+      if (data != null)
+      {
+        if (data.contains("storage", Constants.NBT.TAG_COMPOUND))
+        {
+          BaseEnergyStorage storage = this.storage.get();
+      
+          storage.deserializeNBT(data.getCompound("storage"));
+          if (storage.getEnergyStored() > 0)
+          {
+            tooltip.add(TextComponentBuilder.create(Utilities.getTooltip(storage, !Screen.hasShiftDown())).aqua().build());
+          }
+        }
+      }
+  
+      super.addInformation(stack, worldIn, tooltip, flagIn);
+    }
   }
 }

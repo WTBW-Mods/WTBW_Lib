@@ -2,6 +2,7 @@ package com.wtbw.mods.lib;
 
 import com.wtbw.mods.lib.block.BaseTileBlock;
 import com.wtbw.mods.lib.gui.container.BaseTileContainer;
+import com.wtbw.mods.lib.item.BaseBlockItem;
 import com.wtbw.mods.lib.item.BaseItemProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -167,6 +168,11 @@ public abstract class Registrator
     return register(block, registryName, createBlockItem, null);
   }
   
+  protected <T extends Block> T register(T block, String registryName, Item.Properties blockItemProperties)
+  {
+    return register(block, registryName, true, blockItemProperties);
+  }
+  
   protected <T extends Block> T register(T block, String registryName, boolean createBlockItem, Item.Properties blockItemProperties)
   {
     block.setRegistryName(modid, registryName);
@@ -176,7 +182,14 @@ public abstract class Registrator
       {
         blockItemProperties = getItemProperties();
       }
-      blockItems.add((BlockItem) new BlockItem(block, blockItemProperties).setRegistryName(modid, registryName));
+      if (blockItemProperties instanceof BaseItemProperties)
+      {
+        blockItems.add((BlockItem) new BaseBlockItem(block, (BaseItemProperties) blockItemProperties).setRegistryName(modid, registryName));
+      }
+      else
+      {
+        blockItems.add((BlockItem) new BlockItem(block, blockItemProperties).setRegistryName(modid, registryName));
+      }
     }
     
     if (block instanceof BaseTileBlock)
