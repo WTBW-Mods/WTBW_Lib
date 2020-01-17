@@ -126,6 +126,21 @@ public abstract class Manager
     }
   }
   
+  public abstract static class Long extends Impl<java.lang.Long>
+  {
+    @Override
+    public void read(String name, CompoundNBT nbt)
+    {
+      set(nbt.getLong(name));
+    }
+  
+    @Override
+    public void write(String name, CompoundNBT nbt)
+    {
+      nbt.putLong(name, get());
+    }
+  }
+  
   public abstract static class BlockPos extends Impl<net.minecraft.util.math.BlockPos> implements IIntArrayHolder
   {
     @Override

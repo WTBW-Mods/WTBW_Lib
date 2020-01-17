@@ -55,9 +55,27 @@ public class NBTManager
       {
         return get.get();
       }
-  
+      
       @Override
       public void set(Integer value)
+      {
+        set.accept(value);
+      }
+    });
+  }
+  
+  public NBTManager registerLong(String name, Supplier<Long> get, Consumer<Long> set)
+  {
+    return register(name, new Manager.Long()
+    {
+      @Override
+      public java.lang.Long get()
+      {
+        return get.get();
+      }
+      
+      @Override
+      public void set(java.lang.Long value)
       {
         set.accept(value);
       }

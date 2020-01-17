@@ -112,6 +112,13 @@ public class TextComponentBuilder
   
   public TextComponentBuilder nextTranslate(String key, Object... args)
   {
+    if (insertSpace)
+    {
+      insertSpace = false;
+      next(" ");
+      insertSpace = true;
+    }
+    
     return next(new TranslationTextComponent(key, args));
   }
   

@@ -28,6 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /*
@@ -162,6 +163,10 @@ public class Utilities
     return list;
   }
   
+  public static <T> T getSafe(T[] array, int index)
+  {
+    return array[index % array.length];
+  }
 
   public static Area getArea(BlockPos pos, Direction facing, int size)
   {
@@ -540,5 +545,12 @@ public class Utilities
     String capacity = abbreviated ? Utilities.abbreviate(storage.getMaxEnergyStored()) : String.valueOf(storage.getMaxEnergyStored());
     
     return energy + "/" + capacity + " FE";
+  }
+  
+  public static <T> T make(T t, Consumer<T> consumer)
+  {
+    consumer.accept(t);
+    
+    return t;
   }
 }
