@@ -167,6 +167,11 @@ public class Utilities
   {
     return array[index % array.length];
   }
+  
+  public static <T> T getNext(T[] array, T current)
+  {
+    return getSafe(array, getIndex(array, current) + 1);
+  }
 
   public static Area getArea(BlockPos pos, Direction facing, int size)
   {
