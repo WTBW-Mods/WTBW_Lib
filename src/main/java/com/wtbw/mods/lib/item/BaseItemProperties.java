@@ -110,8 +110,8 @@ public class BaseItemProperties extends Item.Properties
   }
   
   @Override
-  public BaseItemProperties setTEISR(Supplier<Callable<ItemStackTileEntityRenderer>> teisr)
+  public BaseItemProperties setISTER(Supplier<Callable<ItemStackTileEntityRenderer>> teisr)
   {
-    return (BaseItemProperties) super.setTEISR(teisr);
+    return (BaseItemProperties) super.setISTER(teisr);
   }
 }

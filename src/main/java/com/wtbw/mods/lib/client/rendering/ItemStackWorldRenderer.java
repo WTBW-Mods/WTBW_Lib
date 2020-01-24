@@ -48,12 +48,12 @@ public abstract class ItemStackWorldRenderer
       double y = view.getY();
       double z = view.getZ();
       
-      Minecraft minecraft = Minecraft.getInstance();
-      RenderTypeBuffers buffers = minecraft.func_228019_au_();
-      IRenderTypeBuffer.Impl impl = buffers.func_228487_b_();
-      IVertexBuilder vertexBuilder =  impl.getBuffer(RenderType.func_228659_m_()); //IRenderTypeBuffer.func_228455_a_(Tessellator.getInstance().getBuffer()).getBuffer(RenderType.func_228659_m_());
-
-      drawShape(new MatrixStack(), vertexBuilder, info.getRenderViewEntity(), x, y, z, blockpos, blockstate);
+//      Minecraft minecraft = Minecraft.getInstance();
+//      RenderTypeBuffers buffers = minecraft.func_228019_au_();
+//      IRenderTypeBuffer.Impl impl = buffers.func_228487_b_();
+//      IVertexBuilder vertexBuilder =  impl.getBuffer(RenderType.func_228659_m_()); //IRenderTypeBuffer.func_228455_a_(Tessellator.getInstance().getBuffer()).getBuffer(RenderType.func_228659_m_());
+//
+//      drawShape(new MatrixStack(), vertexBuilder, info.getRenderViewEntity(), x, y, z, blockpos, blockstate);
       // func_228429_a_(
       
 //      RenderSystem.enableBlend();
@@ -105,11 +105,11 @@ public abstract class ItemStackWorldRenderer
   
   private static void drawShape(MatrixStack matrixStack, IVertexBuilder vertexBuilder, VoxelShape shape, double x, double y, double z, float r, float g, float b, float a)
   {
-    Matrix4f matrix4f = matrixStack.func_227866_c_().func_227870_a_();
+    Matrix4f matrix4f = matrixStack.getLast().getPositionMatrix();
     shape.forEachEdge((px1, py1, pz1, px2, py2, pz2) ->
     {
-      vertexBuilder.func_227888_a_(matrix4f, (float)(px1 + x), (float)(py1 + y), (float)(pz1 + z)).func_227885_a_(r, g, b, a).endVertex();
-      vertexBuilder.func_227888_a_(matrix4f, (float)(px2 + x), (float)(py2 + y), (float)(pz2 + z)).func_227885_a_(r, g, b, a).endVertex();
+      vertexBuilder.pos(matrix4f, (float)(px1 + x), (float)(py1 + y), (float)(pz1 + z)).color(r, g, b, a).endVertex();
+      vertexBuilder.pos(matrix4f, (float)(px2 + x), (float)(py2 + y), (float)(pz2 + z)).color(r, g, b, a).endVertex();
     });
   }
 }

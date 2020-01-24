@@ -91,7 +91,7 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
   }
   
   @Override
-  public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity playerEntity, Hand hand, BlockRayTraceResult hit)
+  public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity playerEntity, Hand hand, BlockRayTraceResult hit)
   {
     if (hasGui)
     {
@@ -111,7 +111,7 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
       }
     }
 
-    return super.func_225533_a_(state, world, pos, playerEntity, hand, hit);
+    return super.onBlockActivated(state, world, pos, playerEntity, hand, hit);
   }
   
   protected void onGuiOpen(BlockState state, World world, BlockPos pos, ServerPlayerEntity player, Hand hand, BlockRayTraceResult hit)

@@ -7,9 +7,9 @@ import com.wtbw.mods.lib.tile.util.IRedstoneControlled;
 import com.wtbw.mods.lib.tile.util.RedstoneMode;
 import com.wtbw.mods.lib.util.Utilities;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 /*
   @author: Naxanria
 */
-public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends GuiButtonExt implements ITooltipProvider
+public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends Button implements ITooltipProvider
 {
   public static final ResourceLocation ICONS = new ResourceLocation(WTBWLib.MODID, "textures/gui/redstone_buttons.png");
   private final static SpriteMap SPRITE_MAP = new SpriteMap(64, ICONS);
