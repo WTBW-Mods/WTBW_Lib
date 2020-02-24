@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntReferenceHolder;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.INBTSerializable;
 
 /*
@@ -164,17 +165,24 @@ public abstract class Manager
         public int get(int index)
         {
           net.minecraft.util.math.BlockPos pos = BlockPos.this.get();
-          switch (index)
+          if (pos == null)
           {
-            default:
-            case 0:
-              return pos.getX();
-              
-            case 1:
-              return pos.getY();
-              
-            case 2:
-              return pos.getZ();
+            return Integer.MIN_VALUE;
+          }
+          else
+          {
+            switch (index)
+            {
+              default:
+              case 0:
+                return pos.getX();
+  
+              case 1:
+                return pos.getY();
+  
+              case 2:
+                return pos.getZ();
+            }
           }
         }
   
@@ -182,6 +190,11 @@ public abstract class Manager
         public void set(int index, int value)
         {
           net.minecraft.util.math.BlockPos pos = BlockPos.this.get();
+          if (pos == null)
+          {
+            pos = new net.minecraft.util.math.BlockPos(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
+          }
+          
           int x = pos.getX();
           int y = pos.getY();
           int z = pos.getZ();
