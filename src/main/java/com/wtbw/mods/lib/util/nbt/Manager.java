@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib.util.nbt;
 
+import com.wtbw.mods.lib.WTBWLib;
 import com.wtbw.mods.lib.tile.util.RedstoneControl;
 import com.wtbw.mods.lib.util.ICast;
 import net.minecraft.nbt.CompoundNBT;
@@ -153,7 +154,11 @@ public abstract class Manager
     @Override
     public void write(String name, CompoundNBT nbt)
     {
-      nbt.put(name, NBTUtil.writeBlockPos(get()));
+      net.minecraft.util.math.BlockPos blockPos = get();
+      if (blockPos != null)
+      {
+        nbt.put(name, NBTUtil.writeBlockPos(blockPos));
+      }
     }
   
     @Override
@@ -274,13 +279,19 @@ public abstract class Manager
     @Override
     public void read(String name, CompoundNBT nbt)
     {
-      serializable.deserializeNBT(nbt.getCompound(name));
+      if (serializable != null)
+      {
+        serializable.deserializeNBT(nbt.getCompound(name));
+      }
     }
   
     @Override
     public void write(String name, CompoundNBT nbt)
     {
-      nbt.put(name, serializable.serializeNBT());
+      if (serializable != null)
+      {
+        nbt.put(name, serializable.serializeNBT());
+      }
     }
   }
 }
