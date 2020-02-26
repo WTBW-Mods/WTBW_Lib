@@ -2,6 +2,7 @@ package com.wtbw.mods.lib.util;
 
 import com.wtbw.mods.lib.WTBWLib;
 import com.wtbw.mods.lib.tile.util.InventoryWrapper;
+import com.wtbw.mods.lib.util.rand.RandomUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -491,18 +492,24 @@ public class Utilities
         if (insert == 0)
         {
           storageFound.remove(i);
+          i--;
+          continue;
         }
         toSend -= insert;
       }
     }
     else
     {
+      // shuffle so we spread randomly; more equally
+      RandomUtil.shuffle(world.rand, storageFound);
       for (int i = 0; i < storageFound.size(); i++)
       {
         int insert = storageFound.get(i).receiveEnergy(toSend, false);
         if (insert == 0)
         {
           storageFound.remove(i);
+          i--;
+          continue;
         }
         toSend -= insert;
       }
