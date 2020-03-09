@@ -17,6 +17,18 @@ public abstract class Manager
 {
   public abstract void read(String name, CompoundNBT nbt);
   public abstract void write(String name, CompoundNBT nbt);
+  protected boolean track = true;
+  
+  public <T> T noGuiTracking()
+  {
+    track = false;
+    return (T) this;
+  }
+  
+  public boolean isGuiTracking()
+  {
+    return track;
+  }
   
   private abstract static class Impl<T> extends Manager
   {

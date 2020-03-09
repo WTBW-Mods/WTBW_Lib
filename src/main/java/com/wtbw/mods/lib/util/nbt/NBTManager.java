@@ -42,6 +42,16 @@ public class NBTManager
   
   public NBTManager register(String name, Manager manager)
   {
+    return register(name, manager, true);
+  }
+  
+  public NBTManager register(String name, Manager manager, boolean trackGui)
+  {
+    if (!trackGui)
+    {
+      manager.noGuiTracking();
+    }
+    
     managerMap.put(name, manager);
     return this;
   }
@@ -120,7 +130,18 @@ public class NBTManager
   
   public NBTManager register(String name, INBTSerializable<CompoundNBT> serializable)
   {
-    return register(name, new Manager.Serializable(serializable));
+    return register(name, serializable, true);
+  }
+  
+  public NBTManager register(String name, INBTSerializable<CompoundNBT> serializable, boolean trackGui)
+  {
+    Manager.Serializable manager = new Manager.Serializable(serializable);
+    if (!trackGui)
+    {
+      manager.noGuiTracking();
+    }
+    
+    return register(name, manager);
   }
   
   

@@ -1,14 +1,18 @@
 package com.wtbw.mods.lib.gui.screen;
 
+import com.wtbw.mods.lib.gui.container.BaseTileContainer;
 import com.wtbw.mods.lib.gui.util.EnergyBar;
 import com.wtbw.mods.lib.gui.util.GuiUtil;
 import com.wtbw.mods.lib.gui.util.ITooltipProvider;
+import com.wtbw.mods.lib.network.RequestGuiUpdatePacket;
+import com.wtbw.mods.lib.tile.util.IGuiUpdateHandler;
 import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
@@ -20,10 +24,26 @@ import java.util.List;
 public abstract class BaseContainerScreen<C extends Container> extends ContainerScreen<C>
 {
   private List<ITooltipProvider> tooltipProviders = new ArrayList<>();
+  protected int ticks = 0;
+  
+  protected final TileEntity tileEntity;
+  protected boolean requestGuiUpdates;
+  
 
   public BaseContainerScreen(C container, PlayerInventory inventory, ITextComponent title)
   {
     super(container, inventory, title);
+    
+    if (container instanceof BaseTileContainer)
+    {
+      tileEntity = ((BaseTileContainer) container).tileEntity;
+    }
+    else
+    {
+      tileEntity = null;
+    }
+    
+    requestGuiUpdates = tileEntity instanceof IGuiUpdateHandler;
   }
 
   protected void addTooltipProvider(ITooltipProvider provider)
@@ -38,7 +58,22 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
     super.render(mouseX, mouseY, partialTicks);
     renderTooltip(mouseX, mouseY);
   }
-
+  
+  @Override
+  public void tick()
+  {
+    ticks++;
+    if (requestGuiUpdates)
+    {
+      //todo: make config option?
+      if (ticks % 40 == 0)
+      {
+        RequestGuiUpdatePacket.request(tileEntity.getPos());
+      }
+    }
+    super.tick();
+  }
+  
   protected void renderTooltip(int mouseX, int mouseY)
   {
     if (this.minecraft.player.inventory.getItemStack().isEmpty())
