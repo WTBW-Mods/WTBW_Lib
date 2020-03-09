@@ -161,7 +161,7 @@ public class NBTManager
     List<Manager.IIntReferenceHolder> referenceHolders = new ArrayList<>();
     for (Map.Entry<String, Manager> entry : managerMap.entrySet())
     {
-      if (entry.getValue() instanceof Manager.IIntReferenceHolder)
+      if (entry.getValue() instanceof Manager.IIntReferenceHolder && entry.getValue().isGuiTracking())
       {
         referenceHolders.add((Manager.IIntReferenceHolder) entry.getValue());
       }
@@ -177,13 +177,16 @@ public class NBTManager
     for (Map.Entry<String, Manager> entry : managerMap.entrySet())
     {
       Manager manager = entry.getValue();
-      if (manager instanceof Manager.IIntArrayHolder)
+      if (manager.isGuiTracking())
       {
-        holders.add((Manager.IIntArrayHolder) manager);
-      }
-      else if (manager instanceof Manager.Serializable && ((Manager.Serializable) manager).serializable instanceof Manager.IIntArrayHolder)
-      {
-        holders.add((Manager.IIntArrayHolder) ((Manager.Serializable) manager).serializable);
+        if (manager instanceof Manager.IIntArrayHolder)
+        {
+          holders.add((Manager.IIntArrayHolder) manager);
+        }
+        else if (manager instanceof Manager.Serializable && ((Manager.Serializable) manager).serializable instanceof Manager.IIntArrayHolder)
+        {
+          holders.add((Manager.IIntArrayHolder) ((Manager.Serializable) manager).serializable);
+        }
       }
     }
     
