@@ -62,15 +62,15 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
   @Override
   public void tick()
   {
-    ticks++;
     if (requestGuiUpdates)
     {
       //todo: make config option?
-      if (ticks % 40 == 0)
-      {
+//      if (ticks % 1 == 0)
+//      {
         RequestGuiUpdatePacket.request(tileEntity.getPos());
-      }
+//      }
     }
+    ticks++;
     super.tick();
   }
   

@@ -4,6 +4,7 @@ import com.wtbw.mods.lib.WTBWLib;
 import com.wtbw.mods.lib.tile.util.IGuiUpdateHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -51,10 +52,10 @@ public class RequestGuiUpdatePacket extends Packet
     {
       context.enqueueWork(() ->
       {
-        ServerPlayerEntity sender = context.getSender();
-        if (sender != null)
+        PlayerEntity player = Minecraft.getInstance().player;
+        if (player != null)
         {
-          World world = sender.world;
+          World world = player.world;
           if (world != null)
           {
             TileEntity tileEntity = world.getTileEntity(pos);

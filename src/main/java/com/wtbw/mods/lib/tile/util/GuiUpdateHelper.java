@@ -9,12 +9,15 @@ public class GuiUpdateHelper
 {
   public static void updateEnergy(BaseEnergyStorage storage, int[] values)
   {
-    storage.setEnergy(values[0]);
-    storage.setCapacity(values[1]);
-    if (values.length == 4)
+    if (values.length > 0)
     {
-      storage.setReceive(values[2]);
-      storage.setExtract(values[3]);
+      storage.setEnergy(values[0]);
+      storage.setCapacity(values[1]);
+      if (values.length == 4)
+      {
+        storage.setReceive(values[2]);
+        storage.setExtract(values[3]);
+      }
     }
   }
   
