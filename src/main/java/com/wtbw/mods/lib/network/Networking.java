@@ -40,6 +40,7 @@ public class Networking
     INSTANCE.registerMessage(id(), ColoredRedstoneParticlePacket.class, ColoredRedstoneParticlePacket::toBytes, ColoredRedstoneParticlePacket::new, ColoredRedstoneParticlePacket::handle);
     INSTANCE.registerMessage(id(), ButtonClickedPacket.class, ButtonClickedPacket::toBytes, ButtonClickedPacket::new, ButtonClickedPacket::handle);
     INSTANCE.registerMessage(id(), RequestGuiUpdatePacket.class, RequestGuiUpdatePacket::toBytes, RequestGuiUpdatePacket::new, RequestGuiUpdatePacket::handle);
+    INSTANCE.registerMessage(id(), ReplyGuiUpdatePacket.class, ReplyGuiUpdatePacket::toBytes, ReplyGuiUpdatePacket::new, ReplyGuiUpdatePacket::handle);
   }
   
   public static int sendAround(World world, BlockPos pos, double radius, Object packet)
