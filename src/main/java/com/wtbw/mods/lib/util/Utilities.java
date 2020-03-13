@@ -16,6 +16,7 @@ import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -564,5 +565,30 @@ public class Utilities
     consumer.accept(t);
     
     return t;
+  }
+  
+  public static boolean isSlimeChunk(World world, BlockPos pos)
+  {
+    return isSlimeChunk(world, new ChunkPos(pos));
+  }
+  
+  public static boolean isSlimeChunk(World world, ChunkPos pos)
+  {
+    return SharedSeedRandom.seedSlimeChunk(pos.x, pos.z, world.getSeed(), 987234911L).nextInt(10) == 0;
+  }
+  
+  public static int distanceSqr(ChunkPos a, ChunkPos b)
+  {
+    int dx = a.x - b.x;
+    int dz = a.z - b.z;
+    return dx * dx + dz * dz;
+  }
+  
+  public static int distanceSqr(BlockPos a, BlockPos b)
+  {
+    int dx = a.getX() - b.getX();
+    int dy = a.getY() - b.getY();
+    int dz = a.getZ() - b.getZ();
+    return dx * dx + dy * dy + dz * dz;
   }
 }
