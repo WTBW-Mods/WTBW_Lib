@@ -3,7 +3,11 @@ package com.wtbw.mods.lib.block;
 import com.wtbw.mods.lib.tile.util.IComparatorProvider;
 import com.wtbw.mods.lib.tile.util.IContentHolder;
 import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
+import com.wtbw.mods.lib.upgrade.IUpgradeProvider;
+import com.wtbw.mods.lib.upgrade.IUpgradeable;
+import com.wtbw.mods.lib.upgrade.UpgradeManager;
 import com.wtbw.mods.lib.util.Cache;
+import com.wtbw.mods.lib.util.PlayEvent;
 import com.wtbw.mods.lib.util.TextComponentBuilder;
 import com.wtbw.mods.lib.util.Utilities;
 import net.minecraft.block.Block;
@@ -16,8 +20,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
@@ -98,7 +101,21 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
       if (!playerEntity.isCrouching())
       {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity != null && tileEntity instanceof INamedContainerProvider)
+        ItemStack stack = playerEntity.getHeldItem(hand);
+        
+        if (stack.getItem() instanceof IUpgradeProvider && tileEntity instanceof IUpgradeable)
+        {
+          UpgradeManager manager = ((IUpgradeable) tileEntity).getUpgradeManager();
+          if (manager.addUpgrade(stack))
+          {
+            stack.shrink(1);
+            world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 0.5f, 1);
+            
+            return ActionResultType.SUCCESS;
+          }
+        }
+        
+        if (tileEntity instanceof INamedContainerProvider)
         {
           if (!world.isRemote)
           {
