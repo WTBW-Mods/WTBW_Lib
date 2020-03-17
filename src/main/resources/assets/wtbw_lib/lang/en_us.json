@@ -1,3 +1,11 @@
 {
-
+  "wtbw.modifier.speed": "Speed",
+  "wtbw.modifier.speed.description": "Modifies the working speed of a machine",
+  "wtbw.modifier.power_usage": "Power Usage",
+  "wtbw.modifier.power_usage.description": "Modifies the power usage of a machine",
+  "wtbw.modifier.power_capacity": "Capacity",
+  "wtbw.modifier.power_capacity.description": "Increases the FE capacity of a machine",
+  "wtbw.modifier.range": "Range",
+  "wtbw.modifier.range.description": "Increases the working range of a machine",
+  "wtbw.modifier.range.blocks": "Blocks"
 }

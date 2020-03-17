@@ -4,38 +4,54 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /*
   @author: Naxanria
 */
 public class UpgradeManager implements INBTSerializable<CompoundNBT>
 {
-  private int maxUpgradeSlots = 10;
+  protected Function<ItemStack, Boolean> filter = stack -> true;
+  
+  private int maxUpgradeSlots = 5;
+  private int insertedCount = 0;
   private int maxUpgradePoints;
   private int currentCost = 0;
   
-  private List<ItemStack> upgradeInventory;
+  private ItemStackHandler upgradeInventory;
   
   private Map<ModifierType, List<Float>> modifiers = new HashMap<>();
   
   public UpgradeManager()
   {
-    this(10);
+    this(5, 10);
   }
   
-  public UpgradeManager(int maxUpgradePoints)
+  public UpgradeManager(int maxUpgradeSlots)
+  {
+    this(maxUpgradeSlots, 10);
+  }
+  
+  public UpgradeManager(int maxUpgradeSlots, int maxUpgradePoints)
   {
     this.maxUpgradePoints = maxUpgradePoints;
+    this.maxUpgradeSlots = maxUpgradeSlots;
     
-    upgradeInventory = new ArrayList<>();
+    upgradeInventory = new ItemStackHandler(maxUpgradeSlots)
+    {
+      @Override
+      public int getSlotLimit(int slot)
+      {
+        return 1;
+      }
+    };
   }
   
   public int getMaxUpgradeSlots()
@@ -53,7 +69,7 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
     return currentCost;
   }
   
-  public List<ItemStack> getUpgradeInventory()
+  public ItemStackHandler getUpgradeInventory()
   {
     return upgradeInventory;
   }
@@ -66,6 +82,42 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
   public int getModifierCount(ModifierType type)
   {
     return hasModifier(type) ? modifiers.get(type).size() : 0;
+  }
+  
+  public Function<ItemStack, Boolean> getFilter()
+  {
+    return filter;
+  }
+  
+  public UpgradeManager setFilter(Filter filter)
+  {
+    this.filter = stack ->
+    {
+      Map<ModifierType, Float> mods = ((IUpgradeProvider) stack.getItem()).modifierMap();
+      for (Map.Entry<ModifierType, Float> entry : mods.entrySet())
+      {
+        if (!filter.isValid(entry.getKey()))
+        {
+          return false;
+        }
+      }
+      
+      return true;
+    };
+    
+    return this;
+  }
+  
+  public UpgradeManager setFilter(ModifierType... types)
+  {
+    setFilter(new Filter(types));
+    return this;
+  }
+  
+  public UpgradeManager setFilter(Function<ItemStack, Boolean> filter)
+  {
+    this.filter = filter;
+    return this;
   }
   
   public float getModifiedValue(ModifierType type)
@@ -87,9 +139,24 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
     }
   }
   
+  public float getValueOrDefault(ModifierType type)
+  {
+    return getValueOrDefault(type, 1);
+  }
+  
+  public float getValueOrDefault(ModifierType type, float defaultValue)
+  {
+    if (hasModifier(type))
+    {
+      return getModifiedValue(type);
+    }
+    
+    return defaultValue;
+  }
+  
   public boolean addUpgrade(ItemStack stack)
   {
-    if (upgradeInventory.size() < maxUpgradeSlots)
+    if (insertedCount < maxUpgradeSlots)
     {
       Item item = stack.getItem();
       if (item instanceof IUpgradeProvider)
@@ -107,7 +174,8 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
           
           stack = stack.copy();
           stack.setCount(1);
-          upgradeInventory.add(stack);
+          insert(stack);
+          insertedCount++;
           return true;
         }
       }
@@ -116,10 +184,29 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
     return false;
   }
   
+  private void insert(ItemStack stack)
+  {
+    for (int i = 0; i < upgradeInventory.getSlots(); i++)
+    {
+      if (upgradeInventory.getStackInSlot(i) == ItemStack.EMPTY)
+      {
+        upgradeInventory.insertItem(i, stack, false);
+        break;
+      }
+    }
+  }
+  
+  private void remove(int index)
+  {
+    upgradeInventory.setStackInSlot(index, new ItemStack(Items.AIR));
+    insertedCount--;
+  }
+  
   public ItemStack removeUpgrade(int index)
   {
-    ItemStack stack = upgradeInventory.get(index);
-    upgradeInventory.remove(index);
+    ItemStack stack = upgradeInventory.getStackInSlot(index);
+    remove(index);
+    
     return stack;
   }
   
@@ -144,13 +231,13 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
     modifiers.clear();
     currentCost = 0;
     
-    for (int i = 0; i < upgradeInventory.size(); i++)
+    for (int i = 0; i < upgradeInventory.getSlots(); i++)
     {
-      ItemStack stack = upgradeInventory.get(i);
+      ItemStack stack = upgradeInventory.getStackInSlot(i);
       
-      if (stack == null || !(stack.getItem() instanceof IUpgradeProvider))
+      if (!(stack.getItem() instanceof IUpgradeProvider))
       {
-        upgradeInventory.remove(i--);
+        remove(i);
         continue;
       }
   
@@ -165,14 +252,8 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
   public CompoundNBT serializeNBT()
   {
     CompoundNBT nbt = new CompoundNBT();
-  
-    ListNBT list = new ListNBT();
-    for (ItemStack stack : upgradeInventory)
-    {
-      list.add(stack.serializeNBT());
-    }
     
-    nbt.put("upgrades", list);
+    nbt.put("upgrades", upgradeInventory.serializeNBT());
     
     nbt.putInt("maxPoints", maxUpgradePoints);
     nbt.putInt("currPoints", currentCost);
@@ -184,14 +265,7 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
   @Override
   public void deserializeNBT(CompoundNBT nbt)
   {
-    ListNBT list = nbt.getList("upgrades", Constants.NBT.TAG_COMPOUND);
-    upgradeInventory.clear();
-    list.forEach(inbt ->
-    {
-      CompoundNBT compound = (CompoundNBT) inbt;
-      ItemStack stack = new ItemStack(Items.AIR);
-      stack.deserializeNBT(compound);
-    });
+    upgradeInventory.deserializeNBT(nbt.getCompound("upgrades"));
     
     maxUpgradePoints = nbt.getInt("maxPoints");
     currentCost = nbt.getInt("currPoints");
@@ -200,6 +274,43 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
     if (nbt.contains("recalc"))
     {
       recalculate();
+    }
+  }
+  
+  public boolean isValidUpgrade(ItemStack stack)
+  {
+    Item item = stack.getItem();
+    if (item instanceof IUpgradeProvider)
+    {
+      return filter.apply(stack);
+    }
+    
+    return false;
+  }
+  
+  public static class Filter
+  {
+    private List<ModifierType> validModifiers = new ArrayList<>();
+  
+    public Filter(ModifierType[] types)
+    {
+      for (ModifierType type : types)
+      {
+        if (!validModifiers.contains(type))
+        {
+          validModifiers.add(type);
+        }
+      }
+    }
+    
+    public boolean isValid(ModifierType type)
+    {
+      return validModifiers.contains(type);
+    }
+  
+    public static Filter create(ModifierType... types)
+    {
+      return new Filter(types);
     }
   }
 }

@@ -1,16 +1,15 @@
-package com.wtbw.mods.lib.gui.util;
+package com.wtbw.mods.lib.gui.util.slot;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
 /*
   @author: Naxanria
 */
-public class InputSlot extends SlotItemHandler
+public class InputSlot extends BaseSlot
 {
   private final ItemStackHandler handler;
   

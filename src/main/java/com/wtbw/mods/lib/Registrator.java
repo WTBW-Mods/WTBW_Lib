@@ -1,7 +1,7 @@
 package com.wtbw.mods.lib;
 
 import com.wtbw.mods.lib.block.BaseTileBlock;
-import com.wtbw.mods.lib.gui.container.BaseTileContainer;
+import com.wtbw.mods.lib.gui.container.BaseContainer;
 import com.wtbw.mods.lib.item.BaseBlockItem;
 import com.wtbw.mods.lib.item.BaseItemProperties;
 import net.minecraft.block.Block;
@@ -224,6 +224,6 @@ public abstract class Registrator
 
   public interface IContainerFactory
   {
-    BaseTileContainer<?> create(int windowId, World world, BlockPos pos, PlayerInventory inv);
+    BaseContainer create(int windowId, World world, BlockPos pos, PlayerInventory inv);
   }
 }

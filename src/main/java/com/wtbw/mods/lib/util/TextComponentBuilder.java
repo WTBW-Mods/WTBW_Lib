@@ -48,17 +48,25 @@ public class TextComponentBuilder
   
   public TextComponentBuilder next(ITextComponent component)
   {
+    return next(component, false);
+  }
+  
+  public TextComponentBuilder next(ITextComponent component, boolean useNewStyle)
+  {
     Style newStyle = setup();
     
     current = component;
-    current.setStyle(newStyle);
+    if (useNewStyle)
+    {
+      current.setStyle(newStyle);
+    }
     
     return this;
   }
   
   public TextComponentBuilder next(String text)
   {
-    return next(new StringTextComponent(insertSpace ? " " + text : text));
+    return next(new StringTextComponent(insertSpace ? " " + text : text), true);
   }
   
   private Style setup()

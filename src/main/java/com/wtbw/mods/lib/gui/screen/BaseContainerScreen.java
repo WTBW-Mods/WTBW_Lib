@@ -23,6 +23,12 @@ import java.util.List;
 */
 public abstract class BaseContainerScreen<C extends Container> extends ContainerScreen<C>
 {
+  public static final int COLOR_WHITE = 0xffffffff;
+  public static final int COLOR_GRAY = 0xff888888;
+  public static final int COLOR_GREEN = 0xff00ff00;
+  public static final int COLOR_RED = 0xffff0000;
+  public static final int COLOR_BLACK = 0xff000000;
+  
   private List<ITooltipProvider> tooltipProviders = new ArrayList<>();
   protected int ticks = 0;
   
