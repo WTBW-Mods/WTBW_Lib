@@ -125,10 +125,17 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
     List<Float> floats = modifiers.get(type);
     if (floats != null)
     {
-      float total = 1;
+      float total = type.isAdditive() ? 0 : 1;
       for (Float aFloat : floats)
       {
-        total *= aFloat;
+        if (type.isAdditive())
+        {
+          total += aFloat;
+        }
+        else
+        {
+          total *= aFloat;
+        }
       }
       
       return total;

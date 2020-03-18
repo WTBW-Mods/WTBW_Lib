@@ -27,10 +27,12 @@ public class ModifierType
         .nextTranslate("wtbw.modifier.range.blocks")
         .build();
     }
-  };
+  }.additive().showInfo();
   
   public final String name;
   private final boolean moreIsPositive;
+  private boolean isAdditive;
+  private boolean showInfo = false;
   
   public ModifierType(String name)
   {
@@ -58,6 +60,23 @@ public class ModifierType
     return (value < 1) != moreIsPositive;
   }
   
+  protected ModifierType additive()
+  {
+    isAdditive = true;
+    return this;
+  }
+  
+  public boolean isAdditive()
+  {
+    return isAdditive;
+  }
+  
+  protected ModifierType showInfo()
+  {
+    showInfo = true;
+    return this;
+  }
+  
   @OnlyIn(Dist.CLIENT)
   public List<ITextComponent> getInformation(ITooltipFlag tooltipFlag, float value)
   {
@@ -74,7 +93,10 @@ public class ModifierType
       builder.red();
     }
   
-    builder.next(" ").next(typeInfo(value));
+    if (showInfo)
+    {
+      builder.next(" ").next(typeInfo(value));
+    }
     
     info.add(builder.build());
   
