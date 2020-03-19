@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib.util.rand;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import javax.annotation.Nonnull;
@@ -74,5 +75,15 @@ public class RandomUtil
   {
     float diff = max - min;
     return random.nextFloat() * diff + min;
+  }
+  
+  public static Vec3d fromPos(Random random, BlockPos pos)
+  {
+    return new Vec3d
+    (
+      pos.getX() + random.nextDouble(),
+      pos.getY() + random.nextDouble(),
+      pos.getZ() + random.nextDouble()
+    );
   }
 }

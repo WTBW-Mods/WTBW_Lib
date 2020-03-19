@@ -3,7 +3,9 @@ package com.wtbw.mods.lib.util;
 import com.wtbw.mods.lib.WTBWLib;
 import com.wtbw.mods.lib.tile.util.InventoryWrapper;
 import com.wtbw.mods.lib.util.rand.RandomUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -590,5 +592,37 @@ public class Utilities
     int dy = a.getY() - b.getY();
     int dz = a.getZ() - b.getZ();
     return dx * dx + dy * dy + dz * dz;
+  }
+  
+  public static int spawnExp(World world, BlockPos pos, BlockState state, int fortune, int silk)
+  {
+    return spawnExp(world, pos, state.getExpDrop(world, pos, fortune, silk));
+  }
+  
+  public static int spawnExp(World world, BlockPos pos, int exp)
+  {
+    return spawnExp(world, pos, exp, true);
+  }
+  
+  public static int spawnExp(World world, BlockPos pos, int exp, boolean split)
+  {
+    if (exp > 0)
+    {
+      if (split)
+      {
+        while (exp > 0)
+        {
+          int drop = ExperienceOrbEntity.getXPSplit(exp);
+          exp -= drop;
+          world.addEntity(new ExperienceOrbEntity(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, drop));
+        }
+      }
+      else
+      {
+        world.addEntity(new ExperienceOrbEntity(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, exp));
+      }
+    }
+    
+    return exp;
   }
 }
