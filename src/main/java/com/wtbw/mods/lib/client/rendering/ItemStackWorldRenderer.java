@@ -105,11 +105,11 @@ public abstract class ItemStackWorldRenderer
   
   private static void drawShape(MatrixStack matrixStack, IVertexBuilder vertexBuilder, VoxelShape shape, double x, double y, double z, float r, float g, float b, float a)
   {
-    Matrix4f matrix4f = matrixStack.getLast().getPositionMatrix();
-    shape.forEachEdge((px1, py1, pz1, px2, py2, pz2) ->
-    {
-      vertexBuilder.pos(matrix4f, (float)(px1 + x), (float)(py1 + y), (float)(pz1 + z)).color(r, g, b, a).endVertex();
-      vertexBuilder.pos(matrix4f, (float)(px2 + x), (float)(py2 + y), (float)(pz2 + z)).color(r, g, b, a).endVertex();
-    });
+//    Matrix4f matrix4f = matrixStack.getLast().getPositionMatrix();
+//    shape.forEachEdge((px1, py1, pz1, px2, py2, pz2) ->
+//    {
+//      vertexBuilder.pos(matrix4f, (float)(px1 + x), (float)(py1 + y), (float)(pz1 + z)).color(r, g, b, a).endVertex();
+//      vertexBuilder.pos(matrix4f, (float)(px2 + x), (float)(py2 + y), (float)(pz2 + z)).color(r, g, b, a).endVertex();
+//    });
   }
 }
