@@ -29,7 +29,7 @@ public abstract class BaseUpgradeScreen<C extends BaseUpgradeContainer<? extends
   @Override
   protected final void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
   {
-    GuiUtil.renderGui(guiLeft - 22, guiTop + 20, 26, upgradeManager.getMaxUpgradeSlots() * 18 + 10);
+    GuiUtil.renderGui(guiLeft - 22, guiTop + 26, 26, upgradeManager.getMaxUpgradeSlots() * 18 + 10);
     defaultGui();
     drawGuiBackgroundLayer(partialTicks, mouseX, mouseY);
   }

@@ -25,7 +25,7 @@ public abstract class BaseUpgradeContainer<TE extends TileEntity & IUpgradeable>
     
     upgradeManager = tileEntity.getUpgradeManager();
     upgradeSlotsSize = upgradeManager.getMaxUpgradeSlots();
-    addUpgradeSlots(-15, 25);
+    addUpgradeSlots(-15, 31);
     
   }
   
