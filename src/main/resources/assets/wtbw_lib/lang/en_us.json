@@ -7,5 +7,7 @@
   "wtbw.modifier.power_capacity.description": "Increases the FE capacity of a machine",
   "wtbw.modifier.range": "Range",
   "wtbw.modifier.range.description": "Increases the working range of a machine",
-  "wtbw.modifier.range.blocks": "Blocks"
+  "wtbw.modifier.range.blocks": "Blocks",
+
+  "wtbw_lib.tooltip.in_out": "Max I/O:"
 }

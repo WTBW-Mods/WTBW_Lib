@@ -72,9 +72,9 @@ public abstract class BaseContainer extends Container
     return index;
   }
   
-  protected void addSlot(IItemHandler handler, int index, int x, int y)
+  protected SlotItemHandler addSlot(IItemHandler handler, int index, int x, int y)
   {
-    addSlot(new SlotItemHandler(handler, index, x, y));
+    return (SlotItemHandler) addSlot(new SlotItemHandler(handler, index, x, y));
   }
   
   protected void addInputSlot(ItemStackHandler handler, int index, int x, int y)

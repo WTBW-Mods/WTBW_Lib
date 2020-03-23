@@ -625,4 +625,14 @@ public class Utilities
     
     return exp;
   }
+  
+  public static double getEnergyPercentage(IEnergyStorage storage)
+  {
+    if (storage.getMaxEnergyStored() == 0)
+    {
+      return 0;
+    }
+    
+    return 1d - (storage.getEnergyStored() / (double) storage.getMaxEnergyStored());
+  }
 }
