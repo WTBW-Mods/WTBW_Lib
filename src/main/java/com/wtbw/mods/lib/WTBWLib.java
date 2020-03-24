@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib;
 
+import com.wtbw.mods.lib.event.common.WitherEvents;
 import com.wtbw.mods.lib.keybinds.KeyEventListener;
 import com.wtbw.mods.lib.network.Networking;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,6 +35,9 @@ public class WTBWLib
     {
       forgeEventBus.addListener(KeyEventListener::update);
     });
+  
+    forgeEventBus.addListener(WitherEvents::onWitherExplosion);
+    forgeEventBus.addListener(WitherEvents::onExplosion);
     
     Networking.registerMessages();
   }
