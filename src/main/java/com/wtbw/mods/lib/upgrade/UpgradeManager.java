@@ -278,10 +278,7 @@ public class UpgradeManager implements INBTSerializable<CompoundNBT>
     currentCost = nbt.getInt("currPoints");
     maxUpgradeSlots = nbt.getInt("maxSlots");
     
-    if (nbt.contains("recalc"))
-    {
-      recalculate();
-    }
+    recalculate();
   }
   
   public boolean isValidUpgrade(ItemStack stack)
