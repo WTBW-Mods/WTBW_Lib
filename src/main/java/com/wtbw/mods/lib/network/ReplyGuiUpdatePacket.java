@@ -1,9 +1,8 @@
 package com.wtbw.mods.lib.network;
 
-import com.wtbw.mods.lib.ClientSetup;
+import com.wtbw.mods.lib.util.ClientHelper;
 import com.wtbw.mods.lib.tile.util.IGuiUpdateHandler;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -50,7 +49,7 @@ public class ReplyGuiUpdatePacket extends Packet
     {
       DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
       {
-        World world = ClientSetup.getWorld();
+        World world = ClientHelper.getWorld();
         if (world != null)
         {
           TileEntity tileEntity = world.getTileEntity(pos);

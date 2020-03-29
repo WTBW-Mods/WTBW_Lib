@@ -1,4 +1,4 @@
-package com.wtbw.mods.lib;
+package com.wtbw.mods.lib.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,7 +8,7 @@ import net.minecraft.world.World;
   @author: Naxanria
 */
 
-public class ClientSetup
+public class ClientHelper
 {
   public static World getWorld()
   {
