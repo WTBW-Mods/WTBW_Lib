@@ -4,6 +4,7 @@ import com.wtbw.mods.lib.block.BaseTileBlock;
 import com.wtbw.mods.lib.gui.container.BaseContainer;
 import com.wtbw.mods.lib.item.BaseBlockItem;
 import com.wtbw.mods.lib.item.BaseItemProperties;
+import com.wtbw.mods.lib.util.ClientHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -154,7 +155,7 @@ public abstract class Registrator
   protected void registerContainer(IContainerFactory factory, String name)
   {
     containerRegistry.register(IForgeContainerType.create((windowId, inv, data) ->
-      factory.create(windowId, ClientSetup.getWorld(), data.readBlockPos(), inv)
+      factory.create(windowId, ClientHelper.getWorld(), data.readBlockPos(), inv)
     ).setRegistryName(modid, name));
   }
 

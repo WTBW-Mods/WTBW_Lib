@@ -9,5 +9,12 @@
   "wtbw.modifier.range.description": "Increases the working range of a machine",
   "wtbw.modifier.range.blocks": "Blocks",
 
+
+  "wtbw.redstone_control":  "Redstone Mode",
+  "wtbw.redstone_control.on":  "Requires redstone",
+  "wtbw.redstone_control.off":  "Requires no redstone",
+  "wtbw.redstone_control.ignore":  "Ignores redstone",
+  "wtbw.redstone_control.pulse":  "Requires redstone pulse",
+
   "wtbw_lib.tooltip.in_out": "Max I/O:"
 }

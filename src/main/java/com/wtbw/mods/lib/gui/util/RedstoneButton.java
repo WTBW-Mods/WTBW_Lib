@@ -5,9 +5,11 @@ import com.wtbw.mods.lib.gui.util.sprite.Sprite;
 import com.wtbw.mods.lib.gui.util.sprite.SpriteMap;
 import com.wtbw.mods.lib.tile.util.IRedstoneControlled;
 import com.wtbw.mods.lib.tile.util.RedstoneMode;
+import com.wtbw.mods.lib.util.TextComponentBuilder;
 import com.wtbw.mods.lib.util.Utilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -26,6 +28,7 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
   private final static Sprite SPRITE_ON = SPRITE_MAP.getSprite(0, getTextureYOffset(RedstoneMode.ON), 16);
   private final static Sprite SPRITE_OFF = SPRITE_MAP.getSprite(0, getTextureYOffset(RedstoneMode.OFF), 16);
   private final static Sprite SPRITE_PULSE = SPRITE_MAP.getSprite(0, getTextureYOffset(RedstoneMode.PULSE), 16);
+  protected final static String LANG_KEY = "wtbw.redstone_control";
   
   private final IRedstoneControlled control;
   private final TE tile;
@@ -72,7 +75,8 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
   public List<String> getTooltip()
   {
     List<String> tooltip = new ArrayList<>();
-    tooltip.add(control.getRedstoneMode().toString());
+    tooltip.add(TextComponentBuilder.createTranslated(LANG_KEY).bold().build().getFormattedText());
+    tooltip.add(I18n.format(LANG_KEY + "." + control.getRedstoneMode().toString().toLowerCase()));
     return tooltip;
   }
   
