@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 /*
   @author: Naxanria
 */
-public class Cache<T>
+public class Cache<T> implements Supplier<T>
 {
   private T t;
   private final Supplier<T> supplier;
@@ -15,7 +15,8 @@ public class Cache<T>
   {
     this.supplier = supplier;
   }
-  
+ 
+  @Override
   public T get()
   {
     if (t == null)

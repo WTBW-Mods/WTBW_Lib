@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -561,6 +562,18 @@ public class Utilities
     
     return energy + "/" + capacity + " FE";
   }
+  
+  public static String getTooltip(@Nonnull IFluidTank tank, boolean abbreviated)
+  {
+    int fluidAmount = tank.getFluidAmount();
+    int fluidCapacity = tank.getCapacity();
+    
+    String amount = abbreviated ? Utilities.abbreviate(fluidAmount / 1000) : String.valueOf(fluidAmount);
+    String capacity = abbreviated ? Utilities.abbreviate(fluidCapacity / 1000) : String.valueOf(fluidCapacity);
+    
+    return amount + "/" + capacity + " mB";
+  }
+  
   
   public static <T> T make(T t, Consumer<T> consumer)
   {

@@ -1,9 +1,11 @@
 package com.wtbw.mods.lib.util.nbt;
 
+import com.wtbw.mods.lib.WTBWLib;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -144,7 +146,20 @@ public class NBTManager
     return register(name, manager);
   }
   
+  public NBTManager register(String name, FluidTank tank)
+  {
+    return register(name, tank, true);
+  }
   
+  public NBTManager register(String name, FluidTank tank, boolean trackGui)
+  {
+    Manager.FluidTankManager manager = new Manager.FluidTankManager(tank);
+    if (!trackGui)
+    {
+      manager.noGuiTracking();
+    }
+    return register(name, manager);
+  }
   
   public boolean contains(String name)
   {
@@ -191,5 +206,11 @@ public class NBTManager
     }
     
     return holders;
+  }
+  
+  public void listAll()
+  {
+    WTBWLib.LOGGER.info("Listing registered managers, total: {}", managerMap.size());
+    managerMap.forEach((s, manager) -> WTBWLib.LOGGER.info("\t{}: {}", s, manager.getClass().toString()));
   }
 }

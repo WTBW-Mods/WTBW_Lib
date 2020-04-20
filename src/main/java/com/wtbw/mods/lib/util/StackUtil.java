@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
@@ -325,5 +326,33 @@ public class StackUtil
     }
     
     return ItemStack.EMPTY;
+  }
+  
+  /**
+   * Moves 1 item from 1 inventory to the otehr
+   * @param from takes item from
+   * @param to puts item into
+   * @return true if it moved an item
+   */
+  public static boolean moveItem(IItemHandler from, IItemHandler to)
+  {
+    for (int i = 0; i < from.getSlots(); i++)
+    {
+      ItemStack stack = from.extractItem(i, 1, true);
+      if (!stack.isEmpty())
+      {
+        for (int j = 0; j < to.getSlots(); j++)
+        {
+          ItemStack inserted = to.insertItem(j, stack, true);
+          if (inserted.isEmpty())
+          {
+            to.insertItem(j, from.extractItem(i, 1, false), false);
+            return true;
+          }
+        }
+      }
+    }
+    
+    return false;
   }
 }

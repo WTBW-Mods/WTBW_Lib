@@ -1,14 +1,12 @@
 package com.wtbw.mods.lib.util.nbt;
 
-import com.wtbw.mods.lib.WTBWLib;
-import com.wtbw.mods.lib.tile.util.RedstoneControl;
 import com.wtbw.mods.lib.util.ICast;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntReferenceHolder;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 /*
   @author: Naxanria
@@ -304,6 +302,28 @@ public abstract class Manager
       {
         nbt.put(name, serializable.serializeNBT());
       }
+    }
+  }
+  
+  public static class FluidTankManager extends Manager
+  {
+    private final FluidTank tank;
+  
+    public FluidTankManager(FluidTank tank)
+    {
+      this.tank = tank;
+    }
+  
+    @Override
+    public void read(String name, CompoundNBT nbt)
+    {
+      tank.readFromNBT(nbt.getCompound(name));
+    }
+  
+    @Override
+    public void write(String name, CompoundNBT nbt)
+    {
+      nbt.put(name, tank.writeToNBT(new CompoundNBT()));
     }
   }
 }

@@ -1,8 +1,16 @@
 package com.wtbw.mods.lib.gui.util;
 
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.wtbw.mods.lib.util.ColorUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.renderer.Atlases;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.Texture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.inventory.container.PlayerContainer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.function.Supplier;
@@ -41,6 +49,9 @@ public class ProgressBar extends AbstractGui
   protected int currentColor = color;
   protected float currentProgress = 0;
   
+  protected ResourceLocation texture = null;
+  protected TextureMode textureMode = TextureMode.REPEAT;
+  protected boolean colorTexture = false;
   
   public ProgressBar(int x, int y, int width, int height)
   {
@@ -133,6 +144,8 @@ public class ProgressBar extends AbstractGui
     int fillX = x;
     int fillY = y;
     
+    boolean partial = false;
+    
     switch (fillDirection)
     {
       case LEFT_RIGHT:
@@ -141,10 +154,12 @@ public class ProgressBar extends AbstractGui
       case RIGHT_LEFT:
         fillWidth = (int) (fillWidth * currentProgress);
         fillX = x + width - fillWidth;
+        partial = true;
         break;
       case BOTTOM_TOP:
         fillHeight = (int) (fillHeight * currentProgress);
         fillY = y + height - fillHeight;
+        partial = true;
         break;
       case TOP_BOTTOM:
         fillHeight = (int) (fillHeight * currentProgress);
@@ -156,7 +171,33 @@ public class ProgressBar extends AbstractGui
       rect(x, y, width, height, backgroundColor);
     }
     
-    rect(fillX, fillY, fillWidth, fillHeight, currentColor);
+    if (texture != null)
+    {
+      Minecraft minecraft = Minecraft.getInstance();
+
+      TextureAtlasSprite sprite = minecraft.getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(this.texture);
+      int spriteWidth = sprite.getWidth();
+      int spriteHeight = sprite.getHeight();
+      
+      
+//      if (textureMode == TextureMode.REPEAT)
+//      {
+        if (colorTexture)
+        {
+          GuiUtil.color(color);
+        }
+        GuiUtil.renderRepeatingSprite(fillX, y, height, fillWidth, fillHeight, sprite, 16, 16, getBlitOffset());
+//        GuiUtil.renderRepeating(x, y, width, height, 0, 0, spriteWidth, spriteHeight, spriteWidth, spriteHeight, colorTexture ? color : 0xffffffff, PlayerContainer.LOCATION_BLOCKS_TEXTURE);
+//      }
+//      else
+//      {
+////        GuiUtil.renderTexture(fillX, fillY, fillWidth, fillHeight, spriteWidth, spriteHeight, colorTexture ? color : 0xffffffff, this.texture);
+//      }
+    }
+    else
+    {
+      rect(fillX, fillY, fillWidth, fillHeight, currentColor);
+    }
     
     if (border)
     {
@@ -292,6 +333,33 @@ public class ProgressBar extends AbstractGui
     return this;
   }
   
+  public ProgressBar setTexture(ResourceLocation texture)
+  {
+    this.texture = texture;
+    return this;
+  }
+  
+  public ProgressBar setTextureMode(TextureMode textureMode)
+  {
+    this.textureMode = textureMode;
+    return this;
+  }
+  
+  public ProgressBar setUseColorTexture(boolean useColorTexture)
+  {
+    this.colorTexture = useColorTexture;
+    return this;
+  }
+  
+  public ProgressBar setTexture(ResourceLocation texture, TextureMode textureMode, boolean useColorTexture)
+  {
+    this.texture = texture;
+    this.textureMode = textureMode;
+    this.colorTexture = useColorTexture;
+    
+    return this;
+  }
+  
   public int getX()
   {
     return x;
@@ -395,6 +463,21 @@ public class ProgressBar extends AbstractGui
   public float getCurrentProgress()
   {
     return currentProgress;
+  }
+  
+  public ResourceLocation getTexture()
+  {
+    return texture;
+  }
+  
+  public TextureMode getTextureMode()
+  {
+    return textureMode;
+  }
+  
+  public boolean isColorTexture()
+  {
+    return colorTexture;
   }
   
   public <PB extends ProgressBar> PB cast()

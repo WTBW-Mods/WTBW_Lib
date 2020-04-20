@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -221,6 +222,11 @@ public abstract class Registrator
     type.setRegistryName(modid, registryName);
     tileRegistry.register(type);
     return type;
+  }
+  
+  public ResourceLocation getResource(String name)
+  {
+    return new ResourceLocation(modid, name);
   }
 
   public interface IContainerFactory
