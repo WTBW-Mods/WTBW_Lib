@@ -24,6 +24,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -41,6 +42,7 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
   protected boolean hideExtraTooltips = false;
   
   protected Cache<BaseEnergyStorage> storage = Cache.create(() -> new BaseEnergyStorage(10000));
+  protected Cache<FluidTank> tank = Cache.create(() -> new FluidTank(1000));
 
   public BaseTileBlock(Properties properties, TileEntityProvider<TE> tileEntityProvider)
   {
@@ -195,6 +197,25 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
           if (storage.getEnergyStored() > 0)
           {
             tooltip.add(TextComponentBuilder.create(Utilities.getTooltip(storage, !Screen.hasShiftDown())).aqua().build());
+          }
+        }
+        
+        if (data.contains("tank", Constants.NBT.TAG_COMPOUND))
+        {
+          CompoundNBT nbt = data.getCompound("tank");
+          
+          FluidTank fluidTank = this.tank.get();
+          
+          fluidTank.readFromNBT(nbt);
+          if (nbt.contains("capacity", Constants.NBT.TAG_INT))
+          {
+            fluidTank.setCapacity(nbt.getInt("capacity"));
+          }
+          
+          if (fluidTank.getFluidAmount() > 0)
+          {
+            tooltip.add(TextComponentBuilder.create(Utilities.getTooltip(fluidTank, false)).aqua()
+              .next(" ").nextTranslate(fluidTank.getFluid().getTranslationKey()).build());
           }
         }
       }

@@ -571,7 +571,9 @@ public class Utilities
     String amount = abbreviated ? Utilities.abbreviate(fluidAmount / 1000) : String.valueOf(fluidAmount);
     String capacity = abbreviated ? Utilities.abbreviate(fluidCapacity / 1000) : String.valueOf(fluidCapacity);
     
-    return amount + "/" + capacity + " mB";
+    String suffix = abbreviated ? "B" : "mB";
+    
+    return amount + "/" + capacity +  " "+ suffix;
   }
   
   

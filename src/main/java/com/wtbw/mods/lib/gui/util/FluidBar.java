@@ -16,6 +16,7 @@ import java.util.List;
 public class FluidBar extends ProgressBar implements ITooltipProvider
 {
   public final IFluidTank tank;
+  public boolean abbreviate = false;
   
   public FluidBar(IFluidTank tank, int x, int y)
   {
@@ -51,6 +52,12 @@ public class FluidBar extends ProgressBar implements ITooltipProvider
     }
   }
   
+  public FluidBar setAbbreviate(boolean abbreviate)
+  {
+    this.abbreviate = abbreviate;
+    return this;
+  }
+  
   @Override
   public boolean isHover(int mouseX, int mouseY)
   {
@@ -60,6 +67,6 @@ public class FluidBar extends ProgressBar implements ITooltipProvider
   @Override
   public List<String> getTooltip()
   {
-    return Utilities.listOf(Utilities.getTooltip(tank, !Screen.hasShiftDown()));
+    return Utilities.listOf(Utilities.getTooltip(tank, abbreviate));
   }
 }

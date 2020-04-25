@@ -317,13 +317,19 @@ public abstract class Manager
     @Override
     public void read(String name, CompoundNBT nbt)
     {
-      tank.readFromNBT(nbt.getCompound(name));
+      if (tank != null)
+      {
+        tank.readFromNBT(nbt.getCompound(name));
+      }
     }
   
     @Override
     public void write(String name, CompoundNBT nbt)
     {
-      nbt.put(name, tank.writeToNBT(new CompoundNBT()));
+      if (tank != null)
+      {
+        nbt.put(name, tank.writeToNBT(new CompoundNBT()));
+      }
     }
   }
 }
