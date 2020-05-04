@@ -4,6 +4,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /*
   @author: Naxanria
@@ -68,7 +69,7 @@ public abstract class BaseConfig
 
   public static boolean isResouceNameValid(String resourceName) {
     String[] astring = decompose(resourceName, ':');
-    return isValidNamespace(org.apache.commons.lang3.StringUtils.isEmpty(astring[0]) ? "minecraft" : astring[0]) && isPathValid(astring[1]);
+    return isValidNamespace(RandomStringUtils.isEmpty(astring[0]) ? "minecraft" : astring[0]) && isPathValid(astring[1]);
   }
 
   public static boolean isResourceLocation(String resource)
