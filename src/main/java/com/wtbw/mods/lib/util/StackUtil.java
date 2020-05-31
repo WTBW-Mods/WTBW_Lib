@@ -355,4 +355,25 @@ public class StackUtil
     
     return false;
   }
+  
+  public static ItemStack insert(ItemStack insert, IItemHandler itemHandler)
+  {
+    insert = insert.copy();
+    for (int i = 0; i < itemHandler.getSlots(); i++)
+    {
+      ItemStack inserted = itemHandler.insertItem(i, insert, false);
+      if (inserted.isEmpty())
+      {
+        return ItemStack.EMPTY;
+      }
+      
+      insert.setCount(inserted.getCount());
+      if (insert.isEmpty())
+      {
+        return ItemStack.EMPTY;
+      }
+    }
+    
+    return insert;
+  }
 }

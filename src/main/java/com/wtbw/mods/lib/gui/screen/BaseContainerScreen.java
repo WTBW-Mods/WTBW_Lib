@@ -4,6 +4,7 @@ import com.wtbw.mods.lib.gui.container.BaseTileContainer;
 import com.wtbw.mods.lib.gui.util.EnergyBar;
 import com.wtbw.mods.lib.gui.util.GuiUtil;
 import com.wtbw.mods.lib.gui.util.ITooltipProvider;
+import com.wtbw.mods.lib.gui.util.sprite.Sprite;
 import com.wtbw.mods.lib.network.RequestGuiUpdatePacket;
 import com.wtbw.mods.lib.tile.util.IGuiUpdateHandler;
 import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
@@ -16,7 +17,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
   @author: Naxanria
@@ -35,6 +38,7 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
   protected final TileEntity tileEntity;
   protected boolean requestGuiUpdates;
   
+  private Map<Slot, Sprite> slotBackgrounds = new HashMap<>();
 
   public BaseContainerScreen(C container, PlayerInventory inventory, ITextComponent title)
   {
@@ -63,6 +67,13 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
     renderBackground();
     super.render(mouseX, mouseY, partialTicks);
     renderTooltip(mouseX, mouseY);
+  }
+  
+  protected <S extends Slot> S setBackground(S slot, Sprite background)
+  {
+    slotBackgrounds.put(slot, background);
+    
+    return slot;
   }
   
   @Override
@@ -166,8 +177,12 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
           break;
         }
       }
-      
-      GuiUtil.renderSlotBackground(x, y);
+  
+      GuiUtil.SLOT_SPRITE.render(x, y);
+      if (slotBackgrounds.containsKey(slot))
+      {
+        slotBackgrounds.get(slot).render(x, y);
+      }
     }
   }
   
