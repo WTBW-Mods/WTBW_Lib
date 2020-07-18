@@ -20,9 +20,12 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -83,7 +86,7 @@ public class Utilities
     return recipe.orElse(null);
   }
 
-  public static Direction getFacingFromVector(Vec3d vec)
+  public static Direction getFacingFromVector(Vector3d vec)
   {
     return Direction.getFacingFromVector(vec.x, vec.y, vec.z);
   }
@@ -126,16 +129,16 @@ public class Utilities
   {
     World world = player.world;
 
-    Vec3d look = player.getLookVec();
-    Vec3d startPos = getVec3d(player).add(0, player.getEyeHeight(), 0);
-    Vec3d endPos = startPos.add(look.mul(range, range, range));
+    Vector3d look = player.getLookVec();
+    Vector3d startPos = getVector3d(player).add(0, player.getEyeHeight(), 0);
+    Vector3d endPos = startPos.add(look.mul(range, range, range));
     RayTraceContext context = new RayTraceContext(startPos, endPos, RayTraceContext.BlockMode.OUTLINE, fluidMode, player);
     return world.rayTraceBlocks(context);
   }
   
-  public static BlockRayTraceResult getLookingAt(Vec3d position, Vec3d look, double range, Entity entity)
+  public static BlockRayTraceResult getLookingAt(Vector3d position, Vector3d look, double range, Entity entity)
   {
-    Vec3d endPos = position.add(look.mul(range, range, range));
+    Vector3d endPos = position.add(look.mul(range, range, range));
     RayTraceContext context = new RayTraceContext(position, endPos, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity);
     return entity.world.rayTraceBlocks(context);
   }
@@ -145,15 +148,15 @@ public class Utilities
     return lookingAt.getType() == BlockRayTraceResult.Type.MISS;
   }
 
-  public static Vec3d getVec3d(BlockPos pos)
+  public static Vector3d getVector3d(BlockPos pos)
   {
-    return new Vec3d(pos.getX(), pos.getY(), pos.getZ());
+    return new Vector3d(pos.getX(), pos.getY(), pos.getZ());
   }
 
-  public static Vec3d getVec3d(Entity entity)
+  public static Vector3d getVector3d(Entity entity)
   {
     return entity.getPositionVec();
-//    return new Vec3d(entity.posX, entity.posY, entity.posZ);
+//    return new Vector3d(entity.posX, entity.posY, entity.posZ);
   }
 
   public static <T> List<T> listOf(T... toList)
@@ -185,7 +188,7 @@ public class Utilities
   
   public static Area getArea(BlockPos pos, Direction facing, int size, int height)
   {
-    Vec3i directionVec = facing.getDirectionVec();
+    Vector3i directionVec = facing.getDirectionVec();
     int dirX = directionVec.getX();
     int dirY = directionVec.getY();
     int dirZ = directionVec.getZ();
@@ -591,7 +594,11 @@ public class Utilities
   
   public static boolean isSlimeChunk(World world, ChunkPos pos)
   {
-    return SharedSeedRandom.seedSlimeChunk(pos.x, pos.z, world.getSeed(), 987234911L).nextInt(10) == 0;
+    if (world.isRemote)
+    {
+      throw new IllegalStateException("Can only call this from server side!");
+    }
+    return SharedSeedRandom.seedSlimeChunk(pos.x, pos.z, ((ServerWorld) world).getSeed(), 987234911L).nextInt(10) == 0;
   }
   
   public static int distanceSqr(ChunkPos a, ChunkPos b)

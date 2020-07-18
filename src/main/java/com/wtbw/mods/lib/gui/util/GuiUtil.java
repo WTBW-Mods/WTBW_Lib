@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib.gui.util;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.wtbw.mods.lib.gui.util.sprite.NineSliceSprite;
@@ -25,6 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
+import java.lang.ref.WeakReference;
 import java.util.function.Predicate;
 
 /*
@@ -41,8 +43,10 @@ public class GuiUtil extends AbstractGui
   public static final int GREEN = 0xff00ff00;
   public static final int BLUE = 0xff0000ff;
 
+  // fixme: weak reference maybe?
+  private static MatrixStack currentStack = null;
   
-  public static final ResourceLocation WIDGETS = Widget.WIDGETS_LOCATION;
+  public static final ResourceLocation WIDGETS = Widget.field_230687_i_;
 
   public static final SpriteMap GUI_MAP = new SpriteMap(256, new ResourceLocation("textures/gui/container/generic_54.png"));
   public static final Sprite SLOT_SPRITE;
@@ -161,7 +165,7 @@ public class GuiUtil extends AbstractGui
     RenderSystem.enableBlend();
     RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
     RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-    blit(x, y, u, v, width, height, textureWidth, textureHeight);
+    func_238463_a_(currentStack, x, y, u, v, width, height, textureWidth, textureHeight);
   }
   
   //todo: scaleable textures, make buttons be variable height
@@ -395,7 +399,7 @@ public class GuiUtil extends AbstractGui
   
   public static void drawRect(int x, int y, int width, int height, int color)
   {
-    fill(x, y, x + width, y + height, color);
+    func_238467_a_(currentStack, x, y, x + width, y + height, color);
   }
   
   public static void color(DyeColor color)
@@ -408,4 +412,15 @@ public class GuiUtil extends AbstractGui
     float[] rgba = ColorUtil.getRGBAf(color);
     RenderSystem.color4f(rgba[0], rgba[1], rgba[2], rgba[3]);
   }
+  
+  public static MatrixStack setCurrentStack(MatrixStack stack)
+  {
+    return currentStack = stack;
+  }
+  
+  public static MatrixStack getCurrentStack()
+  {
+    return currentStack;
+  }
+  
 }

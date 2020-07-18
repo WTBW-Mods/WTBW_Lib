@@ -3,6 +3,7 @@ package com.wtbw.mods.lib.tile.util.fluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -24,7 +25,7 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
   protected FluidStack stored = FluidStack.EMPTY;
   
   private int capacity;
-  private Tag<Fluid> acceptedTag = null;
+  private ITag<Fluid> acceptedTag = null;
   
   
   public BaseFluidTank(int capacity)
@@ -32,7 +33,7 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
     this.capacity = capacity;
   }
   
-  public Tag<Fluid> getAcceptedTag()
+  public ITag<Fluid> getAcceptedTag()
   {
     return acceptedTag;
   }
@@ -50,7 +51,7 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
   
   public boolean acceptsFluidTag(FluidStack other)
   {
-    return acceptedTag != null && acceptedTag.contains(other.getFluid());
+    return acceptedTag != null && acceptedTag.func_230236_b_().contains(other.getFluid());
   }
   
   /**
@@ -210,9 +211,9 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
     }
   }
   
-  public static List<Tag<Fluid>> getSharingTags(FluidStack a, FluidStack b)
+  public static List<ITag<Fluid>> getSharingTags(FluidStack a, FluidStack b)
   {
-    List<Tag<Fluid>> shared = new ArrayList<>();
+    List<ITag<Fluid>> shared = new ArrayList<>();
     FluidTags.getCollection().getOwningTags(a.getFluid()).stream()
       .filter(rl -> FluidTags.getCollection().getOwningTags(b.getFluid()).contains(rl))
       .forEach(rl -> shared.add(FluidTags.getCollection().get(rl)

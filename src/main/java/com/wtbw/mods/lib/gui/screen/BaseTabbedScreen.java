@@ -28,16 +28,16 @@ public abstract class BaseTabbedScreen<C extends Container> extends BaseContaine
     return (T) this;
   }
   
-  @Override
-  protected void init()
+  @Override // init
+  protected void func_231160_c_()
   {
-    super.init();
+    super.func_231160_c_();
     tabInitializers.get(currentTab).run();
   }
   
-  protected void setIndex(int index)
-  {
-    currentTab = MathHelper.clamp(index, 0, tabInitializers.size() - 1);
-    init(minecraft, width, height);
-  }
+//  protected void setIndex(int index)
+//  {
+//    currentTab = MathHelper.clamp(index, 0, tabInitializers.size() - 1);
+//    init(minecraft, width, height);
+//  }
 }

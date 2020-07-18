@@ -111,7 +111,7 @@ public class ModifierType
     
     info.add(builder.build());
   
-    if (Screen.hasShiftDown())
+    if (Screen.func_231173_s_())
     {
       info.add(TextComponentBuilder.createTranslated(getDescriptionKey()).gray().build());
     }

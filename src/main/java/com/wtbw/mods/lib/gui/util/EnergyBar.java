@@ -34,6 +34,7 @@ public class EnergyBar extends ProgressBar implements ITooltipProvider
   @Override
   public List<String> getTooltip()
   {
-    return Utilities.listOf(Utilities.getTooltip(storage, !Screen.hasShiftDown()));
+    // func_231173_s_() -> shift down
+    return Utilities.listOf(Utilities.getTooltip(storage, !Screen.func_231173_s_()));
   }
 }

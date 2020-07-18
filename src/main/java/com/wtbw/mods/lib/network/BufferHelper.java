@@ -5,11 +5,11 @@ import com.wtbw.mods.lib.WTBWLib;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.state.IProperty;
-import net.minecraft.state.IStateHolder;
+import net.minecraft.state.Property;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.StateHolder;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
 
 import java.util.Map;
@@ -20,9 +20,9 @@ import java.util.Optional;
 */
 public class BufferHelper
 {
-  public static Vec3d readVec3d(PacketBuffer buffer)
+  public static Vector3d readVector3d(PacketBuffer buffer)
   {
-    return new Vec3d
+    return new Vector3d
     (
       buffer.readDouble(),
       buffer.readDouble(),
@@ -30,11 +30,11 @@ public class BufferHelper
     );
   }
   
-  public static PacketBuffer writeVec3d(PacketBuffer buffer, Vec3d vec3d)
+  public static PacketBuffer writeVector3d(PacketBuffer buffer, Vector3d Vector3d)
   {
-    buffer.writeDouble(vec3d.x);
-    buffer.writeDouble(vec3d.y);
-    buffer.writeDouble(vec3d.z);
+    buffer.writeDouble(Vector3d.x);
+    buffer.writeDouble(Vector3d.y);
+    buffer.writeDouble(Vector3d.z);
     
     return buffer;
   }
@@ -50,7 +50,7 @@ public class BufferHelper
     for (int i = 0; i < size; i++)
     {
       String p = buffer.readString();
-      IProperty<?> property = stateContainer.getProperty(p);
+      Property<?> property = stateContainer.getProperty(p);
       String v = buffer.readString();
       if (property != null)
       {
@@ -65,7 +65,7 @@ public class BufferHelper
     return state;
   }
   
-  private static <S extends IStateHolder<S>, T extends Comparable<T>> S setValueHelper(S state, IProperty<T> property, String valueName)
+  private static <S extends StateHolder<?, S>, T extends Comparable<T>> S setValueHelper(S state, Property<T> property, String valueName)
   {
     Optional<T> optional = property.parseValue(valueName);
     if (optional.isPresent())
@@ -82,14 +82,14 @@ public class BufferHelper
   public static PacketBuffer writeState(PacketBuffer buffer, BlockState state)
   {
     String id = Registry.BLOCK.getKey(state.getBlock()).toString();
-    ImmutableMap<IProperty<?>, Comparable<?>> values = state.getValues();
+    ImmutableMap<Property<?>, Comparable<?>> values = state.getValues();
     int size = values.size();
     buffer.writeString(id);
     buffer.writeInt(size);
   
-    for(Map.Entry<IProperty<?>, Comparable<?>> entry : values.entrySet())
+    for(Map.Entry<Property<?>, Comparable<?>> entry : values.entrySet())
     {
-      IProperty<?> property = entry.getKey();
+      Property<?> property = entry.getKey();
       String name = property.getName();
       String value = getName(property, entry.getValue());
       buffer.writeString(name);
@@ -99,7 +99,7 @@ public class BufferHelper
     return buffer;
   }
   
-  public static <T extends Comparable<T>> String getName(IProperty<T> property, Comparable<?> value) {
+  public static <T extends Comparable<T>> String getName(Property<T> property, Comparable<?> value) {
     return property.getName((T)value);
   }
 }

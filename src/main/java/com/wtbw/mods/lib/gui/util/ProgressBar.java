@@ -186,7 +186,8 @@ public class ProgressBar extends AbstractGui
         {
           GuiUtil.color(color);
         }
-        GuiUtil.renderRepeatingSprite(fillX, y, height, fillWidth, fillHeight, sprite, 16, 16, getBlitOffset());
+        // func_230927_p_ -> getBlitOffset
+        GuiUtil.renderRepeatingSprite(fillX, y, height, fillWidth, fillHeight, sprite, 16, 16, func_230927_p_());
 //        GuiUtil.renderRepeating(x, y, width, height, 0, 0, spriteWidth, spriteHeight, spriteWidth, spriteHeight, colorTexture ? color : 0xffffffff, PlayerContainer.LOCATION_BLOCKS_TEXTURE);
 //      }
 //      else
@@ -214,7 +215,7 @@ public class ProgressBar extends AbstractGui
   
   protected void rect(int x, int y, int width, int height, int color)
   {
-    fill(x, y, x + width, y + height, color);
+    GuiUtil.drawRect(x, y, width, height, color);
   }
   
   public ProgressBar setX(int x)

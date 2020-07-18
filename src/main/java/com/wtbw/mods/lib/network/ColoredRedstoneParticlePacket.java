@@ -3,7 +3,7 @@ package com.wtbw.mods.lib.network;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -14,11 +14,11 @@ import java.util.function.Supplier;
 */
 public class ColoredRedstoneParticlePacket extends Packet
 {
-  public final Vec3d pos;
-  public final Vec3d motion;
+  public final Vector3d pos;
+  public final Vector3d motion;
   public final int color;
   
-  public ColoredRedstoneParticlePacket(Vec3d pos, Vec3d motion, int color)
+  public ColoredRedstoneParticlePacket(Vector3d pos, Vector3d motion, int color)
   {
     this.pos = pos;
     this.motion = motion;
@@ -27,16 +27,16 @@ public class ColoredRedstoneParticlePacket extends Packet
   
   public ColoredRedstoneParticlePacket(PacketBuffer buffer)
   {
-    pos = BufferHelper.readVec3d(buffer);
-    motion = BufferHelper.readVec3d(buffer);
+    pos = BufferHelper.readVector3d(buffer);
+    motion = BufferHelper.readVector3d(buffer);
     color = buffer.readInt();
   }
   
   @Override
   public void toBytes(PacketBuffer buffer)
   {
-    BufferHelper.writeVec3d(buffer, pos);
-    BufferHelper.writeVec3d(buffer, motion);
+    BufferHelper.writeVector3d(buffer, pos);
+    BufferHelper.writeVector3d(buffer, motion);
     buffer.writeInt(color);
   }
   

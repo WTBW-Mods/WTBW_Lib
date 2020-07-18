@@ -91,7 +91,7 @@ public class BatteryItem extends BasePoweredItem
         int out = storage.getMaxExtract();
         
         String msg;
-        boolean shift = Screen.hasShiftDown();
+        boolean shift = Screen.func_231173_s_();
         if (in == out)
         {
           msg = !shift ? Utilities.abbreviate(in) : String.valueOf(in);

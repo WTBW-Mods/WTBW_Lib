@@ -1,7 +1,7 @@
 package com.wtbw.mods.lib.util.rand;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -55,14 +55,14 @@ public class RandomUtil
     return list;
   }
   
-  public static Vec3d normalized(Random random)
+  public static Vector3d normalized(Random random)
   {
-    return new Vec3d(random.nextDouble(), random.nextDouble(), random.nextDouble()).normalize();
+    return new Vector3d(random.nextDouble(), random.nextDouble(), random.nextDouble()).normalize();
   }
   
-  public static Vec3d boundVec3d(Random random, double xBound, double yBound, double zBound)
+  public static Vector3d boundVector3d(Random random, double xBound, double yBound, double zBound)
   {
-    return new Vec3d(random.nextDouble() * xBound, random.nextDouble() * yBound, random.nextDouble() * zBound);
+    return new Vector3d(random.nextDouble() * xBound, random.nextDouble() * yBound, random.nextDouble() * zBound);
   }
   
   public static int range(Random random, int min, int max)
@@ -77,9 +77,9 @@ public class RandomUtil
     return random.nextFloat() * diff + min;
   }
   
-  public static Vec3d fromPos(Random random, BlockPos pos)
+  public static Vector3d fromPos(Random random, BlockPos pos)
   {
-    return new Vec3d
+    return new Vector3d
     (
       pos.getX() + random.nextDouble(),
       pos.getY() + random.nextDouble(),

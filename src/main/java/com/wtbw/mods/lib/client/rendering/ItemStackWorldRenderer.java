@@ -11,9 +11,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 /*
@@ -23,14 +24,14 @@ public abstract class ItemStackWorldRenderer
 {
   protected static Minecraft minecraft = Minecraft.getInstance();
   
-  public static Vec3d getPlayerPos()
+  public static Vector3d getPlayerPos()
   {
-//    return new Vec3d(TileEntityRendererDispatcher.staticPlayerX, TileEntityRendererDispatcher.staticPlayerY, TileEntityRendererDispatcher.staticPlayerZ);
+//    return new Vector3d(TileEntityRendererDispatcher.staticPlayerX, TileEntityRendererDispatcher.staticPlayerY, TileEntityRendererDispatcher.staticPlayerZ);
     // fixme: proper position etc
-    return new Vec3d(0, 0, 0);
+    return new Vector3d(0, 0, 0);
   }
 
-  public static Vec3d getPosTranslated(BlockPos pos)
+  public static Vector3d getPosTranslated(BlockPos pos)
   {
     return getPlayerPos().subtract(pos.getX(), pos.getY(), pos.getZ());
   }
@@ -43,7 +44,7 @@ public abstract class ItemStackWorldRenderer
     {
       // fixme: reimplement
 
-      Vec3d view = info.getProjectedView();
+      Vector3d view = info.getProjectedView();
       double x = view.getX();
       double y = view.getY();
       double z = view.getZ();

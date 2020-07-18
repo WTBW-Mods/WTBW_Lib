@@ -196,7 +196,8 @@ public class BaseTileBlock<TE extends TileEntity> extends Block
           storage.deserializeNBT(data.getCompound("storage"));
           if (storage.getEnergyStored() > 0)
           {
-            tooltip.add(TextComponentBuilder.create(Utilities.getTooltip(storage, !Screen.hasShiftDown())).aqua().build());
+            // Screen.func_231173_s_() -> shift down
+            tooltip.add(TextComponentBuilder.create(Utilities.getTooltip(storage, !Screen.func_231173_s_())).aqua().build());
           }
         }
         

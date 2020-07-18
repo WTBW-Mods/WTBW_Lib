@@ -2,13 +2,10 @@ package com.wtbw.mods.lib.item.upgrade;
 
 import com.wtbw.mods.lib.upgrade.IUpgradeProvider;
 import com.wtbw.mods.lib.upgrade.ModifierType;
-import com.wtbw.mods.lib.util.TextComponentBuilder;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;

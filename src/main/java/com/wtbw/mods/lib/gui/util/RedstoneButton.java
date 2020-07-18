@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib.gui.util;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wtbw.mods.lib.WTBWLib;
 import com.wtbw.mods.lib.gui.util.sprite.Sprite;
 import com.wtbw.mods.lib.gui.util.sprite.SpriteMap;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
 
   public RedstoneButton(int xPos, int yPos, TE tile)
   {
-    super(xPos, yPos, 24, 26, "", null);
+    super(xPos, yPos, 24, 26, new StringTextComponent(""), null);
   
     this.control = tile;
     this.tile = tile;
@@ -53,13 +55,13 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
     this.drawBackdrop = drawBackdrop;
     if (drawBackdrop)
     {
-      width = 24;
-      height = 26;
+      field_230688_j_ = 24;
+      field_230689_k_ = 26;
     }
     else
     {
-      width = 18;
-      height = 18;
+      field_230688_j_ = 18;
+      field_230689_k_ = 18;
     }
     
     return this;
@@ -68,26 +70,26 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
   @Override
   public boolean isHover(int mouseX, int mouseY)
   {
-    return isHovered();
+    return func_230449_g_();
   }
   
   @Override
   public List<String> getTooltip()
   {
     List<String> tooltip = new ArrayList<>();
-    tooltip.add(TextComponentBuilder.createTranslated(LANG_KEY).bold().build().getFormattedText());
+    tooltip.add(TextComponentBuilder.createTranslated(LANG_KEY).bold().build().getUnformattedComponentText());
     tooltip.add(I18n.format(LANG_KEY + "." + control.getRedstoneMode().toString().toLowerCase()));
     return tooltip;
   }
   
-  @Override
-  public void onPress()
+  @Override //onPress
+  public void func_230930_b_()
   {
     GuiUtil.sendButton(control.getControl().getButtonId(getNextMode()), tile.getPos(), ClickType.LEFT);
   }
   
-  @Override
-  public void renderButton(int mouseX, int mouseY, float partial)
+  @Override // renderButton
+  public void func_230431_b_(MatrixStack stack, int mouseX, int mouseY, float partial)
   {
 //    GuiUtil.renderButton(x, y, width, height, isHovered, active);
     
@@ -108,6 +110,9 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
         sprite = SPRITE_PULSE;
         break;
     }
+    
+    int x = field_230690_l_;
+    int y = field_230691_m_;
     
     if (drawBackdrop)
     {

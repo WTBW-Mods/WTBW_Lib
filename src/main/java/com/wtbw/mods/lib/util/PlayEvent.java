@@ -4,7 +4,7 @@ import com.wtbw.mods.lib.network.ColoredRedstoneParticlePacket;
 import com.wtbw.mods.lib.network.Networking;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 /*
@@ -102,10 +102,10 @@ public class PlayEvent
   
   public static void redstoneParticle(World world, double posX, double posY, double posZ, double motionX, double motionY, double motionZ, int color)
   {
-    redstoneParticle(world, new Vec3d(posX, posY, posZ), new Vec3d(motionX, motionY, motionZ), color);
+    redstoneParticle(world, new Vector3d(posX, posY, posZ), new Vector3d(motionX, motionY, motionZ), color);
   }
   
-  public static void redstoneParticle(World world, Vec3d pos, Vec3d motion, int color)
+  public static void redstoneParticle(World world, Vector3d pos, Vector3d motion, int color)
   {
     if (!world.isRemote)
     {
