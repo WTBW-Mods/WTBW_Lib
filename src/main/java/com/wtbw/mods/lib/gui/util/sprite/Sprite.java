@@ -1,6 +1,6 @@
 package com.wtbw.mods.lib.gui.util.sprite;
 
-import com.wtbw.mods.lib.WTBWLib;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 /*
   @author: Naxanria
@@ -35,43 +35,42 @@ public class Sprite
     }
   }
   
-  public void render(int x, int y)
+  public void render(MatrixStack stack, int x, int y)
   {
-    render(x, y, 0xffffffff);
+    render(stack, x, y, 0xffffffff);
   }
   
-  public void render(int x, int y, int color)
+  public void render(MatrixStack stack, int x, int y, int color)
   {
-    map.render(x, y, color, this);
+    map.render(stack, x, y, color, this);
   }
   
-  public void render(int x, int y, int width, int height)
+  public void render(MatrixStack stack, int x, int y, int width, int height)
   {
-    render(x, y, width, height, 0xffffffff);
+    render(stack, x, y, width, height, 0xffffffff);
   }
   
-  public void render(int x, int y, int width, int height, int color)
+  public void render(MatrixStack stack, int x, int y, int width, int height, int color)
   {
-    map.render(x, y, width, height, color, this);
+    map.render(stack, x, y, width, height, color, this);
   }
   
-  public void renderPartial(int x, int y, int uOff, int vOff)
+  public void renderPartial(MatrixStack stack, int x, int y, int uOff, int vOff)
   {
-    renderPartial(x, y, uOff, vOff, 0xffffffff);
+    renderPartial(stack, x, y, uOff, vOff, 0xffffffff);
   }
   
-  public void renderPartial(int x, int y, int uOff, int vOff, int color)
+  public void renderPartial(MatrixStack stack, int x, int y, int uOff, int vOff, int color)
   {
-    map.renderPartial(x, y, uOff, vOff, color, this);
+    map.renderPartial(stack, x, y, uOff, vOff, color, this);
   }
   
-  
-  public Sprite getAdjacent(int width, int height, Direction direction)
+  public Sprite getAdjacent(int width, int height, SpriteDirection spriteDirection)
   {
     int su = u;
     int sv = v;
     
-    switch (direction)
+    switch (spriteDirection)
     {
       default:
       case UP:
@@ -93,42 +92,42 @@ public class Sprite
   
   public Sprite getLeft(int width, int height)
   {
-    return getAdjacent(width, height, Direction.LEFT);
+    return getAdjacent(width, height, SpriteDirection.LEFT);
   }
   
   public Sprite getLeft(int size)
   {
-    return getAdjacent(size, size, Direction.LEFT);
+    return getAdjacent(size, size, SpriteDirection.LEFT);
   }
   
   public Sprite getRight(int width, int height)
   {
-    return getAdjacent(width, height, Direction.RIGHT);
+    return getAdjacent(width, height, SpriteDirection.RIGHT);
   }
   
   public Sprite getRight(int size)
   {
-    return getAdjacent(size, size, Direction.RIGHT);
+    return getAdjacent(size, size, SpriteDirection.RIGHT);
   }
   
   public Sprite getAbove(int width, int height)
   {
-    return getAdjacent(width, height, Direction.UP);
+    return getAdjacent(width, height, SpriteDirection.UP);
   }
   
   public Sprite getAbove(int size)
   {
-    return getAdjacent(size, size, Direction.UP);
+    return getAdjacent(size, size, SpriteDirection.UP);
   }
   
   public Sprite getBelow(int width, int height)
   {
-    return getAdjacent(width, height, Direction.DOWN);
+    return getAdjacent(width, height, SpriteDirection.DOWN);
   }
   
   public Sprite getBelow(int size)
   {
-    return getAdjacent(size, size, Direction.DOWN);
+    return getAdjacent(size, size, SpriteDirection.DOWN);
   }
   
   private void assertInside()

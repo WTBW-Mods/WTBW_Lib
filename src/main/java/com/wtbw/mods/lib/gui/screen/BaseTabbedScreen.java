@@ -29,9 +29,9 @@ public abstract class BaseTabbedScreen<C extends Container> extends BaseContaine
   }
   
   @Override // init
-  protected void func_231160_c_()
+  protected void init()
   {
-    super.func_231160_c_();
+    super.init();
     tabInitializers.get(currentTab).run();
   }
   

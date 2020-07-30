@@ -9,7 +9,6 @@ import com.wtbw.mods.lib.gui.util.sprite.Sprite;
 import com.wtbw.mods.lib.network.RequestGuiUpdatePacket;
 import com.wtbw.mods.lib.tile.util.IGuiUpdateHandler;
 import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
-import com.wtbw.mods.lib.util.Cache;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
@@ -18,7 +17,6 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.TextComponent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,8 +33,6 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
   public static final int COLOR_GREEN = 0xff00ff00;
   public static final int COLOR_RED = 0xffff0000;
   public static final int COLOR_BLACK = 0xff000000;
-  
-  protected MatrixStack currentStack = null;
   
   private List<ITooltipProvider> tooltipProviders = new ArrayList<>();
   protected int ticks = 0;
@@ -68,14 +64,12 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
   }
 
   @Override // Screen.render
-  public void func_230430_a_(MatrixStack stack, int mouseX, int mouseY, float partialTicks)
+  public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks)
   {
-    currentStack = stack;
-    
-    func_230446_a_(stack);
+    renderBackground(stack);
     //renderBackground();
 //    super.render(mouseX, mouseY, partialTicks);
-    super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
+    super.render(stack, mouseX, mouseY, partialTicks);
     renderTooltip(stack, mouseX, mouseY);
   }
   
@@ -87,7 +81,7 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
   }
   
   @Override
-  public void func_231023_e_() // tick
+  public void tick() // tick
   {
     if (requestGuiUpdates)
     {
@@ -98,7 +92,7 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
 //      }
     }
     ticks++;
-    super.func_231023_e_();
+    super.tick();
   }
   
   protected void renderTooltip(MatrixStack stack, int mouseX, int mouseY)
@@ -107,18 +101,18 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
     {
       if (this.hoveredSlot != null && this.hoveredSlot.getHasStack())
       {
-        this.func_230457_a_(stack, this.hoveredSlot.getStack(), mouseX, mouseY);
+        this.renderTooltip(stack, this.hoveredSlot.getStack(), mouseX, mouseY);
       }
       else
       {
-        int i = (getWidth() - this.xSize) / 2;
-        int j = (getHeight() - this.ySize) / 2;
+//        int i = (width - this.xSize) / 2;
+//        int j = (height - this.ySize) / 2;
 
         for (ITooltipProvider provider : tooltipProviders)
         {
           if (provider.isHover(mouseX, mouseY))
           {
-            func_238652_a_(stack, getAsTextProperties(provider.getTooltip()), mouseX, mouseY);
+            renderTooltip(stack, getAsTextProperties(provider.getTooltip()), mouseX, mouseY);
             break;
           }
         }
@@ -126,15 +120,15 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
     }
   }
   
-  protected int getWidth()
-  {
-    return field_230708_k_;
-  }
-  
-  protected int getHeight()
-  {
-    return field_230709_l_;
-  }
+//  protected int getWidth()
+//  {
+//    return field_230708_k_;
+//  }
+//
+//  protected int getHeight()
+//  {
+//    return field_230709_l_;
+//  }
   
   protected ITextProperties getAsTextProperties(List<String> strings)
   {
@@ -148,52 +142,52 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
   }
   
   @Override //init
-  protected void func_231160_c_()
+  protected void init()
   {
-    super.func_231160_c_();
+    super.init();
     
     tooltipProviders.clear();
   }
   
   @Override // addButton
-  protected <T extends Widget> T func_230480_a_(T widget)
+  protected <T extends Widget> T addButton(T widget)
   {
     if (widget instanceof ITooltipProvider)
     {
       tooltipProviders.add((ITooltipProvider) widget);
     }
-    return super.func_230480_a_(widget);
+    return super.addButton(widget);
   }
   
-  protected void defaultGui()
+  protected void defaultGui(MatrixStack stack)
   {
-    defaultGuiBackground();
-    renderTitle();
-    renderInventoryText();
-    renderSlotsBackground();
+    defaultGuiBackground(stack);
+    renderTitle(stack);
+    renderInventoryText(stack);
+    renderSlotsBackground(stack);
   }
   
-  protected void defaultGuiBackground()
+  protected void defaultGuiBackground(MatrixStack stack)
   {
-    defaultGuiBackground(guiLeft, guiTop);
+    defaultGuiBackground(stack, guiLeft, guiTop);
   }
   
-  protected void defaultGuiBackground(int x, int y)
+  protected void defaultGuiBackground(MatrixStack stack, int x, int y)
   {
-    GuiUtil.renderGui(x, y);
+    GuiUtil.renderGui(stack, x, y);
   }
   
-  protected void defaultGuiBackground(int x, int y, int width, int height)
+  protected void defaultGuiBackground(MatrixStack stack, int x, int y, int width, int height)
   {
-    GuiUtil.renderGui(x, y, width, height);
+    GuiUtil.renderGui(stack, x, y, width, height);
   }
   
-  protected void renderSlotsBackground()
+  protected void renderSlotsBackground(MatrixStack stack)
   {
-    renderSlotsBackground(true);
+    renderSlotsBackground(stack, true);
   }
   
-  protected void renderSlotsBackground(boolean inventory)
+  protected void renderSlotsBackground(MatrixStack stack, boolean inventory)
   {
     for (int i = 0; i < container.inventorySlots.size(); i++)
     {
@@ -204,41 +198,41 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
       {
         if (i == container.inventorySlots.size() - 36)
         {
-          GuiUtil.renderInventoryBackground(x, y);
+          GuiUtil.renderInventoryBackground(stack, x, y);
           break;
         }
       }
   
-      GuiUtil.SLOT_SPRITE.render(x, y);
+      GuiUtil.SLOT_SPRITE.render(stack, x, y);
       if (slotBackgrounds.containsKey(slot))
       {
-        slotBackgrounds.get(slot).render(x, y);
+        slotBackgrounds.get(slot).render(stack, x, y);
       }
     }
   }
   
-  protected void renderTitle()
+  protected void renderTitle(MatrixStack stack)
   {
-    renderTitle(guiLeft + 8, guiTop + 6);
+    renderTitle(stack, guiLeft + 8, guiTop + 6);
   }
   
-  protected void renderTitle(int x, int y)
+  protected void renderTitle(MatrixStack stack, int x, int y)
   {
-    if (field_230704_d_ != null)
+    if (title != null)
     {
-      String title = this.field_230704_d_.getUnformattedComponentText();
-      field_230712_o_.func_238405_a_(currentStack, title, x, y, 0xff404040);
+      String title = this.title.getUnformattedComponentText();
+      font.drawString(stack, title, x, y, 0xff404040);
     }
   }
   
-  protected void renderInventoryText()
+  protected void renderInventoryText(MatrixStack stack)
   {
-    renderInventoryText(guiLeft + 8, guiTop + 73);
+    renderInventoryText(stack, guiLeft + 8, guiTop + 73);
   }
   
-  protected void renderInventoryText(int x, int y)
+  protected void renderInventoryText(MatrixStack stack, int x, int y)
   {
-    field_230712_o_.func_238405_a_(currentStack, playerInventory.getDisplayName().getUnformattedComponentText(), x, y, 0xff404040);
+    font.drawString(stack, playerInventory.getDisplayName().getUnformattedComponentText(), x, y, 0xff404040);
 //    font.drawString(playerInventory.getDisplayName().getFormattedText(), x, y, 0xff404040);
   }
   
@@ -247,13 +241,13 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
     return new EnergyBar(storage, guiLeft + 10, guiTop + 16);
   }
   
-  protected void drawStringNoShadow(String string, int x, int y, int color)
+  protected void drawStringNoShadow(MatrixStack stack, String string, int x, int y, int color)
   {
-    field_230712_o_.func_238405_a_(currentStack, string, x, y, color);
+    font.drawString(stack, string, x, y, color);
   }
   
-  protected void drawRect(int x, int y, int width, int height, int color)
+  protected void drawRect(MatrixStack stack, int x, int y, int width, int height, int color)
   {
-    GuiUtil.drawRect(x, y, width, height, color);
+    GuiUtil.drawRect(stack, x, y, width, height, color);
   }
 }

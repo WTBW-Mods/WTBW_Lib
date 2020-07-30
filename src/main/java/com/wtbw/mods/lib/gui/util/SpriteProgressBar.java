@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib.gui.util;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wtbw.mods.lib.gui.util.sprite.Sprite;
 
 import java.util.function.Supplier;
@@ -71,14 +72,14 @@ public class SpriteProgressBar extends ProgressBar
   }
   
   @Override
-  public void draw(int xOffset, int yOffset)
+  public void draw(MatrixStack stack, int xOffset, int yOffset)
   {
     int x = this.x + xOffset + this.xOffset;
     int y = this.y + yOffset + this.yOffset;
   
     if (backgroundSprite != null)
     {
-      backgroundSprite.render(x, y);
+      backgroundSprite.render(stack, x, y);
     }
   
     int fillHeight = height;
@@ -109,11 +110,11 @@ public class SpriteProgressBar extends ProgressBar
 
     if (partial)
     {
-      progressSprite.renderPartial(fillX, fillY, width - fillWidth, height - fillHeight);
+      progressSprite.renderPartial(stack, fillX, fillY, width - fillWidth, height - fillHeight);
     }
     else
     {
-      progressSprite.render(fillX, fillY, fillWidth, fillHeight);
+      progressSprite.render(stack, fillX, fillY, fillWidth, fillHeight);
     }
   }
 }

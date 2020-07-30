@@ -1,6 +1,7 @@
 package com.wtbw.mods.lib.gui.util;
 
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.wtbw.mods.lib.util.ColorUtil;
 import net.minecraft.client.Minecraft;
@@ -129,12 +130,12 @@ public class ProgressBar extends AbstractGui
     return val;
   }
   
-  public void draw()
+  public void draw(MatrixStack stack)
   {
-    draw(0, 0);
+    draw(stack, 0, 0);
   }
   
-  public void draw(int xOffset, int yOffset)
+  public void draw(MatrixStack stack, int xOffset, int yOffset)
   {
     int x = this.x + xOffset;
     int y = this.y + yOffset;
@@ -168,7 +169,7 @@ public class ProgressBar extends AbstractGui
     
     if (background)
     {
-      rect(x, y, width, height, backgroundColor);
+      rect(stack, x, y, width, height, backgroundColor);
     }
     
     if (texture != null)
@@ -187,7 +188,7 @@ public class ProgressBar extends AbstractGui
           GuiUtil.color(color);
         }
         // func_230927_p_ -> getBlitOffset
-        GuiUtil.renderRepeatingSprite(fillX, y, height, fillWidth, fillHeight, sprite, 16, 16, func_230927_p_());
+        GuiUtil.renderRepeatingSprite(stack, fillX, y, height, fillWidth, fillHeight, sprite, 16, 16, this.getBlitOffset());
 //        GuiUtil.renderRepeating(x, y, width, height, 0, 0, spriteWidth, spriteHeight, spriteWidth, spriteHeight, colorTexture ? color : 0xffffffff, PlayerContainer.LOCATION_BLOCKS_TEXTURE);
 //      }
 //      else
@@ -197,25 +198,25 @@ public class ProgressBar extends AbstractGui
     }
     else
     {
-      rect(fillX, fillY, fillWidth, fillHeight, currentColor);
+      rect(stack, fillX, fillY, fillWidth, fillHeight, currentColor);
     }
     
     if (border)
     {
       // top
-      rect(x, y, width, borderThickness, borderColor);
+      rect(stack, x, y, width, borderThickness, borderColor);
       // left
-      rect(x, y, borderThickness, height, borderColor);
+      rect(stack, x, y, borderThickness, height, borderColor);
       // right
-      rect(x + width - borderThickness, y, borderThickness, height, borderColor);
+      rect(stack, x + width - borderThickness, y, borderThickness, height, borderColor);
       // bottom
-      rect(x, y + height - borderThickness, width, borderThickness, borderColor);
+      rect(stack, x, y + height - borderThickness, width, borderThickness, borderColor);
     }
   }
   
-  protected void rect(int x, int y, int width, int height, int color)
+  protected void rect(MatrixStack stack, int x, int y, int width, int height, int color)
   {
-    GuiUtil.drawRect(x, y, width, height, color);
+    GuiUtil.drawRect(stack, x, y, width, height, color);
   }
   
   public ProgressBar setX(int x)

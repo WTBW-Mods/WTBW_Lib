@@ -17,17 +17,12 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
-
-import java.lang.ref.WeakReference;
-import java.util.function.Predicate;
 
 /*
   @author: Naxanria
@@ -42,11 +37,8 @@ public class GuiUtil extends AbstractGui
   public static final int RED = 0xffff0000;
   public static final int GREEN = 0xff00ff00;
   public static final int BLUE = 0xff0000ff;
-
-  // fixme: weak reference maybe?
-  private static MatrixStack currentStack = null;
   
-  public static final ResourceLocation WIDGETS = Widget.field_230687_i_;
+  public static final ResourceLocation WIDGETS = Widget.WIDGETS_LOCATION;
 
   public static final SpriteMap GUI_MAP = new SpriteMap(256, new ResourceLocation("textures/gui/container/generic_54.png"));
   public static final Sprite SLOT_SPRITE;
@@ -147,12 +139,12 @@ public class GuiUtil extends AbstractGui
       && y >= rY && y < rY + rHeight;
   }
   
-  public static void renderTexture(int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight, ResourceLocation textureLocation)
+  public static void renderTexture(MatrixStack stack, int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight, ResourceLocation textureLocation)
   {
-    renderTexture(x, y, width, height, u, v, textureWidth, textureHeight, 0xffffffff, textureLocation);
+    renderTexture(stack, x, y, width, height, u, v, textureWidth, textureHeight, 0xffffffff, textureLocation);
   }
   
-  public static void renderTexture(int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight, int color, ResourceLocation textureLocation)
+  public static void renderTexture(MatrixStack stack, int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight, int color, ResourceLocation textureLocation)
   {
     float a = ((color >> 24) & 0xff) / 256f;
     float r = ((color >> 16) & 0xff) / 256f;
@@ -161,46 +153,46 @@ public class GuiUtil extends AbstractGui
     Minecraft.getInstance().getTextureManager().bindTexture(textureLocation);
 
     
-    RenderSystem.color4f(r,g , b, a);
+    RenderSystem.color4f(r, g , b, a);
     RenderSystem.enableBlend();
     RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
     RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-    func_238463_a_(currentStack, x, y, u, v, width, height, textureWidth, textureHeight);
+    blit(stack, x, y, u, v, width, height, textureWidth, textureHeight);
   }
   
   //todo: scaleable textures, make buttons be variable height
   
-  public static void renderButton(int x, int y, int width, boolean hover)
+  public static void renderButton(MatrixStack stack, int x, int y, int width, boolean hover)
   {
-    renderButton(x, y, width, 20, hover);
+    renderButton(stack, x, y, width, 20, hover);
   }
   
-  public static void renderButton(int x, int y, int width, int height, boolean hover)
+  public static void renderButton(MatrixStack stack, int x, int y, int width, int height, boolean hover)
   {
-    renderButton(x, y, width, height, hover, true);
+    renderButton(stack, x, y, width, height, hover, true);
   }
   
-  public static void renderButton(int x, int y, int width, boolean hover, boolean enabled)
+  public static void renderButton(MatrixStack stack, int x, int y, int width, boolean hover, boolean enabled)
   {
-    renderButton(x, y, width, 20, hover, enabled);
+    renderButton(stack, x, y, width, 20, hover, enabled);
   }
   
-  public static void renderButton(int x, int y, int width, int height, boolean hover, boolean enabled)
+  public static void renderButton(MatrixStack stack, int x, int y, int width, int height, boolean hover, boolean enabled)
   {
     if (enabled)
     {
       if (hover)
       {
-        BUTTON_NINE_SLICE_HOVER.render(x, y, width, height);
+        BUTTON_NINE_SLICE_HOVER.render(stack, x, y, width, height);
       }
       else
       {
-        BUTTON_NINE_SLICE_NORMAL.render(x, y, width, height);
+        BUTTON_NINE_SLICE_NORMAL.render(stack, x, y, width, height);
       }
     }
     else
     {
-      BUTTON_NINE_SLICE_DISABLED.render(x, y, width, height);
+      BUTTON_NINE_SLICE_DISABLED.render(stack, x, y, width, height);
     }
     
 //    int buttonX = 0;
@@ -224,7 +216,7 @@ public class GuiUtil extends AbstractGui
 //    renderTexture(x + 3, y, width, height,buttonEndX - width, buttonY, 256, 256, WIDGETS);
   }
   
-  public static void renderRepeating(int x, int y, int width, int height, int u, int v, int uWidth, int vHeight, int textureWidth, int textureHeight, int color, ResourceLocation textureLocation)
+  public static void renderRepeating(MatrixStack stack, int x, int y, int width, int height, int u, int v, int uWidth, int vHeight, int textureWidth, int textureHeight, int color, ResourceLocation textureLocation)
   {
     int renderWidth = width;
     int xp = x;
@@ -234,7 +226,7 @@ public class GuiUtil extends AbstractGui
       int yp = y;
       do
       {
-        renderTexture(xp, yp, renderWidth, renderHeight, u, v, textureWidth, textureHeight, color, textureLocation);
+        renderTexture(stack, xp, yp, renderWidth, renderHeight, u, v, textureWidth, textureHeight, color, textureLocation);
         renderHeight -= vHeight;
         yp += vHeight;
       }
@@ -246,7 +238,7 @@ public class GuiUtil extends AbstractGui
   }
   
   // https://github.com/mekanism/Mekanism/blob/77aef85572e21d3a8c65b6b21c87d9577139c161/src/main/java/mekanism/client/gui/GuiUtils.java drawTiledSprite
-  public static void renderRepeatingSprite(int xPosition, int yPosition, int yOffset, int width, int height, TextureAtlasSprite sprite, int textureWidth, int textureHeight, int zLevel)
+  public static void renderRepeatingSprite(MatrixStack stack, int xPosition, int yPosition, int yOffset, int width, int height, TextureAtlasSprite sprite, int textureWidth, int textureHeight, int zLevel)
   {
 //    if (width == 0 || height == 0 || textureWidth == 0 || textureHeight == 0)
 //    {
@@ -372,34 +364,34 @@ public class GuiUtil extends AbstractGui
     Minecraft.getInstance().textureManager.bindTexture(texture);
   }
   
-  public static void renderGui(int x, int y)
+  public static void renderGui(MatrixStack stack, int x, int y)
   {
-    renderGui(x, y, 175, 165);
+    renderGui(stack, x, y, 175, 165);
   }
   
-  public static void renderGui(int x, int y, int width, int height)
+  public static void renderGui(MatrixStack stack, int x, int y, int width, int height)
   {
-    GUI_NINE_SLICE.render(x, y, width, height);
+    GUI_NINE_SLICE.render(stack, x, y, width, height);
   }
   
-  public static void renderSlotBackground(Slot slot)
+  public static void renderSlotBackground(MatrixStack stack, Slot slot)
   {
-    renderSlotBackground(slot.xPos, slot.yPos);
+    renderSlotBackground(stack, slot.xPos, slot.yPos);
   }
   
-  public static void renderSlotBackground(int x, int y)
+  public static void renderSlotBackground(MatrixStack stack, int x, int y)
   {
-    SLOT_SPRITE.render(x, y);
+    SLOT_SPRITE.render(stack, x, y);
   }
   
-  public static void renderInventoryBackground(int x, int y)
+  public static void renderInventoryBackground(MatrixStack stack, int x, int y)
   {
-    INVENTORY_SPRITE.render(x, y);
+    INVENTORY_SPRITE.render(stack, x, y);
   }
   
-  public static void drawRect(int x, int y, int width, int height, int color)
+  public static void drawRect(MatrixStack stack, int x, int y, int width, int height, int color)
   {
-    func_238467_a_(currentStack, x, y, x + width, y + height, color);
+    fill(stack, x, y, x + width, y + height, color);
   }
   
   public static void color(DyeColor color)
@@ -412,15 +404,4 @@ public class GuiUtil extends AbstractGui
     float[] rgba = ColorUtil.getRGBAf(color);
     RenderSystem.color4f(rgba[0], rgba[1], rgba[2], rgba[3]);
   }
-  
-  public static MatrixStack setCurrentStack(MatrixStack stack)
-  {
-    return currentStack = stack;
-  }
-  
-  public static MatrixStack getCurrentStack()
-  {
-    return currentStack;
-  }
-  
 }

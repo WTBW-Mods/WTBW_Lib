@@ -51,7 +51,7 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
   
   public boolean acceptsFluidTag(FluidStack other)
   {
-    return acceptedTag != null && acceptedTag.func_230236_b_().contains(other.getFluid());
+    return acceptedTag != null && acceptedTag.getAllElements().contains(other.getFluid());
   }
   
   /**

@@ -9,5 +9,6 @@ public interface ITooltipProvider
 {
   boolean isHover(int mouseX, int mouseY);
 
+  // todo: enforce ITextComponent
   List<String> getTooltip();
 }

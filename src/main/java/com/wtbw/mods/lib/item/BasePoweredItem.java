@@ -81,7 +81,7 @@ public class BasePoweredItem extends Item
     getEnergyStorage(stack)
       .ifPresent(storage ->
         {
-          tooltip.add(TextComponentBuilder.create(Utilities.getTooltip(storage, !Screen.func_231173_s_())).aqua().build());
+          tooltip.add(TextComponentBuilder.create(Utilities.getTooltip(storage, !Screen.hasShiftDown())).aqua().build());
         }
       );
     

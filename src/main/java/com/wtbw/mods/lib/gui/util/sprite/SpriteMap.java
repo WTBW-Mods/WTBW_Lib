@@ -1,5 +1,6 @@
 package com.wtbw.mods.lib.gui.util.sprite;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wtbw.mods.lib.gui.util.GuiUtil;
 import com.wtbw.mods.lib.util.QuadInt;
 import net.minecraft.util.ResourceLocation;
@@ -78,48 +79,48 @@ public class SpriteMap
     return list;
   }
   
-  public SpriteMap render(int x, int y, int width, int height, int u, int v)
+  public SpriteMap render(MatrixStack stack, int x, int y, int width, int height, int u, int v)
   {
-    return render(x, y, width, height, u, v, 0xffffffff);
+    return render(stack, x, y, width, height, u, v, 0xffffffff);
   }
   
-  public SpriteMap render(int x, int y, int u, int v, int width, int height, int color)
+  public SpriteMap render(MatrixStack stack, int x, int y, int u, int v, int width, int height, int color)
   {
-    GuiUtil.renderTexture(x, y, width, height, u, v, width, height, color, ID);
+    GuiUtil.renderTexture(stack, x, y, width, height, u, v, width, height, color, ID);
     
     return this;
   }
   
-  public SpriteMap render(int x, int y, Sprite sprite)
+  public SpriteMap render(MatrixStack stack, int x, int y, Sprite sprite)
   {
-    return render(x, y, 0xffffffff, sprite);
+    return render(stack, x, y, 0xffffffff, sprite);
   }
   
-  public SpriteMap render(int x, int y, int color, Sprite sprite)
+  public SpriteMap render(MatrixStack stack, int x, int y, int color, Sprite sprite)
   {
-    GuiUtil.renderTexture(x, y, sprite.width, sprite.height, sprite.u, sprite.v, width, height, color, ID);
+    GuiUtil.renderTexture(stack, x, y, sprite.width, sprite.height, sprite.u, sprite.v, width, height, color, ID);
     return this;
   }
   
-  public SpriteMap render(int x, int y, int width, int height, Sprite sprite)
+  public SpriteMap render(MatrixStack stack, int x, int y, int width, int height, Sprite sprite)
   {
-    return render(x, y, width, height, 0xffffffff, sprite);
+    return render(stack, x, y, width, height, 0xffffffff, sprite);
   }
   
-  public SpriteMap render(int x, int y, int width, int height, int color, Sprite sprite)
+  public SpriteMap render(MatrixStack stack, int x, int y, int width, int height, int color, Sprite sprite)
   {
-    GuiUtil.renderRepeating(x, y, width, height, sprite.u, sprite.v, sprite.width, sprite.height, this.width, this.height, color, ID);
+    GuiUtil.renderRepeating(stack, x, y, width, height, sprite.u, sprite.v, sprite.width, sprite.height, this.width, this.height, color, ID);
     return this;
   }
   
-  public SpriteMap renderPartial(int x, int y, int uOff, int vOff, Sprite sprite)
+  public SpriteMap renderPartial(MatrixStack stack, int x, int y, int uOff, int vOff, Sprite sprite)
   {
-    return renderPartial(x, y, uOff, vOff, 0xffffffff, sprite);
+    return renderPartial(stack, x, y, uOff, vOff, 0xffffffff, sprite);
   }
   
-  public SpriteMap renderPartial(int x, int y, int uOff, int vOff, int color, Sprite sprite)
+  public SpriteMap renderPartial(MatrixStack stack, int x, int y, int uOff, int vOff, int color, Sprite sprite)
   {
-    GuiUtil.renderTexture(x, y, sprite.width - uOff, sprite.height - vOff, sprite.u + uOff, sprite.v + vOff, width, height, color, ID);
+    GuiUtil.renderTexture(stack, x, y, sprite.width - uOff, sprite.height - vOff, sprite.u + uOff, sprite.v + vOff, width, height, color, ID);
     return this;
   }
 }

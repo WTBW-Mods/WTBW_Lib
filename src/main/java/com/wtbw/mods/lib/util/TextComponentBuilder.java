@@ -1,8 +1,12 @@
 package com.wtbw.mods.lib.util;
 
+import net.minecraft.util.Util;
 import net.minecraft.util.text.*;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TextComponentBuilder
 {
@@ -45,7 +49,7 @@ public class TextComponentBuilder
     TextComponentBuilder builder = new TextComponentBuilder(new TranslationTextComponent(text, args));
     return builder;
   }
-
+  
   public TextComponentBuilder next(ITextComponent component)
   {
     return next(component, false);
@@ -56,7 +60,7 @@ public class TextComponentBuilder
     current = component;
     if (useNewStyle)
     {
-      current.getStyle().func_240721_b_(TextFormatting.WHITE);
+      current.getStyle().setFormatting(TextFormatting.WHITE);
     }
 
     return this;
@@ -79,7 +83,7 @@ public class TextComponentBuilder
       return parent.getStyle();
     }
     
-    return Style.field_240709_b_.func_240712_a_(TextFormatting.WHITE);
+    return Style.EMPTY.setFormatting(TextFormatting.WHITE);
   }
 
   public TextComponentBuilder next(int i)
@@ -138,7 +142,7 @@ public class TextComponentBuilder
 
   public TextComponentBuilder setBold(boolean bold)
   {
-    getStyle().func_240713_a_(bold);
+    getStyle().setBold(bold);
 
     return this;
   }
@@ -150,7 +154,7 @@ public class TextComponentBuilder
 
   public TextComponentBuilder setItalic(boolean italic)
   {
-    getStyle().func_240722_b_(italic);
+    getStyle().setItalic(italic);
 
     return this;
   }
@@ -181,28 +185,28 @@ public class TextComponentBuilder
 
   public TextComponentBuilder setColor(TextFormatting formatting)
   {
-    getStyle().func_240721_b_(formatting);
+    getStyle().setFormatting(formatting);
 
     return this;
   }
 
   public TextComponentBuilder setColor(Color color)
   {
-    getStyle().func_240718_a_(color);
+    getStyle().setColor(color);
 
     return this;
   }
 
   public TextComponentBuilder setClickEvent(ClickEvent clickEvent)
   {
-    getStyle().func_240715_a_(clickEvent);
+    getStyle().setClickEvent(clickEvent);
 
     return this;
   }
 
   public TextComponentBuilder setHoverEvent(HoverEvent hoverEvent)
   {
-    getStyle().func_240716_a_(hoverEvent);
+    getStyle().setHoverEvent(hoverEvent);
 
     return this;
   }
@@ -357,5 +361,26 @@ public class TextComponentBuilder
 
     return parent;
   }
-
+  
+  public static List<ITextComponent> translate(List<String> strings)
+  {
+    return Util.make(new ArrayList<>(), list ->
+    {
+      for (String string : strings)
+      {
+        list.add(new TranslationTextComponent(string));
+      }
+    });
+  }
+  
+  public static List<ITextComponent> strings(List<String> strings)
+  {
+    return Util.make(new ArrayList<>(), list ->
+    {
+      for (String string : strings)
+      {
+        list.add(new StringTextComponent(string));
+      }
+    });
+  }
 }

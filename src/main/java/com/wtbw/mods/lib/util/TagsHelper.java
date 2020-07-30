@@ -16,6 +16,6 @@ public class TagsHelper
   
   public static boolean hasTag(FluidStack stack, ResourceLocation tag)
   {
-    return FluidTags.getCollection().get(tag).func_230236_b_().contains(stack.getFluid());
+    return FluidTags.getCollection().get(tag).getAllElements().contains(stack.getFluid());
   }
 }

@@ -55,13 +55,13 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
     this.drawBackdrop = drawBackdrop;
     if (drawBackdrop)
     {
-      field_230688_j_ = 24;
-      field_230689_k_ = 26;
+      width = 24;
+      height = 26;
     }
     else
     {
-      field_230688_j_ = 18;
-      field_230689_k_ = 18;
+      width = 18;
+      height = 18;
     }
     
     return this;
@@ -70,7 +70,7 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
   @Override
   public boolean isHover(int mouseX, int mouseY)
   {
-    return func_230449_g_();
+    return isHovered();
   }
   
   @Override
@@ -83,13 +83,13 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
   }
   
   @Override //onPress
-  public void func_230930_b_()
+  public void onPress()
   {
     GuiUtil.sendButton(control.getControl().getButtonId(getNextMode()), tile.getPos(), ClickType.LEFT);
   }
   
   @Override // renderButton
-  public void func_230431_b_(MatrixStack stack, int mouseX, int mouseY, float partial)
+  public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partial)
   {
 //    GuiUtil.renderButton(x, y, width, height, isHovered, active);
     
@@ -110,18 +110,16 @@ public class RedstoneButton<TE extends TileEntity & IRedstoneControlled> extends
         sprite = SPRITE_PULSE;
         break;
     }
-    
-    int x = field_230690_l_;
-    int y = field_230691_m_;
+   
     
     if (drawBackdrop)
     {
-      SPRITE_BACKGROUND.render(x, y);
-      sprite.render(x + 5, y + 5);
+      SPRITE_BACKGROUND.render(stack, x, y);
+      sprite.render(stack, x + 5, y + 5);
     }
     else
     {
-      sprite.render(x + 1, y + 1);
+      sprite.render(stack, x + 1, y + 1);
     }
     
 

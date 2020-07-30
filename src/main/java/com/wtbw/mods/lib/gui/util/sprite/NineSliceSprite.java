@@ -1,5 +1,7 @@
 package com.wtbw.mods.lib.gui.util.sprite;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 /*
   @author: Naxanria
 */
@@ -52,12 +54,12 @@ public class NineSliceSprite
     return map.getSprite(u, v, width, height);
   }
   
-  public void render(int x, int y, int width, int height)
+  public void render(MatrixStack stack, int x, int y, int width, int height)
   {
-    render(x, y, width, height, 0xffffffff);
+    render(stack, x, y, width, height, 0xffffffff);
   }
   
-  public void render(int x, int y, int width, int height, int color)
+  public void render(MatrixStack stack, int x, int y, int width, int height, int color)
   {
     int middleWidth = width - getTopLeft().width - getTopRight().width;
     int centerHeight = height - getTopLeft().height - getBottomLeft().height;
@@ -65,27 +67,27 @@ public class NineSliceSprite
     int xp = x;
     int yp = y;
     
-    getTopLeft().render(xp, yp, color);
+    getTopLeft().render(stack, xp, yp, color);
     xp += getTopLeft().width;
-    getTopMiddle().render(xp, yp, middleWidth, getTopMiddle().height, color);
+    getTopMiddle().render(stack, xp, yp, middleWidth, getTopMiddle().height, color);
     xp += middleWidth;
-    getTopRight().render(xp, yp, color);
+    getTopRight().render(stack, xp, yp, color);
     
     xp = x;
     yp += getTopLeft().height;
-    getCenterLeft().render(xp, yp, getCenterLeft().width, centerHeight, color);
+    getCenterLeft().render(stack, xp, yp, getCenterLeft().width, centerHeight, color);
     xp += getTopLeft().width;
-    getCenterMiddle().render(xp, yp, middleWidth, centerHeight, color);
+    getCenterMiddle().render(stack, xp, yp, middleWidth, centerHeight, color);
     xp += middleWidth;
-    getCenterRight().render(xp, yp, getCenterRight().width, centerHeight, color);
+    getCenterRight().render(stack, xp, yp, getCenterRight().width, centerHeight, color);
     
     xp = x;
     yp += centerHeight;
-    getBottomLeft().render(xp, yp, color);
+    getBottomLeft().render(stack, xp, yp, color);
     xp += getBottomLeft().width;
-    getBottomMiddle().render(xp, yp, middleWidth, getBottomMiddle().height, color);
+    getBottomMiddle().render(stack, xp, yp, middleWidth, getBottomMiddle().height, color);
     xp += middleWidth;
-    getBottomRight().render(xp, yp, color);
+    getBottomRight().render(stack, xp, yp, color);
   }
   
   public Sprite getSprite(int index)
@@ -93,6 +95,8 @@ public class NineSliceSprite
     return sprites[index % 9];
   }
   
+  
+  // todo: less magic numbers!
   public Sprite getTopLeft()
   {
     return getSprite(0);

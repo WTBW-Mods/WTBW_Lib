@@ -3,7 +3,7 @@ package com.wtbw.mods.lib.gui.util.sprite;
 /*
   @author: Naxanria
 */
-public enum Direction
+public enum SpriteDirection
 {
   UP,
   DOWN,

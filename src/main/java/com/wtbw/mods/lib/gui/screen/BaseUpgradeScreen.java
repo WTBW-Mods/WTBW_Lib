@@ -21,19 +21,13 @@ public abstract class BaseUpgradeScreen<C extends BaseUpgradeContainer<? extends
     upgradeManager = ((IUpgradeable) tileEntity).getUpgradeManager();
   }
   
-  @Override // init
-  protected void func_231160_c_()
-  {
-    super.func_231160_c_();
-  }
-  
   @Override // drawGuiContainerBackgroundLayer
-  protected final void func_230450_a_(MatrixStack stack, float partialTicks, int mouseX, int mouseY)
+  protected final void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY)
   {
-    GuiUtil.renderGui(guiLeft - 22, guiTop + 26, 26, upgradeManager.getMaxUpgradeSlots() * 18 + 10);
-    defaultGui();
-    drawGuiBackgroundLayer(partialTicks, mouseX, mouseY);
+    GuiUtil.renderGui(stack, guiLeft - 22, guiTop + 26, 26, upgradeManager.getMaxUpgradeSlots() * 18 + 10);
+    defaultGui(stack);
+    drawGuiBackgroundLayer(stack, partialTicks, mouseX, mouseY);
   }
   
-  protected abstract void drawGuiBackgroundLayer(float partialTicks, int mouseX, int mouseY);
+  protected abstract void drawGuiBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY);
 }
