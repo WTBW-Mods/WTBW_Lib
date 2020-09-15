@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 loaderVersion="[30,)"
-
+license="All Rights Reserved"
 issueTrackerURL="https://github.com/WTBW-Mods/WTBW_Lib/issues/"
 
 [[mods]]

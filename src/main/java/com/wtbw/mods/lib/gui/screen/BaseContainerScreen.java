@@ -9,14 +9,17 @@ import com.wtbw.mods.lib.gui.util.sprite.Sprite;
 import com.wtbw.mods.lib.network.RequestGuiUpdatePacket;
 import com.wtbw.mods.lib.tile.util.IGuiUpdateHandler;
 import com.wtbw.mods.lib.tile.util.energy.BaseEnergyStorage;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.Style;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,7 +115,7 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
         {
           if (provider.isHover(mouseX, mouseY))
           {
-            renderTooltip(stack, getAsTextProperties(provider.getTooltip()), mouseX, mouseY);
+            renderTooltip(stack, getIReorderingProcessor(provider.getTooltip()), mouseX, mouseY);
             break;
           }
         }
@@ -120,6 +123,17 @@ public abstract class BaseContainerScreen<C extends Container> extends Container
     }
   }
   
+  private List<? extends IReorderingProcessor> getIReorderingProcessor(List<String> tooltip)
+  {
+    List<IReorderingProcessor> processors = new ArrayList<>();
+    for (String t : tooltip)
+    {
+      processors.add(IReorderingProcessor.func_242239_a(t, Style.EMPTY));
+    }
+    
+    return processors;
+  }
+
 //  protected int getWidth()
 //  {
 //    return field_230708_k_;

@@ -3,6 +3,7 @@ package com.wtbw.mods.lib;
 import com.wtbw.mods.lib.event.common.WitherEvents;
 import com.wtbw.mods.lib.keybinds.KeyEventListener;
 import com.wtbw.mods.lib.network.Networking;
+import com.wtbw.mods.lib.world.generation.WorldGenManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -38,6 +39,8 @@ public class WTBWLib
   
     forgeEventBus.addListener(WitherEvents::onWitherExplosion);
     forgeEventBus.addListener(WitherEvents::onExplosion);
+    
+    forgeEventBus.addListener(WorldGenManager::onWorldGen);
     
     Networking.registerMessages();
   }
