@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.lwjgl.system.CallbackI;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
   
   private int capacity;
   private ITag<Fluid> acceptedTag = null;
-  
+  boolean extractOnly = false;
+  boolean fillOnly = false;
   
   public BaseFluidTank(int capacity)
   {
@@ -99,21 +101,32 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
     return capacity - getFluidAmount();
   }
   
+  
   /**
    * {@inheritDoc}
    */
   @Override
   public int fill(FluidStack resource, IFluidHandler.FluidAction action)
   {
-    if (resource.isEmpty())
+    if (extractOnly)
     {
       return 0;
     }
     
+    return fillInternally(resource, action);
+  }
+  
+  public int fillInternally(FluidStack resource, IFluidHandler.FluidAction action)
+  {
+    if (resource.isEmpty())
+    {
+      return 0;
+    }
+  
     int remaining = capacity - getFluidAmount();
-    
+  
     int amount = Math.min(resource.getAmount(), remaining);
-    
+  
     if (isEmpty() || isFluidValid(resource))
     {
       if (action.execute())
@@ -128,17 +141,15 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
           onContentsChanged();
         }
       }
-      
+    
       return amount;
     }
-    
+  
     return 0;
   }
   
   protected void onContentsChanged()
-  {
-  
-  }
+  { }
   
   
   /**
@@ -148,7 +159,12 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
   @Override
   public FluidStack drain(int maxDrain, IFluidHandler.FluidAction action)
   {
-    return drain(new FluidStack(stored, maxDrain), action);
+    if (fillOnly)
+    {
+      return FluidStack.EMPTY;
+    }
+    
+    return drainInternally(maxDrain, action);
   }
   
   /**
@@ -158,6 +174,21 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
   @Override
   public FluidStack drain(FluidStack resource, IFluidHandler.FluidAction action)
   {
+    if (fillOnly)
+    {
+      return FluidStack.EMPTY;
+    }
+    
+    return drainInternally(resource, action);
+  }
+  
+  public FluidStack drainInternally(int maxDrain, IFluidHandler.FluidAction action)
+  {
+    return drainInternally(new FluidStack(stored, maxDrain), action);
+  }
+  
+  public FluidStack drainInternally(FluidStack resource, IFluidHandler.FluidAction action)
+  {
     if (!isEmpty() && isFluidEqual(resource))
     {
       FluidStack drained = new FluidStack(stored, Math.min(getFluidAmount(), resource.getAmount()));
@@ -165,10 +196,10 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
       {
         stored.setAmount(getFluidAmount() - drained.getAmount());
       }
-      
+    
       return drained;
     }
-    
+  
     return FluidStack.EMPTY;
   }
   
@@ -225,5 +256,29 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
   public static boolean sharesTags(FluidStack a, FluidStack b)
   {
     return getSharingTags(a, b).size() > 0;
+  }
+  
+  public BaseFluidTank extractOnly()
+  {
+    extractOnly = true;
+    
+    return this;
+  }
+  
+  public BaseFluidTank fillOnly()
+  {
+    fillOnly = true;
+    
+    return this;
+  }
+  
+  public boolean isExtractOnly()
+  {
+    return extractOnly;
+  }
+  
+  public boolean isFillOnly()
+  {
+    return fillOnly;
   }
 }
