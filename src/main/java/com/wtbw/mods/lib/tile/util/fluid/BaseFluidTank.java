@@ -281,4 +281,9 @@ public class BaseFluidTank implements IFluidTank, INBTSerializable<CompoundNBT>
   {
     return fillOnly;
   }
+  
+  public void setFluid(FluidStack fluidStack)
+  {
+    stored = fluidStack;
+  }
 }
