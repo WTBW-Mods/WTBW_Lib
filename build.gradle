@@ -112,8 +112,8 @@ if (ENV.WTBW_CF_KEY) {
         apiKey = ENV.WTBW_CF_KEY
         project {
             id = "357089"
-            releaseType = "beta"
-            addGameVersion "1.15.2"
+            releaseType = "${release_type}"
+            addGameVersion "${minecraft_version}"
             changelog = getGitChangelog
             changelogType = 'markdown'
             addArtifact(deobfJar)
