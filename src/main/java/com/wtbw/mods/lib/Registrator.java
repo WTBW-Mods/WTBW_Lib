@@ -58,7 +58,6 @@ public abstract class Registrator
 
   protected abstract void registerAllItems();
   
-  @Deprecated
   protected void registerAllTiles()
   {}
   
@@ -143,7 +142,7 @@ public abstract class Registrator
       register(block);
     }
     
-//    registerAllTiles();
+    registerAllTiles();
   }
 
   public void registerContainers(RegistryEvent.Register<ContainerType<?>> event)
